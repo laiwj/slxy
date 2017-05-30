@@ -79,7 +79,12 @@ module.exports = {
       dialog: path.join(__dirname, "src/assets/vendor/oniui/dialog/avalon.dialog"),
       validation: path.join(__dirname, "src/assets/vendor/oniui/validation/avalon.validation"),
       avalon: path.join(__dirname, 'src/assets/vendor/avalon/avalon.shim'), //在正常情况下我们以CommonJS风格引用avalon,以require('avalon')
-      '../avalon': path.join(__dirname, 'src/assets/vendor/avalon/avalon.shim') //由于oniui都以是../avalon来引用avalon的，需要在这里进行别名
+      '../avalon': path.join(__dirname, 'src/assets/vendor/avalon/avalon.shim'), //由于oniui都以是../avalon来引用avalon的，需要在这里进行别名
+
+      // 第三方的
+      validator: path.join(__dirname, "src/lib/validator"),
+      SelectControl: path.join(__dirname, "src/lib/select/select"),
+       
     }
   },
   plugins: plugins,

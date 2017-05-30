@@ -3,7 +3,6 @@
  */
 define([], function () {
   var validationVM;
-
   function showError(el, data) {
     var next = el.parentNode.lastChild;
     if (!(next && next.className === "error-tip")) {
@@ -54,7 +53,7 @@ define([], function () {
         reasons.forEach(function (reason) {
           avalon(reason.element).removeClass("success").addClass("error");
           showError(reason.element, reason);
-          //console.log("验证中");
+          // console.log("验证中");
 
         });
         if (reasons.length === 0) {

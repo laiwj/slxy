@@ -3,11 +3,21 @@
  */
 var avalon = require("./assets/vendor/avalon/avalon.shim");
 require('../node_modules/purecss/build/pure-min.css');
-require('./assets/css/layouts/side-menu.css');
-require('./assets/css/style.css');
+require('./assets/css/common.css');
+require('./assets/css/login.css');
+require('./assets/css/reset.css');
+require('./lib/bootstrap/css/bootstrap.min.css');
+require('./lib/select/css/select.css');
+
+require('./assets/css/theme.css');
+require('./assets/css/font-awesome/css/font-awesome.css');
+require('./assets/css/slxy.css');
 //项目入口
 require("./assets/vendor/oniui/mmRequest/mmRequest");
 require("./assets/vendor/oniui/mmRouter/mmState");
+require("./assets/vendor/oniui/mmRouter/mmRouter");
+require("./assets/vendor/oniui/mmRouter/mmHistory");
+require("./assets/vendor/oniui/mmPromise/mmPromise");
 require("./assets/vendor/oniui/cookie/avalon.cookie");
 require("./assets/vendor/oniui/datepicker/avalon.coupledatepicker");
 require("./assets/vendor/oniui/pager/avalon.pager");
@@ -22,6 +32,55 @@ var root = avalon.define({
 /**
  * 首页路由
  */
+
+avalon.state("login", {
+  url: "/login",
+  views: {
+    "": {
+      //配置模块模板和控制器
+      templateProvider: function () {
+        return new Promise(function (rs) {
+          require.ensure([], function (tt) {
+            rs(require("text!./modules/login/login.html"))
+          })
+        })
+      },
+      controllerProvider: function () {
+        return new Promise(function (rs) {
+          require.ensure([], function () {
+            rs(require("./modules/login/login.js"))
+          })
+        })
+      }
+    }
+  }
+});
+
+
+
+avalon.state("report", {
+  url: "/report",
+  views: {
+    "": {
+      //配置模块模板和控制器
+      templateProvider: function () {
+        return new Promise(function (rs) {
+          require.ensure([], function (tt) {
+            rs(require("text!./modules/report/report.html"))
+          })
+        })
+      },
+      controllerProvider: function () {
+        return new Promise(function (rs) {
+          require.ensure([], function () {
+            rs(require("./modules/report/report.js"))
+          })
+        })
+      }
+    }
+  }
+});
+
 avalon.state("home", {
   url: "/home",
   views: {
@@ -88,28 +147,29 @@ avalon.state("contact", {
     }
   }
 });
-avalon.state("services", {
-  url: "/services",
+avalon.state("account", {
+  url: "/account",
   views: {
     "": {
       //配置模块模板和控制器
       templateProvider: function () {
         return new Promise(function (rs) {
           require.ensure([], function (tt) {
-            rs(require("text!./modules/services/services.html"))
+            rs(require("text!./modules/account/account.html"))
           })
         })
       },
       controllerProvider: function () {
         return new Promise(function (rs) {
           require.ensure([], function () {
-            rs(require("./modules/services/services.js"))
+            rs(require("./modules/account/account.js"))
           })
         })
       }
     }
   }
 });
+
 /**
  * 路由全局配置
  */
@@ -118,7 +178,7 @@ avalon.state.config({
     //console.log(arguments)
   },
   onBegin: function () {
-
+    console.log("begin");
   },
   onViewEnter: function (newNode, oldNode) {
 
@@ -130,4 +190,4 @@ avalon.history.start({
   fireAnchor: false
 });
 //开始扫描编译
-avalon.scan();
+avalon.scan(document.body);
