@@ -20,12 +20,6 @@ define([], function() {
                 }
             });
 
-
-            $('.J_click_pull').on('click', function() {
-                $(this).parent().parent().next().slideToggle();
-            });
-
-
         };
         // 进入视图
         $ctrl.$onEnter = function(param, rs, rj) {};

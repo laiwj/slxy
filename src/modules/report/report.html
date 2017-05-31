@@ -29,29 +29,29 @@
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/report" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
-                                    <i class="icon s16 fa fa-bar-chart"></i>数据管理
-                                </a>
+                                        <i class="icon s16 fa fa-bar-chart"></i>数据管理
+                                    </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/account" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
-                                    <i class="icon s16 fa fa-server"></i>配置管理
-                                </a>
+                                        <i class="icon s16 fa fa-server"></i>配置管理
+                                    </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
-                                    <a href="#!/home" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
-                                    <i class="icon s16 fa fa-user"></i>用户管理
-                                </a>
+                                    <a href="#!/userInfo" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                        <i class="icon s16 fa fa-user"></i>用户管理
+                                    </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/contact" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
-                                    <i class="icon s16 fa fa-cog"></i>账号管理
-                                </a>
+                                        <i class="icon s16 fa fa-cog"></i>账号管理
+                                    </a>
                                 </div>
                             </li>
 
@@ -95,84 +95,81 @@
                                 <p class="pull-left mt10 "><b>数据报告</b></p>
 
                                 <div class="pull-right">
-                                    <div class="select-warp fl mt10" id="J_chartstype" style="width: 100px;">
-                                        <label class="select-text" style=""></label>
-                                        <input type="hidden" />
-                                        <input type="hidden" class="select-value" id="bean_chartstype" />
-                                    </div>
-                                </div>
+                                    <select ms-duplex="chartstype" class="select-warp fl mt10" id="J_chartstype" style="width: 100px;">
+                                            <option value="人才分布">人才分布</option>
+                                            <option value="人才流动">人才流动</option>
+                                            <option value="人才供需">人才供需</option>
+                                    </select>
 
+                                </div>
                             </div>
                         </div>
                         <div class="p20">
                             <div class="top-menu">
-                                <div class="fl report_tab" for-tab="">
-                                    <div class="select-warp s1" id="J_city">
-                                        <b><label class="select-text button1" >北京</label></b>
-                                        <input type="hidden" />
-                                        <input type="hidden" class="select-value" id="bean_city" />
-                                    </div>
+                                <!--<div class="fl report_tab" ms-visible="chartstype=='人才分布'">
+                                    <select ms-duplex="city" class="select-warp s1 button1" id="J_city">
+                                            <option value="北京">北京</option>
+                                            <option value="上海">上海</option>
+                                            <option value="广州">广州</option>
+                                    </select>
+                                </div>-->
+                                <div class="fl report_tab" style="display: block;">
+                                    <select ms-duplex="industry" class="select-warp s1 button1" id="J_industry">
+                                            <option value="互联网全行业">互联网全行业</option>
+                                            <option value="互联网金融">互联网金融</option>
+                                            <option value="游戏">游戏</option>
+                                            <option value="电商">电商</option>
+                                    </select>
                                 </div>
-                                <div class="fl report_tab" for-tab="tab1,tab2,tab3" style="display: block;">
-                                    <div class="select-warp s1" id="J_industry">
-                                        <b><label class="select-text button1" >互联网全行业</label></b>
-                                        <input type="hidden" />
-                                        <input type="hidden" class="select-value" id="bean_industry" />
-                                    </div>
-                                </div>
-                                <div class="fl report_tab" for-tab="tab2">
-                                    <div class="select-warp s1" id="J_direction">
-                                        <b><label class="select-text button1" >人才流出</label></b>
-                                        <input type="hidden" />
-                                        <input type="hidden" class="select-value" id="bean_direction" />
-                                    </div>
-                                </div>
-
-                                <div class="fl report_tab" for-tab="tab3">
-                                    <div class="select-warp s1" id="J_na">
-                                        <b><label class="select-text button1" >需求量</label></b>
-                                        <input type="hidden" />
-                                        <input type="hidden" class="select-value" id="bean_na" />
-                                    </div>
+                                <div class="fl report_tab" ms-visible="chartstype=='人才流动'">
+                                    <select ms-duplex="direction" class="select-warp s1 button1" id="J_direction">
+                                            <option value="人才流入">人才流入</option>
+                                            <option value="人才流出">人才流出</option>
+                                        
+                                    </select>
                                 </div>
 
-                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;display: block;" for-tab="tab1">从业人员的</div>
-                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" for-tab="tab3">排名前五的</div>
-                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" for-tab="tab2">的</div>
-                                <div class="fl report_tab" for-tab="tab1,tab2" style="display: block;">
-                                    <div class="select-warp s1" id="J_cf">
-                                        <b><label class="select-text button1" >热门城市</label></b>
-                                        <input type="hidden" />
-                                        <input type="hidden" class="select-value" id="bean_cf" />
-                                    </div>
+                                <div class="fl report_tab" ms-visible="chartstype=='人才供需'">
+                                    <select ms-duplex="na" class="select-warp s1 button1" id="J_na">
+                                            <option value="需求量">需求量</option>
+                                            <option value="供需指数">供需指数</option>
+                                        
+                                    </select>
                                 </div>
 
-                                <div class="fl report_tab" for-tab="tab3">
-                                    <div class="select-warp s1" id="J_fp">
-                                        <b><label class="select-text button1" >职能</label></b>
-                                        <input type="hidden" />
-                                        <input type="hidden" class="select-value" id="bean_fp" />
-                                    </div>
+                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;display: block;" ms-visible="chartstype=='人才分布'">从业人员的</div>
+                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="chartstype=='人才供需'">排名前五的</div>
+                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="chartstype=='人才流动'">的</div>
+                                <div class="fl report_tab" ms-visible="chartstype=='人才流动'|| chartstype=='人才分布'" style="display: block;">
+                                    <select ms-duplex="cf" class="select-warp s1 button1" id="J_cf">
+                                            <option value="热门城市">热门城市</option>
+                                            <option value="热门职能">热门职能</option>
+                                    </select>
                                 </div>
 
-                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" for-tab="tab1">分布</div>
+                                <div class="fl report_tab" ms-visible="chartstype=='人才供需'">
+                                    <select ms-duplex="fp" class="select-warp s1 button1" id="J_fp">
+                                            <option value="职能">职能</option>
+                                            <option value="岗位">岗位</option>
+                                    </select>
+                                </div>
+
+                                <!--<div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" for-tab="tab1">分布</div>-->
 
                                 <!--<button class="btn button4 ml20" id="J_analysis">分析</button>-->
 
                                 <button class="btn btn-primary fr data_disturb ml10" id="J_data_disturb">数据干预</button>
                                 <div class="ver-middle fr">
                                     <label style="height: 30px;line-height: 30px;" class="fl">报告周期：</label>
-                                    <div class="select-warp fl" id="J_type" style="display: inline-block;width: 100px;">
-                                        <label class="select-text"></label>
-                                        <input type="hidden" />
-                                        <input type="hidden" class="select-value" id="bean_type" />
-                                    </div>
+                                    <select ms-duplex="type" class="select-warp fl" id="J_type" style="display: inline-block;width: 100px;">
+                                            <option value="近一个月">近一个月</option>
+                                            <option value="近三个月">近三个月</option>
+                                            <option value="近一年">近一年</option>
+                                        </select>
                                 </div>
                             </div>
 
                             <div class="charts-wrapper">
-
-
                                 <div class="charts-content">
                                     <input id="J_charts_data" type="hidden" />
                                     <iframe id="report_iframe" width="100%" height="500px" frameborder="0"></iframe>

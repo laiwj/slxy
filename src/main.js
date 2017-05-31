@@ -4,7 +4,7 @@
 var avalon = require("./assets/vendor/avalon/avalon.shim");
 require('../node_modules/purecss/build/pure-min.css');
 require('./assets/css/common.css');
-require('./assets/css/login.css');
+
 require('./assets/css/reset.css');
 require('./lib/bootstrap/css/bootstrap.min.css');
 require('./lib/select/css/select.css');
@@ -12,6 +12,7 @@ require('./lib/select/css/select.css');
 require('./assets/css/theme.css');
 require('./assets/css/font-awesome/css/font-awesome.css');
 require('./assets/css/slxy.css');
+require('./assets/css/login.css');
 //项目入口
 require("./assets/vendor/oniui/mmRequest/mmRequest");
 require("./assets/vendor/oniui/mmRouter/mmState");
@@ -26,168 +27,198 @@ require("./assets/vendor/oniui/validation/avalon.validation");
 
 // 定义一个顶层的vmodel，用来放置全局共享数据
 var root = avalon.define({
-  $id: "app"
+    $id: "app",
+    passname: "lai"
 });
+
+
 
 /**
  * 首页路由
  */
 
 avalon.state("login", {
-  url: "/login",
-  views: {
-    "": {
-      //配置模块模板和控制器
-      templateProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function (tt) {
-            rs(require("text!./modules/login/login.html"))
-          })
-        })
-      },
-      controllerProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function () {
-            rs(require("./modules/login/login.js"))
-          })
-        })
-      }
+    url: "/login",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/login/login.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/login/login.js"))
+                    })
+                })
+            }
+        }
     }
-  }
 });
 
 
 
 avalon.state("report", {
-  url: "/report",
-  views: {
-    "": {
-      //配置模块模板和控制器
-      templateProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function (tt) {
-            rs(require("text!./modules/report/report.html"))
-          })
-        })
-      },
-      controllerProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function () {
-            rs(require("./modules/report/report.js"))
-          })
-        })
-      }
+    url: "/report",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/report/report.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/report/report.js"))
+                    })
+                })
+            }
+        }
     }
-  }
 });
 
 avalon.state("home", {
-  url: "/home",
-  views: {
-    "": {
-      //配置模块模板和控制器
-      templateProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function (tt) {
-            rs(require("text!./modules/home/home.html"))
-          })
-        })
-      },
-      controllerProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function () {
-            rs(require("./modules/home/home.js"))
-          })
-        })
-      }
+    url: "/home",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/home/home.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/home/home.js"))
+                    })
+                })
+            }
+        }
     }
-  }
 });
 avalon.state("about", {
-  url: "/about",
-  views: {
-    "": {
-      //配置模块模板和控制器
-      templateProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function (tt) {
-            rs(require("text!./modules/about/about.html"))
-          })
-        })
-      },
-      controllerProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function () {
-            rs(require("./modules/about/about.js"))
-          })
-        })
-      }
+    url: "/about",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/about/about.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/about/about.js"))
+                    })
+                })
+            }
+        }
     }
-  }
 });
 avalon.state("contact", {
-  url: "/contact",
-  views: {
-    "": {
-      //配置模块模板和控制器
-      templateProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function (tt) {
-            rs(require("text!./modules/contact/contact.html"))
-          })
-        })
-      },
-      controllerProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function () {
-            rs(require("./modules/contact/contact.js"))
-          })
-        })
-      }
+    url: "/contact",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/contact/contact.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/contact/contact.js"))
+                    })
+                })
+            }
+        }
     }
-  }
 });
 avalon.state("account", {
-  url: "/account",
-  views: {
-    "": {
-      //配置模块模板和控制器
-      templateProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function (tt) {
-            rs(require("text!./modules/account/account.html"))
-          })
-        })
-      },
-      controllerProvider: function () {
-        return new Promise(function (rs) {
-          require.ensure([], function () {
-            rs(require("./modules/account/account.js"))
-          })
-        })
-      }
+    url: "/account",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/account/account.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/account/account.js"))
+                    })
+                })
+            }
+        }
     }
-  }
+});
+
+avalon.state("userInfo", {
+    url: "/userInfo",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/userInfo/userInfo.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/userInfo/userInfo.js"))
+                    })
+                })
+            }
+        }
+    }
 });
 
 /**
  * 路由全局配置
  */
 avalon.state.config({
-  onError: function () {
-    //console.log(arguments)
-  },
-  onBegin: function () {
-    console.log("begin");
-  },
-  onViewEnter: function (newNode, oldNode) {
+    onError: function() {
+        //console.log(arguments)
+    },
+    onBegin: function() {
+        console.log("begin");
+    },
+    onViewEnter: function(newNode, oldNode) {
 
-  } // 不建议使用动画，因此实际使用的时候，最好去掉onViewEnter和ms-view元素上的oni-mmRouter-slide
+        } // 不建议使用动画，因此实际使用的时候，最好去掉onViewEnter和ms-view元素上的oni-mmRouter-slide
 
 });
 avalon.history.start({
-  basepath: "/",
-  fireAnchor: false
+    basepath: "/",
+    fireAnchor: false
 });
 //开始扫描编译
 avalon.scan(document.body);
+
+if (location.hash == "") {
+    window.location.href = "#!/login";
+}

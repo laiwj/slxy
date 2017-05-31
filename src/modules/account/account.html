@@ -29,29 +29,29 @@
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/report" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
-                                    <i class="icon s16 fa fa-bar-chart"></i>数据管理
-                                </a>
+                                        <i class="icon s16 fa fa-bar-chart"></i>数据管理
+                                    </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/account" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
-                                    <i class="icon s16 fa fa-server"></i>配置管理
-                                </a>
+                                        <i class="icon s16 fa fa-server"></i>配置管理
+                                    </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
-                                    <a href="#!/home" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
-                                    <i class="icon s16 fa fa-user"></i>用户管理
-                                </a>
+                                    <a href="#!/userInfo" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                        <i class="icon s16 fa fa-user"></i>用户管理
+                                    </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/contact" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
-                                    <i class="icon s16 fa fa-cog"></i>账号管理
-                                </a>
+                                        <i class="icon s16 fa fa-cog"></i>账号管理
+                                    </a>
                                 </div>
                             </li>
 
@@ -143,17 +143,69 @@
                                             </ul>
                                             <ul class=" pull_border p0">
                                                 <li class="tl " style="text-indent: 20px;">
-                                                    <@=index+1@>
+                                                    1
                                                 </li>
                                                 <li style="width: 25%">
-                                                    <@=item.username@>
-                                                        <@=item.email? '&nbsp;/&nbsp;'+item.email: ''@>
+                                                    admin
                                                 </li>
                                                 <li>
-                                                    <@=new Date(item.createTime).format( "yyyy-MM-dd")@>
+                                                    2017/07/09
                                                 </li>
                                                 <li class="tc">
-                                                    <@=item.count@>
+                                                    admin
+                                                </li>
+                                                <li class="tr" style="width: 10%">
+
+                                                </li>
+                                            </ul>
+
+                                        </div>
+
+                                    </dd>
+                                </div>
+                                <div class="biglist">
+                                    <dd class="table_dt">
+                                        <ul class=" cr6 p0">
+                                            <li class="tl " style="text-indent: 20px;">
+                                                1
+                                            </li>
+                                            <li style="width: 25%">
+                                                admin
+                                            </li>
+                                            <li>
+                                                2015/09/08
+                                            </li>
+                                            <li class="tc">
+                                                <a class="fb J_click_pull" _id="<@=item._id@>" _index="0">
+                                                   3
+                                                </a>
+                                            </li>
+                                            <li class="tr" style="width: 10%">
+                                                <button class="btn btn-border J_create_account" style="display: none" _id="<@=item._id@>" _type="1" _title="添加子账号">+添加子账号</button>
+                                                <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>">权限</button>
+                                            </li>
+                                        </ul>
+                                        <div class="pull_model">
+
+                                            <ul class="fb  p0 pull_border smaillList">
+                                                <li class="tl " style="text-indent: 20px;">序号</li>
+                                                <li style="width: 25%">账户</li>
+                                                <li>邀请/注册时间</li>
+                                                <li class="tc">隶属用户</li>
+                                                <li class="tr" style="width: 10%"></li>
+                                            </ul>
+                                            <ul class=" pull_border p0">
+                                                <li class="tl " style="text-indent: 20px;">
+                                                    1
+                                                </li>
+                                                <li style="width: 25%">
+                                                    admin
+                                                </li>
+                                                <li>
+                                                    2017/07/09
+                                                </li>
+                                                <li class="tc">
+                                                    admin
                                                 </li>
                                                 <li class="tr" style="width: 10%">
 

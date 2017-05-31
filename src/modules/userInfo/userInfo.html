@@ -1,0 +1,160 @@
+<div ms-controller="account" class="container_body">
+    <div id="maincontainer" class="container_body">
+        <input value="${userinfo.type}" type="hidden" id="userinfoType" />
+        <input value="${userinfo.get_id()}" type="hidden" id="userinfoId" />
+        <input value="${userinfo.short_id}" type="hidden" id="userinfoshortId" />
+        <div id="toolbar" class="sidebar md-sidenav md-locked-open height100p">
+            <div class="navigation-header ">
+                <div class="text-center">
+                    <img class="logo" src="../../../src/assets/images/logo.png">
+                </div>
+            </div>
+
+            <div class="antiScroll height100p">
+                <div class="antiscroll-content">
+                    <div class="sidebar_inner">
+                        <div class="pt20 pb20">
+                            <div class="person-photo pr">
+                                <img src="../../../src/assets/images/hdlogo.png" class="person-img">
+                            </div>
+                            <p class="text-center user_name"> admin</p>
+                            <input type="hidden" value="数联寻英" id="g_company">
+
+                            <p class="text-center user_position">
+                                管理员
+                            </p>
+                        </div>
+                        <ul id="side_accordion" class="accordion">
+
+                            <li class="accordion-group">
+                                <div class="accordion-heading ver-middle J_menu_children">
+                                    <a href="#!/report" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                        <i class="icon s16 fa fa-bar-chart"></i>数据管理
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="accordion-group">
+                                <div class="accordion-heading ver-middle J_menu_children">
+                                    <a href="#!/account" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                        <i class="icon s16 fa fa-server"></i>配置管理
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="accordion-group">
+                                <div class="accordion-heading ver-middle J_menu_children">
+                                    <a href="#!/userInfo" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                        <i class="icon s16 fa fa-user"></i>用户管理
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="accordion-group">
+                                <div class="accordion-heading ver-middle J_menu_children">
+                                    <a href="#!/contact" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                        <i class="icon s16 fa fa-cog"></i>账号管理
+                                    </a>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="navigation" class="clearfix">
+            <div>
+                <div class="navbar navbar-fixed-top">
+                    <div class="navbar-inner">
+                        <div class="btn_menu mt20 ml10 fl"><i class="small-menu small-menu-img"></i>
+
+                        </div>
+                        <div class="container-fluid">
+                            <div class="btn-group fr mt20" style="right: 50px;">
+
+                                <div data-toggle="dropdown" class="dropdown-toggle hd-person cur" aria-expanded="false"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> admin</div>
+                                <ul class="dropdown-menu">
+
+                                    <li><a href="/user/logout">退出登录</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div id="content-container" class="main_content clearfix">
+            <div class=" p20">
+                <div class="row-fluid tabContainer">
+                    <div class="span12 search_page">
+
+                        <div class="well  clearfix">
+                            <div class="row-fluid">
+                                <p class="pull-left mt10 "><b>用户管理</b><span class="J_account_num number">0</span></p>
+
+                                <div class="pull-right">
+
+                                    <a class="btn btn-primary mr10 mt8" id="J_invitedUsers" style="display: none">邀请用户</a>
+
+
+                                    <div class="clearfix fr" style="display: none">
+                                        <label class="fl mt5 mr10"></label>
+
+                                        <div class="select-minH select-warp select-input  fl" id="service_id" style="width: 150px;">
+                                            <label class="select-text ">客服名称</label>
+                                            <input type="hidden" class="defaultValue" />
+                                            <input type="hidden" class="select-value" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="p20">
+                            <p class="tc null-model" style="display:none;">暂无数据</p>
+                            <table class="table infolist">
+                                <thead>
+                                    <tr class="fb cr6">
+                                        <th style="width: 20%">序号</th>
+                                        <th style="width: 30%">用户名称/手机号/Email</th>
+                                        <th>邀请/注册时间</th>
+                                        <th class="tc">隶属客服</th>
+                                        <th class="tr">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="userList">
+                                    <tr>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td style="width: 30%">
+                                            admin
+                                        </td>
+                                        <td>
+                                            2017/09/08
+                                        </td>
+                                        <td class="tc">
+                                            admin
+                                        </td>
+                                        <td class="tr">
+                                            <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>">权限</button>
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+                            <div id="kkpager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="dialog"></div>
+
+
+        </div>
+    </div>
+</div>
