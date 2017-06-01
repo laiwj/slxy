@@ -24,13 +24,15 @@ require("./assets/vendor/oniui/datepicker/avalon.coupledatepicker");
 require("./assets/vendor/oniui/pager/avalon.pager");
 require("./assets/vendor/oniui/dialog/avalon.dialog");
 require("./assets/vendor/oniui/validation/avalon.validation");
+// jquery.cookie
+require("./lib/jquery-1.8.3.min");
+require("./lib/jquery.cookie.min");
 
 // 定义一个顶层的vmodel，用来放置全局共享数据
 var root = avalon.define({
     $id: "app",
     passname: "lai"
 });
-
 
 
 /**
@@ -59,7 +61,6 @@ avalon.state("login", {
         }
     }
 });
-
 
 
 avalon.state("report", {
@@ -190,6 +191,29 @@ avalon.state("userInfo", {
                 return new Promise(function(rs) {
                     require.ensure([], function() {
                         rs(require("./modules/userInfo/userInfo.js"))
+                    })
+                })
+            }
+        }
+    }
+});
+
+avalon.state("config", {
+    url: "/config",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/config/config.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/config/config.js"))
                     })
                 })
             }

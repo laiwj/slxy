@@ -1,8 +1,5 @@
-<div ms-controller="account" class="container_body">
+<div ms-controller="report" class="container_body">
     <div id="maincontainer" class="container_body">
-        <input value="${userinfo.type}" type="hidden" id="userinfoType" />
-        <input value="${userinfo.get_id()}" type="hidden" id="userinfoId" />
-        <input value="${userinfo.short_id}" type="hidden" id="userinfoshortId" />
         <div id="toolbar" class="sidebar md-sidenav md-locked-open height100p">
             <div class="navigation-header ">
                 <div class="text-center">
@@ -92,69 +89,63 @@
 
                         <div class="well  clearfix">
                             <div class="row-fluid">
-                                <p class="pull-left mt10 "><b>用户管理</b><span class="J_account_num number">0</span></p>
+                                <p class="pull-left mt10 "><b>配置管理</b></p>
 
                                 <div class="pull-right">
+                                    <select ms-duplex="configstype" class="select-warp fl mt10" id="J_configstype">
+                                            <option value="人才分布">请选择分析模板</option>
+                                            <option value="人才流动">热门岗位人群的薪酬及特征画像</option>
+                                    </select>
 
-                                    <a class="btn btn-primary mr10 mt8" id="J_invitedUsers" style="display: none">邀请用户</a>
-
-
-                                    <div class="clearfix fr" style="display: none">
-                                        <label class="fl mt5 mr10"></label>
-
-                                        <div class="select-minH select-warp select-input  fl" id="service_id" style="width: 150px;">
-                                            <label class="select-text ">客服名称</label>
-                                            <input type="hidden" class="defaultValue" />
-                                            <input type="hidden" class="select-value" />
-                                        </div>
-                                    </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="p20">
-                            <p class="tc null-model" style="display:none;">暂无数据</p>
-                            <table class="table infolist">
-                                <thead>
-                                    <tr class="fb cr6">
-                                        <th style="width: 20%">序号</th>
-                                        <th style="width: 30%">用户名称/手机号/Email</th>
-                                        <th>邀请/注册时间</th>
-                                        <th class="tc">隶属客服</th>
-                                        <th class="tr">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="userList">
-                                    <tr>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td style="width: 30%">
-                                            admin
-                                        </td>
-                                        <td>
-                                            2017/09/08
-                                        </td>
-                                        <td class="tc">
-                                            admin
-                                        </td>
-                                        <td class="tr">
-                                            <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>">权限</button>
-                                        </td>
-                                    </tr>
+                            <div class="top-menu">
+                                <p class="tl null-model">请选择并设置用户端数据分析显示范围。</p>
+                                <div class="addlist">
+                                    <div class="add-title fb cr3">
+                                        <span>行业</span>
+                                        <button class="btn btn-primary J_power fr">添加</button>
+                                    </div>
+                                    <div class="add-body choiceList">
+                                        <p>点选展示给客户端的数据内容</p>
+                                        <div>
+                                            <div class="tag">互联网金融</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table addlist">
+                                    <thead>
+                                        <tr class="fb cr3">
+                                            <th style="width: 80%" class="fb f14">行业</th>
+                                            <th class="tr">
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="choiceList">
+                                        <tr>
+                                            <td>
+                                                点选展示给客户端的数据内容
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
 
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
 
-                            <div id="kkpager"></div>
+
+                            </div>
+
+
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="dialog"></div>
-
-
         </div>
     </div>
 </div>
