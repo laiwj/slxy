@@ -1,7 +1,7 @@
 /**
  * Created by WangMing on 15/12/9.
  */
-var avalon = require("./assets/vendor/avalon/avalon.shim");
+var avalon = require("./assets/vendor/oniui/avalon");
 require('../node_modules/purecss/build/pure-min.css');
 require('./assets/css/common.css');
 
