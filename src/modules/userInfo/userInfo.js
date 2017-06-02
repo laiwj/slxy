@@ -4,7 +4,30 @@
 define([], function() {
     // 定义所有相关的vmodel
     var vm = avalon.define({
-        $id: "account"
+        $id: "account",
+        show: function(id) {
+            // validationVM.resetAll();
+            var dialog = avalon.vmodels[id];
+            if (!dialog) {
+
+            } else {
+                dialog.toggle = true;
+            }
+        },
+        $ccOpts: {
+            title: "邀请用户",
+            width: 500,
+            onConfirm: function() {
+                alert("你点击了确定");
+            }
+        },
+        $ddOpts: {
+            title: "B端用户权限设置",
+            width: 500,
+            onConfirm: function() {
+                alert("你点击了确定");
+            }
+        }
     });
 
     return avalon.controller(function($ctrl) {

@@ -4,7 +4,37 @@
 define([], function() {
     // 定义所有相关的vmodel
     var vm = avalon.define({
-        $id: "account"
+        $id: "account",
+        show: function(id) {
+            // validationVM.resetAll();
+            var dialog = avalon.vmodels[id];
+            if (!dialog) {
+
+            } else {
+                dialog.toggle = true;
+            }
+        },
+        $eeOpts: {
+            title: "创建账号",
+            width: 500,
+            onConfirm: function() {
+                alert("你点击了确定");
+            }
+        },
+        $ffOpts: {
+            title: "添加子账号",
+            width: 500,
+            onConfirm: function() {
+                alert("你点击了确定");
+            }
+        },
+        $ggOpts: {
+            title: "操作报告",
+            width: 500,
+            onConfirm: function() {
+                alert("你点击了确定");
+            }
+        }
     });
 
     return avalon.controller(function($ctrl) {

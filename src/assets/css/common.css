@@ -131,7 +131,8 @@ button {
     border: 1px solid #e1e1e1;
     height: 150px;
     width: 97%;
-    display: none;
+    position: relative;
+    /*display: none;*/
 }
 
 .add-desc {
@@ -156,11 +157,12 @@ button {
 
 .analysis-items {
     margin-left: -10px;
+    margin-bottom: 20px;
 }
 
 .analysis-items-warp {
     border-left: 1px solid #ebebeb;
-    display: none;
+    /*display: none;*/
 }
 
 .data_disturb {

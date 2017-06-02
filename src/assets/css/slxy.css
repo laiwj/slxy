@@ -3718,8 +3718,8 @@ input[type="color"],
 }
 
 .addlist .add-title {
-    height: 65px;
-    line-height: 65px;
+    height: 52px;
+    line-height: 52px;
 }
 
 .addlist .add-body {
@@ -3729,4 +3729,167 @@ input[type="color"],
 
 .addlist .add-body p {
     /*margin-top: 30px;*/
+}
+
+.add-body .tags {
+    margin-top: 12px;
+}
+
+.add-body .tags .tag {
+    height: 32px;
+    line-height: 32px;
+    background-color: #e5eaee;
+    border-radius: 5px;
+    width: auto;
+    display: inline-block !important;
+    display: inline;
+    border: 1px solid #d0d5d9;
+    padding: 0 34px 0 16px;
+    position: relative;
+    color: #737b81;
+    margin-right: 6px;
+}
+
+.bgcw {
+    background-color: white!important;
+}
+
+.bgcg {
+    background-color: #f3f3f4!important;
+}
+
+.add-body .tags .tag i {
+    position: absolute;
+    font-style: normal;
+    right: 10px;
+    top: 0;
+    color: #737b81;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.mb128 {
+    margin-bottom: 128px;
+}
+
+
+/*弹框css*/
+
+
+/*数据干预*/
+
+.disturb-warp {
+    border: 1px solid #dfdfe1!important;
+    height: 38px!important;
+    width: 100%!important;
+    text-indent: 12px!important;
+    border-radius: 5px;
+    box-shadow: none!important;
+}
+
+.disturb-warp-p {
+    margin: 10px 0;
+}
+
+
+/*添加分析说明*/
+
+.charts-desc .add_tag {
+    height: 32px;
+    line-height: 32px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    width: 130px;
+    border: 1px solid #d0d5d9;
+    padding: 0 16px 0 16px;
+    color: #737b81;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.charts-desc .add_tag i {
+    font-style: normal;
+    margin-right: 4px;
+}
+
+.charts-warp {
+    border: 1px solid #dfdfe1!important;
+    height: 100px!important;
+    width: 100%!important;
+    text-indent: 12px!important;
+    border-radius: 5px;
+    padding-top: 10px;
+    box-shadow: none!important;
+}
+
+
+/*邀请用户*/
+
+.pure-form li {
+    margin-bottom: 20px;
+}
+
+.pure-form li:last-child {
+    margin-bottom: 0;
+}
+
+
+/*权限*/
+
+.power-warp-p {
+    border-top: 1px solid #dfdfdf;
+    padding: 20px 0;
+}
+
+.reportList {
+    height: 70px;
+    line-height: 70px;
+    background-color: #f1f1f1;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.chk_1 {
+    display: none;
+}
+
+.chk_1+label {
+    background-color: #FFF;
+    border: 1px solid #2b76d1;
+    padding: 6px;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+    margin-right: 8px;
+    margin-bottom: -2px!important;
+    line-height: 18px!important;
+}
+
+.chk_1+label:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chk_1:checked+label {
+    background-color: #FFF;
+    border: 1px solid #2b76d1;
+    color: #2b76d1;
+}
+
+.chk_1:checked+label:after {
+    content: '\2714';
+    position: absolute;
+    top: -4px;
+    left: 0px;
+    color: #2b76d1;
+    width: 100%;
+    text-align: center;
+    font-size: 1em;
+    padding: 1px 0 0 0;
+    vertical-align: middle;
 }

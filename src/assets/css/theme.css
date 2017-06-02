@@ -492,6 +492,10 @@ a {
     background-color: #ffffff;
 }
 
+.btn-border:hover {
+    color: #286090;
+}
+
 .mark_ok {
     color: #fff;
     background-color: #38bb9b;

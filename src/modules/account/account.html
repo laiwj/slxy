@@ -35,7 +35,7 @@
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
-                                    <a href="#!/account" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                    <a href="#!/config" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-server"></i>配置管理
                                     </a>
                                 </div>
@@ -49,7 +49,7 @@
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
-                                    <a href="#!/config" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                    <a href="#!/account" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-cog"></i>账号管理
                                     </a>
                                 </div>
@@ -93,7 +93,25 @@
                             <div class="row-fluid">
                                 <p class="pull-left mt10 "><b>账号管理</b><span class="J_account_num number">0</span></p>
                                 <div class="pull-right">
-                                    <a class="btn btn-primary mr10 J_create_account mt8" _title="创建账号" _type="0">创建账号</a>
+                                    <a class="btn btn-primary mr10 J_create_account mt8" _title="创建账号" _type="0" ms-click="show('ee')">创建账号</a>
+                                    <!--创建账号弹框-->
+                                    <div ms-widget="dialog,ee,$eeOpts">
+                                        <form class="pure-form pure-form-stacked" ms-widget="validation,validationVM">
+                                            <ul>
+                                                <li>
+                                                    <label>公司名称</label><input type="text" ms-duplex-required="name" class="disturb-warp">
+                                                </li>
+                                                <li>
+                                                    <label>手机/Email</label><input type="text" ms-duplex-norequired-id="idcard" class="disturb-warp">
+                                                </li>
+                                                <li>
+                                                    <label>消息内容</label> <textarea class="charts-warp" placeholder="%公司名称%，您好，欢迎使用报告平台产品，地址：www.abc.com，
+登录账户为：184****，登录密码为：abcds4."></textarea>
+                                                </li>
+                                            </ul>
+                                        </form>
+                                    </div>
+                                    <!--创建账号弹框-->
                                 </div>
                             </div>
                         </div>
@@ -128,8 +146,40 @@
                                                 </a>
                                             </li>
                                             <li class="tr" style="width: 10%">
-                                                <button class="btn btn-border J_create_account" style="display: none" _id="<@=item._id@>" _type="1" _title="添加子账号">+添加子账号</button>
-                                                <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>">权限</button>
+                                                <button class="btn btn-border J_create_account" _id="<@=item._id@>" _type="1" _title="添加子账号" ms-click="show('ff')">+添加子账号</button>
+                                                <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>" ms-click="show('gg')">权限</button>
+                                                <!--权限弹框-->
+                                                <div ms-widget="dialog,gg,$ggOpts">
+                                                    <label class="mr30 mb15">
+                                                    <input type="checkbox" id="checkbox_a1" class="chk_1" value=""  /> 
+                                                    <label for="checkbox_a1"></label> 标签配置
+                                                    </label>
+                                                    <p class="power-warp-p">
+                                                        <input type="checkbox" id="checkbox_a2" class="chk_1" value="" />
+                                                        <label for="checkbox_a2"></label> 添加报告解释说明
+                                                    </p>
+                                                    <div class="reportList">
+                                                        <label class="mr30">
+                                                        <input type="checkbox" id="checkbox_a3" class="chk_1" value=""  /> 
+                                                        <label for="checkbox_a3"></label> 报告1
+                                                        </label>
+                                                        <label class="mr30">
+                                                        <input type="checkbox" id="checkbox_a4" class="chk_1" value=""  /> 
+                                                        <label for="checkbox_a4"></label> 报告2
+                                                        </label>
+                                                        <label class="mr30">
+                                                        <input type="checkbox" id="checkbox_a5" class="chk_1" value=""  /> 
+                                                        <label for="checkbox_a5"></label> 报告3
+                                                        </label>
+                                                        <label class="mr30">
+                                                        <input type="checkbox" id="checkbox_a6" class="chk_1" value=""  /> 
+                                                        <label for="checkbox_a6"></label> 报告4
+                                                        </label>
+
+
+                                                    </div>
+                                                </div>
+                                                <!--权限弹框结束-->
                                             </li>
                                         </ul>
                                         <div class="pull_model">
@@ -181,8 +231,25 @@
                                                 </a>
                                             </li>
                                             <li class="tr" style="width: 10%">
-                                                <button class="btn btn-border J_create_account" style="display: none" _id="<@=item._id@>" _type="1" _title="添加子账号">+添加子账号</button>
-                                                <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>">权限</button>
+                                                <button class="btn btn-border J_create_account" _id="<@=item._id@>" _type="1" _title="添加子账号" ms-click="show('ff')">+添加子账号</button>
+                                                <!--创建账号弹框-->
+                                                <div ms-widget="dialog,ff,$ffOpts">
+                                                    <form class="pure-form pure-form-stacked" ms-widget="validation,validationVM">
+                                                        <ul>
+                                                            <li>
+                                                                <label>公司名称</label><input type="text" ms-duplex-required="name" class="disturb-warp">
+                                                            </li>
+                                                            <li>
+                                                                <label>手机/Email</label><input type="text" ms-duplex-norequired-id="idcard" class="disturb-warp">
+                                                            </li>
+                                                            <li>
+                                                                <label>密码</label><input type="text" ms-duplex-norequired-id="idcard" class="disturb-warp">
+                                                            </li>
+                                                        </ul>
+                                                    </form>
+                                                </div>
+                                                <!--创建账号弹框-->
+                                                <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>" ms-click="show('gg')">权限</button>
                                             </li>
                                         </ul>
                                         <div class="pull_model">
@@ -257,13 +324,6 @@
                             <div id="kkpager"></div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div id="dialog">
-                <div ms-controller="services" class="services-panel">
-                    这里是服务页面
-                    <button id="testjq" style="color: black">测试集成jquery</button>
-
                 </div>
             </div>
 

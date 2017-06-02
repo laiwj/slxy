@@ -2,12 +2,36 @@
  * Created by WangMing on 15/12/9.
  */
 define([], function() {
+    var validationVM;
     // 定义所有相关的 vmodel
     var vm = avalon.define({
         $id: "report",
         chartstype: "人才分布",
         type: "近一个月",
-        industry: "互联网全行业"
+        industry: "互联网全行业",
+        show: function(id) {
+            // validationVM.resetAll();
+            var dialog = avalon.vmodels[id];
+            if (!dialog) {
+
+            } else {
+                dialog.toggle = true;
+            }
+        },
+        $aaOpts: {
+            title: "数据干预",
+            width: 500,
+            onConfirm: function() {
+                alert("你点击了确定");
+            }
+        },
+        $bbOpts: {
+            title: "添加分析说明",
+            width: 500,
+            onConfirm: function() {
+                alert("你点击了确定");
+            }
+        }
     });
 
     vm.$watch("chartstype", function() {
