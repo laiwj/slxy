@@ -103,7 +103,28 @@
                         <div class="p20">
                             <div class="top-menu">
                                 <p class="tl null-model">请选择并设置用户端数据分析显示范围。</p>
-                                <div class="addlist">
+                                 <!--<li ms-repeat="myDatas" ms-click="doClick(el)">{{$index}}{{el.name}}</li>-->
+                                <div class="addlist" ms-repeat="data">
+                                    <div class="add-title fb cr3">
+                                        <span>{{el.name}}</span>
+                                        <button class="btn btn-primary J_power fr mt10">添加</button>
+                                    </div>
+                                    <div class="add-body choiceList">
+                                        <p class="cr3">点选展示给客户端的数据内容</p>
+                                        <div class="tags">
+                                            <div class="tag">互联网金融
+                                                <i>×</i>
+                                            </div>
+                                            <div class="tag">游戏娱乐
+                                                <i>×</i>
+                                            </div>
+                                            <div class="tag bgcw">移动传媒
+                                                <i>×</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="addlist">
                                     <div class="add-title fb cr3">
                                         <span>行业</span>
                                         <button class="btn btn-primary J_power fr mt10">添加</button>
@@ -222,7 +243,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="hiddle clearfix">
                                     <button class="btn btn-primary J_power fr mt30 mb50">保存</button>
                                     <button class="btn J_power fr mt30 mr10 mb50">清空</button>

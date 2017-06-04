@@ -226,7 +226,7 @@ avalon.state("config", {
  */
 avalon.state.config({
     onError: function() {
-        //console.log(arguments)
+        // console.log(arguments)
     },
     onBegin: function() {
         console.log("begin");

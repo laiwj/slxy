@@ -3,18 +3,18 @@ var fun_flag_arr = new Array(); //	已选中数组
 
 var Funtype = {
     // 职位列表
-    init: function() {
-        var _str = '',
-            _id = '';
-        if (fun_flag_arr.length > 0) {
-            for (var i in fun_flag_arr) {
-                _str += ',' + fun_a[fun_flag_arr[i]];
-                _id += ',' + fun_flag_arr[i];
-            }
-            $('#btn_FuntypeID').val(_str.substring(1));
-            $('#FuntypeID').val(_id.substring(1));
-        }
-    },
+    // init: function() {
+    //     var _str = '',
+    //         _id = '';
+    //     if (fun_flag_arr.length > 0) {
+    //         for (var i in fun_flag_arr) {
+    //             _str += ',' + fun_a[fun_flag_arr[i]];
+    //             _id += ',' + fun_flag_arr[i];
+    //         }
+    //         $('#btn_FuntypeID').val(_str.substring(1));
+    //         $('#FuntypeID').val(_id.substring(1));
+    //     }
+    // },
     // Show: function() {
     //     var output = '',
     //         flag, output2 = '';
@@ -87,25 +87,25 @@ var Funtype = {
     //         this.del(id)
     //     }
     // },
-    del: function(id) {
-        for (var i in fun_flag_arr) {
-            if (fun_flag_arr[i] == id) fun_flag_arr.splice(i, 1);;
-        }
-        $('#FuntypeSelected .Funtype' + id).remove();
-        $('.Funtype' + id).removeClass('chkON');
-    },
-    // 确定
-    confirm: function() {
-        var funStr = '',
-            fun_Id = '';
-        for (var i in fun_flag_arr) {
-            funStr += ',' + fun_a[fun_flag_arr[i]];
-        }
-        funStr = funStr.substring(1) ? funStr.substring(1) : '请选择职能类别';
-        $('#btn_FuntypeID').val(funStr);
-        $('#FuntypeID').val(fun_flag_arr);
-        // boxAlpha();
-    },
+    // del: function(id) {
+    //     for (var i in fun_flag_arr) {
+    //         if (fun_flag_arr[i] == id) fun_flag_arr.splice(i, 1);;
+    //     }
+    //     $('#FuntypeSelected .Funtype' + id).remove();
+    //     $('.Funtype' + id).removeClass('chkON');
+    // },
+    // // 确定
+    // confirm: function() {
+    //     var funStr = '',
+    //         fun_Id = '';
+    //     for (var i in fun_flag_arr) {
+    //         funStr += ',' + fun_a[fun_flag_arr[i]];
+    //     }
+    //     funStr = funStr.substring(1) ? funStr.substring(1) : '请选择职能类别';
+    //     $('#btn_FuntypeID').val(funStr);
+    //     $('#FuntypeID').val(fun_flag_arr);
+    //     // boxAlpha();
+    // },
 
 
     /* ****************************** 单选 ********************************* */
