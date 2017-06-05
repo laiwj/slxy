@@ -3720,6 +3720,7 @@ input[type="color"],
 .addlist .add-title {
     height: 52px;
     line-height: 52px;
+    position: relative;
 }
 
 .addlist .add-body {
@@ -3897,3 +3898,143 @@ input[type="color"],
 
 /*配置管理页面-添加弹窗*/
 
+
+/* 遮罩层 */
+
+#maskLayer {
+    position: absolute;
+    /*right: 150px;
+    top: 44px*/
+}
+
+#alphadiv {
+    position: absolute;
+    background: #000;
+    z-index: 2000
+}
+
+#drag {
+    position: absolute;
+    background: #fff;
+    z-index: 2001;
+    width: 580px;
+    border: 1px solid #ccc
+}
+
+#sublist {
+    position: absolute;
+    z-index: 2100;
+    background: #fff;
+}
+
+
+/* 选择职能类别列表 */
+
+
+/*#FuntypeAlpha {
+    padding: 10px 4px
+}*/
+
+#FuntypeAlpha dl {
+    zoom: 1;
+    overflow: hidden;
+    line-height: 25px;
+    border-bottom: 1px dashed #ccc
+}
+
+#FuntypeAlpha dt {
+    float: left;
+    width: 200px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #f90
+}
+
+#FuntypeAlpha dd {
+    float: left;
+    width: 450px
+}
+
+#FuntypeAlpha ul {
+    zoom: 1;
+    overflow: Hidden;
+    line-height: 25px;
+    /*padding: 8px 0*/
+}
+
+#FuntypeAlpha li {
+    float: left;
+    width: 100%;
+    cursor: pointer;
+    /*text-indent: 34px;*/
+    height: 36px;
+    line-height: 36px;
+    padding-left: 10px;
+    overflow: Hidden;
+    background-repeat: no-repeat;
+    background-position: 6px 6px;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#FuntypeAlpha li.over {
+    background-color: #deedff;
+    color: #666;
+}
+
+
+/*#FuntypeAlpha li.chkON {
+    background-image: url(chk_on.gif)
+}*/
+
+
+/* 职能类别 悬浮子菜单 */
+
+#sub_funtype {
+    border: 1px solid #ccc;
+    line-height: 36px;
+    text-align: left
+}
+
+#sub_funtype ul {
+    overflow: hidden;
+    zoom: 1
+}
+
+#sub_funtype ul li {
+    float: left;
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    overflow: hidden;
+    cursor: pointer;
+    padding-left: 10px;
+    font-weight: normal;
+}
+
+
+/*
+#sub_funtype ul a {
+    display: block;
+    height: 25px;
+    color: #000;
+    text-decoration: none;
+    text-indent: 16px;
+    background-repeat: no-repeat;
+    background-position: 2px 6px
+}*/
+
+#sub_funtype ul a:hover {
+    background-color: #f90;
+    color: #fff
+}
+
+
+/*
+#sub_funtype ul a.chkON {
+    background-image: url(chk_on.gif)
+}*/
+
+#sublist .radio a {
+    background-image: none
+}

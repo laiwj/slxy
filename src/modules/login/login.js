@@ -6,6 +6,7 @@ define([], function() {
     var vm = avalon.define({
         $id: "login",
         isSumbit: false,
+        aaa: "",
         initEditData: function() {
             var userStr = vm.getPassFromCookie();
             if (userStr) {
@@ -108,6 +109,9 @@ define([], function() {
         },
         clearPassToCookie: function() {
             window.$.cookie(location.host + "_password", "", { path: "/" });
+        },
+        click: function() {
+            vm.$fire("all!aaa", "sss");
         }
     });
 

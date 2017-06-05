@@ -103,11 +103,11 @@
                         <div class="p20">
                             <div class="top-menu">
                                 <p class="tl null-model">请选择并设置用户端数据分析显示范围。</p>
-                                 <!--<li ms-repeat="myDatas" ms-click="doClick(el)">{{$index}}{{el.name}}</li>-->
+                                <!--<li ms-repeat="myDatas" ms-click="doClick(el)">{{$index}}{{el.name}}</li>-->
                                 <div class="addlist" ms-repeat="data">
                                     <div class="add-title fb cr3">
                                         <span>{{el.name}}</span>
-                                        <button class="btn btn-primary J_power fr mt10">添加</button>
+                                        <button class="btn btn-primary J_power fr mt10" ms-click="doClick(el)">添加</button>
                                     </div>
                                     <div class="add-body choiceList">
                                         <p class="cr3">点选展示给客户端的数据内容</p>
@@ -124,6 +124,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- alpha div -->
+                                <div id="maskLayer" style="display:none">
+                                    <div id="drag">
+
+                                        <div id="drag_con"></div>
+                                        <!-- drag_con end -->
+                                    </div>
+                                </div>
+                                <!-- maskLayer end -->
+                                <!-- alpha div end -->
+                                <div id="sublist" style="display:none"></div>
                                 <!--<div class="addlist">
                                     <div class="add-title fb cr3">
                                         <span>行业</span>
