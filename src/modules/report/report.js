@@ -6,10 +6,14 @@ define([], function() {
     // 定义所有相关的 vmodel
     var vm = avalon.define({
         $id: "report",
+        userinfo: {},
         chartstype: "人才分布",
         type: "近一个月",
         industry: "互联网全行业",
-        aaa: "",
+        direction: "人才流入",
+        na: "需求量",
+        cf: "热门城市",
+        fp: "职能",
         show: function(id) {
             // validationVM.resetAll();
             var dialog = avalon.vmodels[id];
@@ -32,6 +36,12 @@ define([], function() {
             onConfirm: function() {
                 alert("你点击了确定");
             }
+        },
+        getPassFromCookie: function() {
+            return window.$.cookie(location.host + "_password");
+        },
+        clearPassToCookie: function() {
+            window.$.cookie(location.host + "_password", "", { path: "/" });
         }
     });
 
@@ -39,12 +49,7 @@ define([], function() {
         console.log(vm.chartstype);
         console.log(vm.type);
         console.log(vm.industry);
-    })
-
-    vm.$watch('aaa', function(v) {
-        console.log(111);
-    })
-
+    });
 
     //开始扫描编译
     avalon.scan(document.body);
@@ -52,7 +57,6 @@ define([], function() {
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
-            // console.log(root.flage);
             $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
                 if ($(this).children().attr("href") == location.hash) {
                     $(this).addClass('md-accent-bg');
@@ -65,7 +69,7 @@ define([], function() {
         };
         // 进入视图
         $ctrl.$onEnter = function(param, rs, rj) {
-
+            // console.log(window.obj);
         };
         // 对应的视图销毁前
         $ctrl.$onBeforeUnload = function() {

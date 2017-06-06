@@ -31,9 +31,14 @@ require("./lib/jquery.cookie.min");
 // 定义一个顶层的vmodel，用来放置全局共享数据
 var root = avalon.define({
     $id: "app",
-    passname: "lai"
+    passname: "lai",
+    userinfo: {},
+    userinfodata: {}
 });
-
+root.$watch('userinfodata', function(v) {
+    root.userinfo = v;
+    // avalon.log('ancestor.aaa事件被触发了')
+})
 
 /**
  * 首页路由
@@ -229,7 +234,10 @@ avalon.state.config({
         // console.log(arguments)
     },
     onBegin: function() {
-        console.log("begin");
+        // var obj = root.userinfo.$model;
+        console.log(root.passname);
+        // 讲个人信息传递给每一个路由
+        // root.$fire('all!userinfodata', root.userinfo.$model);
     },
     onViewEnter: function(newNode, oldNode) {
 
