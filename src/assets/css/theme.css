@@ -587,7 +587,7 @@ a {
 #navigation {
     border-bottom: 1px solid #dfdfdf;
     background-color: #fff;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .navbar-fixed-top,

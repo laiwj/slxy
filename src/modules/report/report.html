@@ -14,7 +14,7 @@
                             <div class="person-photo pr">
                                 <img src="../../../src/assets/images/hdlogo.png" class="person-img">
                             </div>
-                            <p class="text-center user_name"> admin</p>
+                            <p class="text-center user_name"> {{username}}</p>
                             <input type="hidden" value="数联寻英" id="g_company">
 
                             <p class="text-center user_position">
@@ -67,10 +67,10 @@
                         <div class="container-fluid">
                             <div class="btn-group fr mt20" style="right: 50px;">
 
-                                <div data-toggle="dropdown" class="dropdown-toggle hd-person cur" aria-expanded="false"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> admin</div>
-                                <ul class="dropdown-menu">
+                                <div class="dropdown-toggle hd-person cur" aria-expanded="false" ms-click="toggle_hiddle"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> {{username}}</div>
+                                <ul class="dropdown-menu" ms-visible="toggle" ms-click="logout">
 
-                                    <li><a href="/user/logout">退出登录</a></li>
+                                    <li><a href="javascript:">退出登录</a></li>
 
                                 </ul>
                             </div>
@@ -92,7 +92,7 @@
                                 <p class="pull-left mt10 "><b>数据报告</b></p>
 
                                 <div class="pull-right">
-                                    <select ms-duplex="chartstype" class="select-warp fl mt10" id="J_chartstype" style="width: 100px;">
+                                    <select ms-duplex="J_chartstype" class="select-warp fl mt10" id="J_chartstype" style="width: 100px;">
                                             <option value="人才分布">人才分布</option>
                                             <option value="人才流动">人才流动</option>
                                             <option value="人才供需">人才供需</option>
@@ -111,41 +111,41 @@
                                     </select>
                                 </div>-->
                                 <div class="fl report_tab" style="display: block;">
-                                    <select ms-duplex="industry" class="select-warp s1 button1" id="J_industry">
+                                    <select ms-duplex="J_industry" class="select-warp s1 button1" id="J_industry">
                                             <option value="互联网全行业">互联网全行业</option>
                                             <option value="互联网金融">互联网金融</option>
                                             <option value="游戏">游戏</option>
                                             <option value="电商">电商</option>
                                     </select>
                                 </div>
-                                <div class="fl report_tab" ms-visible="chartstype=='人才流动'">
-                                    <select ms-duplex="direction" class="select-warp s1 button1" id="J_direction">
+                                <div class="fl report_tab" ms-visible="J_chartstype=='人才流动'">
+                                    <select ms-duplex="J_direction" class="select-warp s1 button1" id="J_direction">
                                             <option value="人才流入">人才流入</option>
                                             <option value="人才流出">人才流出</option>
                                         
                                     </select>
                                 </div>
 
-                                <div class="fl report_tab" ms-visible="chartstype=='人才供需'">
-                                    <select ms-duplex="na" class="select-warp s1 button1" id="J_na">
+                                <div class="fl report_tab" ms-visible="J_chartstype=='人才供需'">
+                                    <select ms-duplex="J_na" class="select-warp s1 button1" id="J_na">
                                             <option value="需求量">需求量</option>
                                             <option value="供需指数">供需指数</option>
                                         
                                     </select>
                                 </div>
 
-                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;display: block;" ms-visible="chartstype=='人才分布'">从业人员的</div>
-                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="chartstype=='人才供需'">排名前五的</div>
-                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="chartstype=='人才流动'">的</div>
-                                <div class="fl report_tab" ms-visible="chartstype=='人才流动'|| chartstype=='人才分布'" style="display: block;">
-                                    <select ms-duplex="cf" class="select-warp s1 button1" id="J_cf">
+                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;display: block;" ms-visible="J_chartstype=='人才分布'">从业人员的</div>
+                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才供需'">排名前五的</div>
+                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才流动'">的</div>
+                                <div class="fl report_tab" ms-visible="J_chartstype=='人才流动'|| J_chartstype=='人才分布'" style="display: block;">
+                                    <select ms-duplex="J_cf" class="select-warp s1 button1" id="J_cf">
                                             <option value="热门城市">热门城市</option>
                                             <option value="热门职能">热门职能</option>
                                     </select>
                                 </div>
 
-                                <div class="fl report_tab" ms-visible="chartstype=='人才供需'">
-                                    <select ms-duplex="fp" class="select-warp s1 button1" id="J_fp">
+                                <div class="fl report_tab" ms-visible="J_chartstype=='人才供需'">
+                                    <select ms-duplex="J_fp" class="select-warp s1 button1" id="J_fp">
                                             <option value="职能">职能</option>
                                             <option value="岗位">岗位</option>
                                     </select>
@@ -155,7 +155,7 @@
 
                                 <!--<button class="btn button4 ml20" id="J_analysis">分析</button>-->
 
-                                <button class="btn btn-primary fr data_disturb ml10" id="J_data_disturb" ms-click="show('aa')">数据干预</button>
+                                <button class="btn btn-primary fr data_disturb ml10" id="J_data_disturb" ms-click="show('aa')" ms-visible="type=='2'|| type=='1'">数据干预</button>
                                 <!--数据干预弹框-->
                                 <div ms-widget="dialog,aa,$aaOpts">
                                     <p class="disturb-warp-p">当前数据：互联网全行业从业人员-职能1：9880000</p>
@@ -165,7 +165,7 @@
 
                                 <div class="ver-middle fr">
                                     <label style="height: 30px;line-height: 30px;" class="fl">报告周期：</label>
-                                    <select ms-duplex="type" class="select-warp fl" id="J_type" style="display: inline-block;width: 100px;">
+                                    <select ms-duplex="J_type" class="select-warp fl" id="J_type" style="display: inline-block;width: 100px;">
                                             <option value="近一个月">近一个月</option>
                                             <option value="近三个月">近三个月</option>
                                             <option value="近一年">近一年</option>
@@ -180,7 +180,7 @@
                                        
                                     </iframe>
                                 </div>
-                                <div class="charts-desc" id="report_info">
+                                <div class="charts-desc" id="report_info" ms-visible="type=='3'">
                                     <div class="add_tag" ms-click="show('bb')"> <i>+</i>添加分析说明</div>
                                     <!--添加分析说明弹框-->
                                     <div ms-widget="dialog,bb,$bbOpts">
@@ -191,13 +191,12 @@
                                 </div>
                             </div>
 
-                            <div class="analysis-items-warp mt20 J_analysis_items_warp">
+                            <div class="analysis-items-warp mt20 J_analysis_items_warp" ms-visible="type=='2'|| type=='1'">
                                 <div class="analysis-items clearfix">
                                     <i class="icon icon-circle fl">·</i>
                                     <div class="fl ml10">
                                         <p><b>罗春</b><span class="f10 cr9 ml10">2017/10/23 22:00</span></p>
-                                        <p class="text_desc_p"><span class="text_desc">添加报告分析说明。</span><button class="button1 edit_desc J_edit_desc"
-                                                ms-click="show('bb')">编辑</button></p>
+                                        <p class="text_desc_p"><span class="text_desc">添加报告分析说明。</span><button class="button1 edit_desc J_edit_desc" ms-click="show('bb')">编辑</button></p>
                                     </div>
                                 </div>
 
@@ -205,8 +204,7 @@
                                     <i class="icon icon-circle fl">·</i>
                                     <div class="fl ml10">
                                         <p><b>罗春</b> <span class="f10 cr9 ml10">2017/10/23 22:00</span></p>
-                                        <p class="text_desc_p"><span class="text_desc">添加报告分析说明。</span><button class="button1 edit_desc J_edit_desc"
-                                                ms-click="show('bb')">编辑</button></p>
+                                        <p class="text_desc_p"><span class="text_desc">添加报告分析说明。</span><button class="button1 edit_desc J_edit_desc" ms-click="show('bb')">编辑</button></p>
                                     </div>
                                 </div>
                             </div>

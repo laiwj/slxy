@@ -56,6 +56,13 @@ define([], function() {
     //     // console.log(vm.data);
     // })
 
+    vm.$watch('userinfodata', function(v) {
+        console.log(v);
+        avalon.log('ancestor.aaa事件被触发了')
+    })
+
+
+
     //开始扫描编译
     avalon.scan(document.body);
     return avalon.controller(function($ctrl) {

@@ -73,7 +73,8 @@ define([], function() {
 
                 //登录成功
                 // 保存用户信息
-                window.$.cookie(location.host + "_userinfo", "hahha", { expires: 365 });
+                var userInfo = jsonObj.data._id + "|" + jsonObj.data.type + "|" + jsonObj.data.short_id + "|" + jsonObj.data.username;
+                window.$.cookie(location.host + "_userinfo", userInfo, { expires: 365 });
                 var passInfo = jsonObj.data.username + "|" + jsonObj.data.password;
                 if (document.getElementById('J_password_remember').checked) {
                     vm.savePassToCookie(passInfo);
@@ -98,6 +99,11 @@ define([], function() {
             window.$.cookie(location.host + "_password", "", { path: "/" });
         }
     });
+
+    vm.$watch('userinfodata', function(v) {
+        console.log(v);
+        avalon.log('ancestor.aaa事件被触发了')
+    })
 
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成

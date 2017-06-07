@@ -37,6 +37,11 @@ define([], function() {
         }
     });
 
+    vm.$watch('userinfodata', function(v) {
+        console.log(v);
+        avalon.log('ancestor.aaa事件被触发了')
+    })
+
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
