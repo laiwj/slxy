@@ -40,22 +40,24 @@ module.exports = {
     },
     module: {
         loaders: [{
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract(
-                "style-loader", "css-loader?sourceMap!cssnext-loader")
-        }, {
-            test: /\.(jpg|png|gif)$/,
-            loader: "file-loader?name=images/[name].[hash].[ext]"
-        }, {
-            test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "url-loader?limit=10000&minetype=application/font-woff"
-        }, {
-            test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "file-loader"
-        }, {
-            test: /\.json$/,
-            loader: 'json'
-        }],
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract(
+                    "style-loader", "css-loader?sourceMap!cssnext-loader")
+            }, {
+                test: /\.(jpg|png|gif)$/,
+                loader: "file-loader?name=images/[name].[hash].[ext]"
+            }, {
+                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "url-loader?limit=10000&minetype=application/font-woff"
+            }, {
+                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "file-loader"
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
+            }
+        ],
         preLoaders: [{
             test: /\.js$/,
             loader: "require-css-preloader"

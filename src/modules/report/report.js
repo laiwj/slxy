@@ -11,6 +11,9 @@ define([], function() {
         short_id: "",
         username: "",
         toggle: false,
+        api_url: "",
+        params: {},
+        info: [],
         J_chartstype: "人才分布",
         J_type: "近一个月",
         J_industry: "互联网全行业",
@@ -20,7 +23,28 @@ define([], function() {
         J_fp: "职能",
         show: function(id) {
             // validationVM.resetAll();
-            var dialog = avalon.vmodels[id];
+            if (id.charAt(0) == "b") {
+                var arr = id.split(",");
+                var id = arr[0];
+                var index = arr[1];
+                if (index) {
+                    for (var i = 0; i < $(".J_edit_desc").length; i++) {
+                        if (i == index) {
+                            $(this).attr("isClick", "yes");
+                            break;
+                        }
+                    }
+                } else {
+                    $("#report_info").attr("isClick", "yes");
+                }
+
+                var dialog = avalon.vmodels[id];
+
+            } else {
+
+                var dialog = avalon.vmodels[id];
+            }
+
             if (!dialog) {
 
             } else {
@@ -38,7 +62,18 @@ define([], function() {
             title: "添加分析说明",
             width: 500,
             onConfirm: function() {
-                alert("你点击了确定");
+                if ($("#report_info").attr("isClick")) {
+                    vm.saveDesc();
+                    $("#report_info").attr("isClick", "");
+                } else {
+                    $(".J_edit_desc").each(function(i, v) {
+                        if ($(v).attr("isClick")) {
+                            vm.saveDesc(v);
+                            $(v).attr("isClick", "");
+                        }
+                    });
+                }
+
             }
         },
         getPassFromCookie: function() {
@@ -52,42 +87,31 @@ define([], function() {
         },
         logout: function() {
             vm.clearPassToCookie();
-            window.location.href = "/#!/login";
+            window.location.href = "";
         },
         analysisData: function() {
             var param = vm.getBean();
-            var tab = param.tab;
+            var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
             $.post(param.url, param.bean, function(result) {
-                console.log(result);
-
-                $("#J_charts_data").val(JSON.stringify(data.data.data)).attr("charts_type", param.charts_type);
-                $("#report_iframe").attr("src", "/lib/resource-report/" + tab + ".html");
-                $("#report_info").attr("api_url", data.data.api_url);
-                if (data.info.length > 0) {
-                    $("#report_info").attr("user_id", data.info[0].pm_user_id);
-                    $("#report_info").attr("data_id", data.info[0]._id);
-                    if ($("#userinfoType").val() == 3) {
-                        $("#report_info").val('').val(data.info[0].info);
+                $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type);
+                $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                $("#report_info").attr("api_url", result.data.data.api_url);
+                if (result.data.info.length > 0) {
+                    $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
+                    $("#report_info").attr("data_id", result.data.info[0]._id);
+                    if (vm.type == "3") {
+                        $(".charts-warp").val('').val(result.data.info[0].info);
                     }
                 } else {
                     $("#report_info").attr("data_url", "").attr("data_id", "").val('');
                 }
 
-                //普通业务员
-                if ($("#userinfoType").val() == 3) {
-                    $("#report_info").show();
-                }
-
                 //超管与公司权限
-                if ($("#userinfoType").val() < 3) {
-                    var temp = _.template($("#desc_temp").html());
-                    $(".J_analysis_items_warp").html(temp({ data: data.info }))
-                    $(".J_analysis_items_warp").show();
-
-                    $(".J_edit_desc").off().on("click", function() {
-                        me.editDesc(this);
-                    })
+                if (vm.type != "3") {
+                    vm.info = result.data.info;
                 }
+                vm.params = result.data.data.params;
+                vm.api_url = result.data.data.api_url;
 
 
             })
@@ -102,7 +126,7 @@ define([], function() {
                     bean = {
                         industry: vm.J_industry,
                         cf: vm.J_cf == "热门城市" ? "city" : "func",
-                        type: vm.J_type == "近一个月" ? 1 : vm.J_type == "近三个月" ? 2 : 3
+                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
                     }
                     bean.city = "";
                     bean.top = 10;
@@ -114,7 +138,7 @@ define([], function() {
                         industry: vm.J_industry,
                         direction: vm.J_direction == "人才流入" ? "in" : "out",
                         cf: vm.J_cf == "热门城市" ? "city" : "func",
-                        type: vm.J_type == "近一个月" ? 1 : vm.J_type == "近三个月" ? 2 : 3
+                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
                     }
                     bean.city = "";
                     bean.top = 10;
@@ -126,7 +150,7 @@ define([], function() {
                         industry: vm.J_industry,
                         na: vm.J_na == "需求量" ? "need" : "all",
                         fp: vm.J_fp == "职能" ? "func" : "position",
-                        type: vm.J_type == "近一个月" ? 1 : vm.J_type == "近三个月" ? 2 : 3
+                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
                     }
                     bean.top = 5;
                     bean.city = "";
@@ -138,10 +162,58 @@ define([], function() {
             }
 
             return { bean: bean, tab: tab, url: url, charts_type: charts_type };
+        },
+        saveDesc: function(obj) {
+            var user_id = $("#report_info").attr("user_id") ? $("#report_info").attr("user_id") : $("#userinfoId").val();
+            var bean = {};
+            if (obj) {
+                var param = {
+                    api_url: $(obj).attr("api_url"),
+                    user_id: $(obj).attr("user_id"),
+                    report_info: $(".charts-warp").val(),
+                    params: JSON.stringify(vm.params)
+                }
+                bean = param;
+                console.log(bean);
+            } else {
+                bean = {
+                    api_url: vm.api_url,
+                    user_id: user_id,
+                    report_info: $(".charts-warp").val(),
+                    params: JSON.stringify(vm.params)
+                };
+                console.log(bean);
+            }
+
+            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
+                console.log(result);
+                // xy_util.restCallback(result, function(data) {;
+                //     jTip(STATICMSG["ok"]);
+                //     me.resetEditDesc(obj, bean.report_info);
+                // })
+            })
         }
     });
 
     vm.$watch("J_chartstype", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_type", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_industry", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_direction", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_na", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_cf", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_fp", function() {
         vm.analysisData();
     });
 

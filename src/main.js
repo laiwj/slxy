@@ -28,6 +28,7 @@ require("./assets/vendor/oniui/validation/avalon.validation");
 require("./lib/jquery-1.8.3.min");
 require("./lib/jquery.cookie.min");
 
+
 // 定义一个顶层的vmodel，用来放置全局共享数据
 var root = avalon.define({
     $id: "app"
