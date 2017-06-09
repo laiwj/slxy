@@ -1,7 +1,7 @@
 /**
  * Created by WangMing on 15/12/9.
  */
-var avalon = require("./assets/vendor/oniui/avalon");
+var avalon = require("./assets/vendor/oniui/avalon.shim");
 require('../node_modules/purecss/build/pure-min.css');
 require('./assets/css/common.css');
 
@@ -19,8 +19,6 @@ require("./assets/vendor/oniui/mmRouter/mmState");
 require("./assets/vendor/oniui/mmRouter/mmRouter");
 require("./assets/vendor/oniui/mmRouter/mmHistory");
 require("./assets/vendor/oniui/mmPromise/mmPromise");
-require("./assets/vendor/oniui/cookie/avalon.cookie");
-require("./assets/vendor/oniui/datepicker/avalon.coupledatepicker");
 require("./assets/vendor/oniui/pager/avalon.pager");
 require("./assets/vendor/oniui/dialog/avalon.dialog");
 require("./assets/vendor/oniui/validation/avalon.validation");
@@ -60,7 +58,6 @@ avalon.state("login", {
     }
 });
 
-
 avalon.state("report", {
     url: "/report",
     views: {
@@ -77,118 +74,6 @@ avalon.state("report", {
                 return new Promise(function(rs) {
                     require.ensure([], function() {
                         rs(require("./modules/report/report.js"))
-                    })
-                })
-            }
-        }
-    }
-});
-
-avalon.state("home", {
-    url: "/home",
-    views: {
-        "": {
-            //配置模块模板和控制器
-            templateProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function(tt) {
-                        rs(require("text!./modules/home/home.html"))
-                    })
-                })
-            },
-            controllerProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function() {
-                        rs(require("./modules/home/home.js"))
-                    })
-                })
-            }
-        }
-    }
-});
-avalon.state("about", {
-    url: "/about",
-    views: {
-        "": {
-            //配置模块模板和控制器
-            templateProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function(tt) {
-                        rs(require("text!./modules/about/about.html"))
-                    })
-                })
-            },
-            controllerProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function() {
-                        rs(require("./modules/about/about.js"))
-                    })
-                })
-            }
-        }
-    }
-});
-avalon.state("contact", {
-    url: "/contact",
-    views: {
-        "": {
-            //配置模块模板和控制器
-            templateProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function(tt) {
-                        rs(require("text!./modules/contact/contact.html"))
-                    })
-                })
-            },
-            controllerProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function() {
-                        rs(require("./modules/contact/contact.js"))
-                    })
-                })
-            }
-        }
-    }
-});
-avalon.state("account", {
-    url: "/account",
-    views: {
-        "": {
-            //配置模块模板和控制器
-            templateProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function(tt) {
-                        rs(require("text!./modules/account/account.html"))
-                    })
-                })
-            },
-            controllerProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function() {
-                        rs(require("./modules/account/account.js"))
-                    })
-                })
-            }
-        }
-    }
-});
-
-avalon.state("userInfo", {
-    url: "/userInfo",
-    views: {
-        "": {
-            //配置模块模板和控制器
-            templateProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function(tt) {
-                        rs(require("text!./modules/userInfo/userInfo.html"))
-                    })
-                })
-            },
-            controllerProvider: function() {
-                return new Promise(function(rs) {
-                    require.ensure([], function() {
-                        rs(require("./modules/userInfo/userInfo.js"))
                     })
                 })
             }
@@ -219,6 +104,54 @@ avalon.state("config", {
     }
 });
 
+avalon.state("userInfo", {
+    url: "/userInfo",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/userInfo/userInfo.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/userInfo/userInfo.js"))
+                    })
+                })
+            }
+        }
+    }
+});
+
+avalon.state("account", {
+    url: "/account",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/account/account.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/account/account.js"))
+                    })
+                })
+            }
+        }
+    }
+});
+
+
+
 /**
  * 路由全局配置
  */
@@ -229,6 +162,7 @@ avalon.state.config({
     onBegin: function() {
         // var obj = root.userinfo.$model;
         // console.log(root.passname);
+        // delete avalon.vmodels["userInfo"]
 
 
     },

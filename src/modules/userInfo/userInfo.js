@@ -4,7 +4,7 @@
 define([], function() {
     // 定义所有相关的vmodel
     var vm = avalon.define({
-        $id: "account",
+        $id: "userInfo",
         myDatas: [{ "name": "aaa" }, { "name": "bbb" }, { "name": "ccc" }, { "name": "ddd" }],
         doClick: function(data) {
             alert(data.name);

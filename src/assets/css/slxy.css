@@ -4038,3 +4038,15 @@ input[type="color"],
 #sublist .radio a {
     background-image: none
 }
+
+
+/*分页*/
+
+#kkpager {
+    clear: both;
+    height: 60px;
+    line-height: 60px;
+    color: #555555;
+    font-size: 12px;
+    text-align: center;
+}

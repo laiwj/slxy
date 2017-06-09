@@ -17,7 +17,7 @@
                             <div class="person-photo pr">
                                 <img src="../../../src/assets/images/hdlogo.png" class="person-img">
                             </div>
-                            <p class="text-center user_name"> admin</p>
+                            <p class="text-center user_name"> {{username}}</p>
                             <input type="hidden" value="数联寻英" id="g_company">
 
                             <p class="text-center user_position">
@@ -28,28 +28,28 @@
 
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
-                                    <a href="#!/report" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                    <a href="#!/report" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-bar-chart"></i>数据管理
                                     </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
-                                    <a href="#!/config" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                    <a href="#!/config" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-server"></i>配置管理
                                     </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
-                                    <a href="#!/userInfo" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                    <a href="#!/userInfo" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-user"></i>用户管理
                                     </a>
                                 </div>
                             </li>
                             <li class="accordion-group">
                                 <div class="accordion-heading ver-middle J_menu_children">
-                                    <a href="#!/account" data-parent="#side_accordion" data-toggle="menu" class="accordion-toggle ver-middle">
+                                    <a href="#!/account" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-cog"></i>账号管理
                                     </a>
                                 </div>
@@ -70,11 +70,10 @@
                         <div class="container-fluid">
                             <div class="btn-group fr mt20" style="right: 50px;">
 
-                                <div data-toggle="dropdown" class="dropdown-toggle hd-person cur" aria-expanded="false"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> admin</div>
-                                <ul class="dropdown-menu">
+                                <div data-toggle="dropdown" class="dropdown-toggle hd-person cur" aria-expanded="false" ms-click="toggle_hiddle"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> {{username}}</div>
+                                <ul class="dropdown-menu" ms-visible="toggle" ms-click="logout">
 
-                                    <li><a href="/user/logout">退出登录</a></li>
-
+                                    <li><a href="javascript:">退出登录</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -91,7 +90,7 @@
                     <div class="span12 search_page">
                         <div class="well  clearfix">
                             <div class="row-fluid">
-                                <p class="pull-left mt10 "><b>账号管理</b><span class="J_account_num number">0</span></p>
+                                <p class="pull-left mt10 "><b>账号管理</b><span class="J_account_num number">{{count}}</span></p>
                                 <div class="pull-right">
                                     <a class="btn btn-primary mr10 J_create_account mt8" _title="创建账号" _type="0" ms-click="show('ee')">创建账号</a>
                                     <!--创建账号弹框-->
@@ -117,7 +116,7 @@
                         </div>
                         <div class="p20">
                             <p class="tc null-model" style="display:none;">暂无数据</p>
-                            <div class="table_li admin_model">
+                            <div class="table_li admin_model" ms-visible="type=='1'">
                                 <div class="table_dt ">
                                     <ul class="fb cr6 p0 company">
                                         <li class="tl " style="text-indent: 20px;">序号</li>
@@ -128,21 +127,21 @@
                                     </ul>
 
                                 </div>
-                                <div class="biglist">
+                                <div class="biglist" ms-repeat-el="bigList">
                                     <dd class="table_dt">
                                         <ul class=" cr6 p0">
                                             <li class="tl " style="text-indent: 20px;">
-                                                1
+                                                {{$index+1}}
                                             </li>
                                             <li style="width: 25%">
-                                                admin
+                                                {{el.username}}
                                             </li>
                                             <li>
-                                                2015/09/08
+                                                {{el.createTime}}
                                             </li>
                                             <li class="tc">
-                                                <a class="fb J_click_pull" _id="<@=item._id@>" _index="0">
-                                                   3
+                                                <a class="fb J_click_pull" _index="0" ms-attr-_id="el._id">
+                                                    {{el.count}}
                                                 </a>
                                             </li>
                                             <li class="tr" style="width: 10%">
@@ -184,95 +183,25 @@
                                         </ul>
                                         <div class="pull_model">
 
-                                            <ul class="fb  p0 pull_border smaillList">
+                                            <ul class="fb  p0 pull_border smallList">
                                                 <li class="tl " style="text-indent: 20px;">序号</li>
                                                 <li style="width: 25%">账户</li>
                                                 <li>邀请/注册时间</li>
                                                 <li class="tc">隶属用户</li>
                                                 <li class="tr" style="width: 10%"></li>
                                             </ul>
-                                            <ul class=" pull_border p0">
+                                            <ul class=" pull_border p0" ms-repeat-el="smallList">
                                                 <li class="tl " style="text-indent: 20px;">
-                                                    1
+                                                    {{$index+1}}
                                                 </li>
                                                 <li style="width: 25%">
-                                                    admin
+                                                    {{el.username}}
                                                 </li>
                                                 <li>
-                                                    2017/07/09
+                                                    {{el.createTime}}
                                                 </li>
                                                 <li class="tc">
-                                                    admin
-                                                </li>
-                                                <li class="tr" style="width: 10%">
-
-                                                </li>
-                                            </ul>
-
-                                        </div>
-
-                                    </dd>
-                                </div>
-                                <div class="biglist">
-                                    <dd class="table_dt">
-                                        <ul class=" cr6 p0">
-                                            <li class="tl " style="text-indent: 20px;">
-                                                1
-                                            </li>
-                                            <li style="width: 25%">
-                                                admin
-                                            </li>
-                                            <li>
-                                                2015/09/08
-                                            </li>
-                                            <li class="tc">
-                                                <a class="fb J_click_pull" _id="<@=item._id@>" _index="0">
-                                                   3
-                                                </a>
-                                            </li>
-                                            <li class="tr" style="width: 10%">
-                                                <button class="btn btn-border J_create_account" _id="<@=item._id@>" _type="1" _title="添加子账号" ms-click="show('ff')">+添加子账号</button>
-                                                <!--创建账号弹框-->
-                                                <div ms-widget="dialog,ff,$ffOpts">
-                                                    <form class="pure-form pure-form-stacked" ms-widget="validation,validationVM">
-                                                        <ul>
-                                                            <li>
-                                                                <label>公司名称</label><input type="text" ms-duplex-required="name" class="disturb-warp">
-                                                            </li>
-                                                            <li>
-                                                                <label>手机/Email</label><input type="text" ms-duplex-norequired-id="idcard" class="disturb-warp">
-                                                            </li>
-                                                            <li>
-                                                                <label>密码</label><input type="text" ms-duplex-norequired-id="idcard" class="disturb-warp">
-                                                            </li>
-                                                        </ul>
-                                                    </form>
-                                                </div>
-                                                <!--创建账号弹框-->
-                                                <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>" ms-click="show('gg')">权限</button>
-                                            </li>
-                                        </ul>
-                                        <div class="pull_model">
-
-                                            <ul class="fb  p0 pull_border smaillList">
-                                                <li class="tl " style="text-indent: 20px;">序号</li>
-                                                <li style="width: 25%">账户</li>
-                                                <li>邀请/注册时间</li>
-                                                <li class="tc">隶属用户</li>
-                                                <li class="tr" style="width: 10%"></li>
-                                            </ul>
-                                            <ul class=" pull_border p0">
-                                                <li class="tl " style="text-indent: 20px;">
-                                                    1
-                                                </li>
-                                                <li style="width: 25%">
-                                                    admin
-                                                </li>
-                                                <li>
-                                                    2017/07/09
-                                                </li>
-                                                <li class="tc">
-                                                    admin
+                                                    {{el.count}}
                                                 </li>
                                                 <li class="tr" style="width: 10%">
 
@@ -286,7 +215,7 @@
 
                             </div>
 
-                            <table class="table company_model" style="display: none;">
+                            <table class="table company_model" ms-visible="type=='2'">
                                 <thead>
                                     <tr class="fb cr6">
                                         <th style="width: 20%">序号</th>
@@ -321,7 +250,9 @@
 
                             </table>
 
-                            <div id="kkpager"></div>
+                            <div id="kkpager">
+                                <div ms-widget="pager, pp"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
