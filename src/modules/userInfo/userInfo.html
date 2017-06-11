@@ -17,7 +17,7 @@
                             <div class="person-photo pr">
                                 <img src="../../../src/assets/images/hdlogo.png" class="person-img">
                             </div>
-                            <p class="text-center user_name"> admin</p>
+                            <p class="text-center user_name"> {{username}}</p>
                             <input type="hidden" value="数联寻英" id="g_company">
 
                             <p class="text-center user_position">
@@ -70,11 +70,10 @@
                         <div class="container-fluid">
                             <div class="btn-group fr mt20" style="right: 50px;">
 
-                                <div data-toggle="dropdown" class="dropdown-toggle hd-person cur" aria-expanded="false"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> admin</div>
-                                <ul class="dropdown-menu">
+                                <div data-toggle="dropdown" class="dropdown-toggle hd-person cur" aria-expanded="false" ms-click="toggle_hiddle"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> {{username}}</div>
+                                <ul class="dropdown-menu" ms-visible="toggle" ms-click="logout">
 
-                                    <li><a href="/user/logout">退出登录</a></li>
-
+                                    <li><a href="javascript:">退出登录</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -92,11 +91,11 @@
 
                         <div class="well  clearfix">
                             <div class="row-fluid">
-                                <p class="pull-left mt10 "><b>用户管理</b><span class="J_account_num number">0</span></p>
+                                <p class="pull-left mt10 "><b>用户管理</b><span class="J_account_num number">{{count}}</span></p>
 
                                 <div class="pull-right">
 
-                                    <a class="btn btn-primary mr10 mt8" id="J_invitedUsers" ms-click="show('cc')">邀请用户</a>
+                                    <a class="btn btn-primary mr10 mt8" id="J_invitedUsers" ms-click="show('cc')" ms-visible="type=='3'">邀请用户</a>
                                     <!--邀请用户弹框-->
                                     <div ms-widget="dialog,cc,$ccOpts">
                                         <form class="pure-form pure-form-stacked" ms-widget="validation,validationVM">
@@ -105,7 +104,8 @@
                                                     <label>用户名称</label><input type="text" ms-duplex-required="name" class="disturb-warp">
                                                 </li>
                                                 <li>
-                                                    <label>手机/Email</label><input type="text" ms-duplex-norequired-id="idcard" class="disturb-warp">
+                                                    <label>手机/Email</label><input type="text" ms-duplex-norequired-id="idcard"
+                                                        class="disturb-warp">
                                                 </li>
                                                 <li>
                                                     <label>消息内容</label> <textarea class="charts-warp" placeholder="%公司名称%，您好，欢迎使用报告平台产品，地址：www.abc.com，
@@ -141,71 +141,76 @@
                                     </tr>
                                 </thead>
                                 <tbody class="userList">
-                                    <tr>
+                                    <tr ms-repeat-el="userList">
                                         <td>
-                                            1
+                                            {{$index+1}}
                                         </td>
                                         <td style="width: 30%">
-                                            admin
+                                            {{el.username+"/"+el.telphone||el.email}}
                                         </td>
                                         <td>
-                                            2017/09/08
+                                            {{el.createTime}}
                                         </td>
                                         <td class="tc">
-                                            admin
+                                            {{el.pm_user_name}}
                                         </td>
                                         <td class="tr">
-                                            <button class="btn btn-primary J_power" ms-click="show('dd')">权限</button>
-                                            <!--权限弹框-->
-                                            <div ms-widget="dialog,dd,$ddOpts">
-                                                <label class="mr30 mb15">
-                                                    <input type="checkbox" id="checkbox_a1" class="chk_1" value=""  /> 
-                                                    <label for="checkbox_a1"></label> 报告下载
-                                                </label>
-                                                <label class="mr30 mb15">
-                                                    <input type="checkbox" id="checkbox_a2" class="chk_1" value=""  /> 
-                                                    <label for="checkbox_a2"></label> 报告收藏
-                                                </label>
-                                                <p class="power-warp-p">报告查看</p>
-                                                <div class="reportList">
-                                                    <label class="mr30">
-                                                        <input type="checkbox" id="checkbox_a3" class="chk_1" value=""  /> 
-                                                        <label for="checkbox_a3"></label> 报告1
-                                                    </label>
-                                                    <label class="mr30">
-                                                        <input type="checkbox" id="checkbox_a4" class="chk_1" value=""  /> 
-                                                        <label for="checkbox_a4"></label> 报告2
-                                                    </label>
-                                                    <label class="mr30">
-                                                        <input type="checkbox" id="checkbox_a5" class="chk_1" value=""  /> 
-                                                        <label for="checkbox_a5"></label> 报告3
-                                                    </label>
-                                                    <label class="mr30">
-                                                        <input type="checkbox" id="checkbox_a6" class="chk_1" value=""  /> 
-                                                        <label for="checkbox_a6"></label> 报告4
-                                                    </label>
+                                            <button class="btn btn-primary J_power" ms-attr-data_userid="el._id" ms-attr-_powerList="el.power_list" ms-click="show('gg,'+$index)">权限</button>
 
-
-                                                </div>
-                                            </div>
-                                            <!--权限弹框结束-->
                                         </td>
                                     </tr>
+                                    <!--权限弹框-->
+                                    <div ms-widget="dialog,gg,$ggOpts">
+                                        <div class=" powerB_dialog p20 clearfix" id="powerB_dialog" title="权限设置">
+                                            <div class="control-group-warp">
+
+                                                <div class="control-group-charts clearfix mt20">
+                                                    <div class="ver-middle fl ml20">
+                                                        <input type="checkbox" value="100" />
+                                                        <label>收藏报告</label>
+                                                    </div>
+
+                                                    <div class="ver-middle fl ml20">
+                                                        <input type="checkbox" value="101" />
+                                                        <label>下载报告</label>
+                                                    </div>
+
+                                                    <div class="ver-middle fl ml20">
+                                                        <input type="checkbox" value="201" />
+                                                        <label>人才分布</label>
+                                                    </div>
+                                                    <div class="ver-middle fl ml20">
+                                                        <input type="checkbox" value="202" />
+                                                        <label>人才流动</label>
+                                                    </div>
+                                                    <div class="ver-middle fl ml20">
+                                                        <input type="checkbox" value="203" />
+                                                        <label>供需指数</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
 
 
-                                </tbody>
-                            </table>
-                            <ul>
-                                <li ms-repeat="myDatas" ms-click="doClick(el)">{{$index}}--{{el.name}}</li>
-                            </ul>
-                            <div id="kkpager"></div>
+                                    </div>
+                        </div>
+                        <!--权限弹框结束-->
+
+                        </tbody>
+                        </table>
+
+                        <div id="kkpager">
+                            <div ms-widget="pager, bb"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="dialog"></div>
-
-
         </div>
+
+
+
     </div>
+</div>
 </div>

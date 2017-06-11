@@ -130,7 +130,9 @@ define([], function() {
                     }
                     bean.city = "";
                     bean.top = 10;
-                    url = "http://10.101.1.171:10110/api/talent/distribution";
+                   
+                    // url = "http://10.101.1.171:10110/api/talent/distribution";
+                     url = "http://rm.xunying.me/api/talent/distribution";
                     charts_type = bean.cf;
                     break;
                 case "人才流动":
@@ -142,7 +144,8 @@ define([], function() {
                     }
                     bean.city = "";
                     bean.top = 10;
-                    url = "http://10.101.1.171:10110/api/talent/flow";
+                    // url = "http://10.101.1.171:10110/api/talent/flow";
+                    url = "http://rm.xunying.me/api/talent/flow";
                     charts_type = bean.cf;
                     break;
                 case "人才供需":
@@ -154,7 +157,8 @@ define([], function() {
                     }
                     bean.top = 5;
                     bean.city = "";
-                    url = "http://10.101.1.171:10110/api/talent/exponential";
+                    // url = "http://10.101.1.171:10110/api/talent/exponential";
+                    url = "http://rm.xunying.me/api/talent/exponential";
                     charts_type = bean.na;
                     break;
                 default:
@@ -185,7 +189,7 @@ define([], function() {
                 console.log(bean);
             }
 
-            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
+            $.post("http://rm.xunying.me/api/info/write", bean, function(result) {
                 console.log(result);
                 // xy_util.restCallback(result, function(data) {;
                 //     jTip(STATICMSG["ok"]);

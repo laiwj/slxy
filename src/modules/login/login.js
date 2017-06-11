@@ -8,7 +8,6 @@ define([], function() {
         $id: "login",
         isSumbit: false,
         account: "",
-        userinfodata: {},
         password: null,
         validation: {
             onInit: function(v) {
@@ -57,7 +56,8 @@ define([], function() {
                     "password": vm.password
                 }
                 //发送数据到后台
-            var url = "http://10.101.1.171:10110/user/login";
+            // var url = "http://10.101.1.171:10110/user/login";
+            var url = "http://rm.xunying.me/user/login";
             vm.isSumbit = true;
             $.post(url, bean, function(jsonObj) {
                 vm.isSumbit = false;
@@ -100,10 +100,6 @@ define([], function() {
         }
     });
 
-    vm.$watch('userinfodata', function(v) {
-        console.log(v);
-        avalon.log('ancestor.aaa事件被触发了')
-    })
 
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
