@@ -3856,7 +3856,8 @@
         }
 
         function compositionEnd() {
-            composing = false
+            composing = false;
+            setTimeout(updateVModel);
         }
         var IE9Value
             //当value变化时改变model的值

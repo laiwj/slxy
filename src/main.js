@@ -1,7 +1,5 @@
-/**
- * Created by WangMing on 15/12/9.
- */
 var avalon = require("./assets/vendor/oniui/avalon.shim");
+// var dialog = require('../node_modules/art-dialog/dist/dialog.js');
 require('../node_modules/purecss/build/pure-min.css');
 require('./assets/css/common.css');
 
@@ -25,6 +23,7 @@ require("./assets/vendor/oniui/validation/avalon.validation");
 // jquery.cookie
 require("./lib/jquery-1.8.3.min");
 require("./lib/jquery.cookie.min");
+// require("./lib/dialog");
 
 
 // 定义一个顶层的vmodel，用来放置全局共享数据
@@ -106,6 +105,29 @@ avalon.state("config", {
 
 avalon.state("userInfo", {
     url: "/userInfo",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/userInfo/userInfo.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/userInfo/userInfo.js"))
+                    })
+                })
+            }
+        }
+    }
+});
+
+avalon.state("userInfo.id", {
+    url: "/{id}",
     views: {
         "": {
             //配置模块模板和控制器

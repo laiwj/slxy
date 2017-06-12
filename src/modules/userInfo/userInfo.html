@@ -33,7 +33,7 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="accordion-group">
+                            <li class="accordion-group" ms-visible="type=='2'|| type=='1'">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/config" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-server"></i>配置管理
@@ -47,7 +47,7 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="accordion-group">
+                            <li class="accordion-group" ms-visible="type=='2'|| type=='1'">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/account" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-cog"></i>账号管理
@@ -101,14 +101,13 @@
                                         <form class="pure-form pure-form-stacked" ms-widget="validation,validationVM">
                                             <ul>
                                                 <li>
-                                                    <label>用户名称</label><input type="text" ms-duplex-required="name" class="disturb-warp">
+                                                    <label>用户名称</label><input type="text" ms-duplex-required="user_username1" class="disturb-warp">
                                                 </li>
                                                 <li>
-                                                    <label>手机/Email</label><input type="text" ms-duplex-norequired-id="idcard"
-                                                        class="disturb-warp">
+                                                    <label>手机/Email</label><input type="text" ms-duplex-norequired-id="user_account1" class="disturb-warp">
                                                 </li>
                                                 <li>
-                                                    <label>消息内容</label> <textarea class="charts-warp" placeholder="%公司名称%，您好，欢迎使用报告平台产品，地址：www.abc.com，
+                                                    <label>消息内容</label> <textarea class="charts-warp" ms-duplex-required="user_msg" placeholder="%公司名称%，您好，欢迎使用报告平台产品，地址：www.abc.com，
 登录账户为：184****，登录密码为：abcds4."></textarea>
                                                 </li>
                                             </ul>
@@ -116,7 +115,7 @@
                                     </div>
                                     <!--邀请用户弹框-->
 
-                                    <div class="clearfix fr" style="display: block">
+                                    <div class="clearfix fr" ms-visible="type=='1'||type=='2'">
                                         <select ms-duplex="serviceName" class="select-warp fl mt10" id="service_id" style="width: 100px;">
                                             <option value="客户名称">客户名称</option>
                                             <option value="罗春">罗春</option>
@@ -145,11 +144,14 @@
                                         <td>
                                             {{$index+1}}
                                         </td>
-                                        <td style="width: 30%">
-                                            {{el.username+"/"+el.telphone||el.email}}
+                                        <td style="width: 30%" ms-visible="el.telphone">
+                                            {{el.username+" / "+el.telphone}}
+                                        </td>
+                                        <td style="width: 30%" ms-visible="el.email">
+                                            {{el.username+" / "+el.email}}
                                         </td>
                                         <td>
-                                            {{el.createTime}}
+                                            {{el.createTime | date("yyyy-MM-dd")}}
                                         </td>
                                         <td class="tc">
                                             {{el.pm_user_name}}

@@ -44,7 +44,7 @@ define([], function() {
             dragHtml += '<div id="FuntypeList"></div>'; //职能类别列表
             dragHtml += '</div>';
             $('#drag_con').html(dragHtml);
-            Show2(data.tags);
+            Show2(data.$model.tags);
             $('#maskLayer').css({ top: top + 44, left: left + 129 }).show();
             $("#sublist").css({ top: top + 44, left: left - 92 })
         }
@@ -68,12 +68,13 @@ define([], function() {
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
-            $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
-                if ($(this).children().attr("href") == location.hash) {
-                    $(this).addClass('md-accent-bg');
-                    return false; // 跳出循环
-                }
-            });
+            // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
+            //     if ($(this).children().attr("href") == location.hash) {
+            //         $(this).addClass('md-accent-bg');
+            //         return false; // 跳出循环
+            //     }
+            // });
+            $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
 
 
         };

@@ -1,4 +1,4 @@
-define([], function () {
+define([], function() {
     var widget = avalon.vmodels.$opts;
 
     // 定义所有相关的vmodel
@@ -24,26 +24,28 @@ define([], function () {
         count: 0,
         bigList: [],
         smallList: [],
+        userList: [],
+        skipId: {},
         pager: {
             currentPage: 1,
-            totalItems: 150,
+            totalItems: 0,
             showJumper: true,
             alwaysShowNext: true,
             alwaysShowPrev: true,
             prevText: "上一页",
             nextText: "下一页",
-            onJump: function (e, page) {
+            onJump: function(e, page) {
                 var param = {
-                    force: false,
-                    page: page.currentPage,
-                    user_id: ''
-                }
-                // console.log(param);
+                        force: false,
+                        page: page.currentPage,
+                        user_id: ''
+                    }
+                    // console.log(param);
                 vm.initList(param);
             }
 
         },
-        show: function (id) {
+        show: function(id) {
             var arr = id.split(",");
             var id = arr[0];
             var index = arr[1];
@@ -69,21 +71,21 @@ define([], function () {
         $eeOpts: {
             title: "创建账号",
             width: 500,
-            onConfirm: function () {
+            onConfirm: function() {
                 vm.addAcount(vm._type);
             }
         },
         $ggOpts: {
             title: "操作报告",
             width: 500,
-            onOpen: function () {
+            onOpen: function() {
                 var oldpowerlist = [];
-                $(".J_power").each(function (i, v) {
+                $(".J_power").each(function(i, v) {
                     if ($(v).attr("isClick")) {
                         vm.uid = $(v).attr("data_userid");
                         oldpowerlist = $(v).attr('_powerList').split(',');
-                        $.each(oldpowerlist, function (index, val) {
-                            $.each($("#powerPM_dialog input[type='checkbox']"), function (i, v) {
+                        $.each(oldpowerlist, function(index, val) {
+                            $.each($("#powerPM_dialog input[type='checkbox']"), function(i, v) {
                                 var boxval = v.value;
                                 if (boxval == val) {
                                     $(this).attr('checked', 'checked');
@@ -97,25 +99,25 @@ define([], function () {
                     }
                 });
             },
-            onConfirm: function () {
+            onConfirm: function() {
                 vm.savePower({ user_id: vm.uid }, vm.newlist);
             }
         },
-        getPassFromCookie: function () {
+        getPassFromCookie: function() {
             return window.$.cookie(location.host + "_userinfo");
         },
-        clearPassToCookie: function () {
+        clearPassToCookie: function() {
             window.$.cookie(location.host + "_userinfo", "", { path: "/" });
         },
-        toggle_hiddle: function () {
+        toggle_hiddle: function() {
             vm.toggle = !vm.toggle
         },
-        logout: function () {
+        logout: function() {
             vm.clearPassToCookie();
             window.location.href = "";
         },
-        initList: function (obj, objDom) {
-            $.post('http://rm.xunying.me/user/list', obj, function (data) {
+        initList: function(obj, objDom) {
+            $.post('http://10.101.1.171:10110/user/list', obj, function(data) {
                 if (data.data.data.length == 0) {
                     if (obj.user_id) {
                         objDom.text('暂无数据');
@@ -126,7 +128,7 @@ define([], function () {
                         $(".null-model").show();
                     }
                 } else {
-                    $(".table_li").show();
+
                     $(".null-model").hide();
                     if (obj.user_id) {
                         vm.smallList = data.data.data;
@@ -134,15 +136,12 @@ define([], function () {
                         vm.list.page = 1;
                     } else {
                         vm.count = data.data.count;
-                        vm.bigList = data.data.data;
-
-                        // if (vm.type == "2") {
-                        //     $(".company_model").show();
-                        //     $(".admin_model").hide();
-                        // } else if (vm.type == "1") {
-                        //     $(".company_model").hide();
-                        //     $(".admin_model").show();
-                        // }
+                        if (vm.type == "2") {
+                            vm.userList = data.data.data;
+                        } else if (vm.type == "1") {
+                            // $(".table_li").show();
+                            vm.bigList = data.data.data;
+                        }
                         if (obj.page == 1) {
                             var widget = avalon.vmodels.pp
                             if (widget) {
@@ -155,11 +154,11 @@ define([], function () {
                 vm.domListener();
             })
         },
-        domListener: function () {
+        domListener: function() {
             /*展开子账号*/
-            $(".J_click_pull").off().on('click', function () {
+            $(".J_click_pull").off().on('click', function() {
                 var me = this;
-                $(this).parent().parent().next().slideToggle("fast", function () {
+                $(this).parent().parent().next().slideToggle("fast", function() {
                     if ($(this).is(":hidden")) {
                         vm.smallList = [];
                     } else {
@@ -171,9 +170,15 @@ define([], function () {
                 });
 
             });
+            /*跳转用户列表页*/
+            $(".J_click_skip").off().on('click', function() {
+                var param = $(this).attr("_id");
+                window.location.href = "/#!/userInfo/" + param;
+            });
+
 
         },
-        addAcount: function (type) {
+        addAcount: function(type) {
 
             if (vm.isSumbit) {
                 return;
@@ -185,7 +190,7 @@ define([], function () {
             }
             vm.isSumbit = true;
 
-            $.post('http://rm.xunying.me/user/regist', bean, function (data) {
+            $.post('http://10.101.1.171:10110/user/regist', bean, function(data) {
                 vm.isSumbit = false;
 
                 if (data.code == 0) {
@@ -200,29 +205,29 @@ define([], function () {
 
             })
         },
-        savePower: function (param, oldpowerlist) {
+        savePower: function(param, oldpowerlist) {
             var newpower = [];
-            $.each($("#powerPM_dialog").find("input[type='checkbox']"), function (index) {
+            $.each($("#powerPM_dialog").find("input[type='checkbox']"), function(index) {
                 if ($(this).is(':checked')) {
                     newpower.push($(this).attr("value"))
                 }
 
             });
             var contactArr = [];
-            $.each(newpower, function (i) {
+            $.each(newpower, function(i) {
                 if ($.inArray(newpower[i], oldpowerlist) > -1) {
                     contactArr.push(newpower[i]);
                 }
             })
 
             var remove = [];
-            $.each(oldpowerlist, function (i) {
+            $.each(oldpowerlist, function(i) {
                 if ($.inArray(oldpowerlist[i], contactArr) == -1) {
                     remove.push(oldpowerlist[i]);
                 }
             })
             var add = [];
-            $.each(newpower, function (i) {
+            $.each(newpower, function(i) {
                 if ($.inArray(newpower[i], contactArr) == -1) {
                     add.push(newpower[i]);
                 }
@@ -231,10 +236,14 @@ define([], function () {
             // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
 
 
-            $.post("http://rm.xunying.me/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function (data) {
+            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
                 console.log(data);
                 // jTip(STATICMSG["ok"]);
                 vm.initList(vm.list.$model);
+                var widget = avalon.vmodels.pp
+                if (widget) {
+                    widget.currentPage = 1;
+                }
 
 
             })
@@ -243,17 +252,18 @@ define([], function () {
 
     vm.$skipArray = ["pager"]
 
-    return avalon.controller(function ($ctrl) {
+    return avalon.controller(function($ctrl) {
         avalon.scan(document.body);
         // 视图渲染后，意思是avalon.scan完成
-        $ctrl.$onRendered = function () {
+        $ctrl.$onRendered = function() {
 
-            $('#side_accordion div').removeClass('md-accent-bg').each(function (i, v) {
-                if ($(this).children().attr("href") == location.hash) {
-                    $(this).addClass('md-accent-bg');
-                    return false; // 跳出循环
-                }
-            });
+            // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
+            //     if ($(this).children().attr("href") == location.hash) {
+            //         $(this).addClass('md-accent-bg');
+            //         return false; // 跳出循环
+            //     }
+            // });
+            $('#side_accordion div').removeClass('md-accent-bg').eq(3).addClass('md-accent-bg');
 
             //生成列表
             vm.initList(vm.list.$model);
@@ -261,7 +271,7 @@ define([], function () {
 
         };
         // 进入视图
-        $ctrl.$onEnter = function (param, rs, rj) {
+        $ctrl.$onEnter = function(param, rs, rj) {
             var userinfo = vm.getPassFromCookie();
             var userBean = userinfo.split('|');
             vm._id = userBean[0];
@@ -271,7 +281,7 @@ define([], function () {
 
         };
         // 对应的视图销毁前
-        $ctrl.$onBeforeUnload = function () {
+        $ctrl.$onBeforeUnload = function() {
 
 
         };

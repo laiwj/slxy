@@ -30,7 +30,7 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="accordion-group">
+                            <li class="accordion-group" ms-visible="type=='2'|| type=='1'">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/config" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-server"></i>配置管理
@@ -44,7 +44,7 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="accordion-group">
+                            <li class="accordion-group" ms-visible="type=='2'|| type=='1'">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/account" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-cog"></i>账号管理
@@ -181,12 +181,6 @@
                                 </div>
                                 <div class="charts-desc" id="report_info" ms-visible="type=='3'">
                                     <div class="add_tag" ms-click="show('bb')"> <i>+</i>添加分析说明</div>
-                                    <!--添加分析说明弹框-->
-                                    <div ms-widget="dialog,bb,$bbOpts">
-                                        <p class="disturb-warp-p">当前报告：全国互联网行业职能从业人员总体规模城市TOP10</p>
-                                        <textarea class="charts-warp" placeholder="添加说明..."></textarea>
-                                    </div>
-                                    <!--添加分析说明弹框-->
                                 </div>
                             </div>
 
@@ -194,11 +188,18 @@
                                 <div class="analysis-items clearfix" ms-repeat-el="info">
                                     <i class="icon icon-circle fl">·</i>
                                     <div class="fl ml10">
-                                        <p><b>{{el.pm_username}}</b><span class="f10 cr9 ml10">{{el.modify_time}}</span></p>
-                                        <p class="text_desc_p"><span class="text_desc">{{el.info}}</span><button class="button1 edit_desc J_edit_desc" ms-click="show('bb,'+$index)" ms-attr-api_url="el.api_url" ms-attr-data_id="el._id" ms-attr-user_id="el.pm_user_id">编辑</button></p>
+                                        <p><b>{{el.pm_username}}</b><span class="f10 cr9 ml10">{{el.modify_time | date("yyyy/MM/dd HH:mm:ss")}}</span></p>
+                                        <p class="text_desc_p"><span class="text_desc">{{el.info}}</span><button class="button1 edit_desc J_edit_desc ml20" ms-click="show('bb,'+$index)" ms-attr-api_url="el.api_url" ms-attr-data_id="el._id" ms-attr-user_id="el.pm_user_id">编辑</button></p>
                                     </div>
                                 </div>
                             </div>
+                            <!--添加分析说明弹框-->
+                            <div ms-widget="dialog,bb,$bbOpts">
+                                <p class="disturb-warp-p">当前报告：全国互联网行业职能从业人员总体规模城市TOP10</p>
+                                <textarea class="charts-warp" placeholder="添加说明..." ms-duplex="report_info" /></textarea>
+                                {{report_info}}
+                            </div>
+                            <!--添加分析说明弹框-->
 
                         </div>
                     </div>

@@ -21,6 +21,7 @@ define([], function() {
         J_na: "需求量",
         J_cf: "热门城市",
         J_fp: "职能",
+        report_info: "",
         show: function(id) {
             // validationVM.resetAll();
             if (id.charAt(0) == "b") {
@@ -68,6 +69,7 @@ define([], function() {
                 } else {
                     $(".J_edit_desc").each(function(i, v) {
                         if ($(v).attr("isClick")) {
+                            console.log(vm.report_info);
                             vm.saveDesc(v);
                             $(v).attr("isClick", "");
                         }
@@ -130,9 +132,9 @@ define([], function() {
                     }
                     bean.city = "";
                     bean.top = 10;
-                   
-                    // url = "http://10.101.1.171:10110/api/talent/distribution";
-                     url = "http://rm.xunying.me/api/talent/distribution";
+
+                    url = "http://10.101.1.171:10110/api/talent/distribution";
+                    //  url = "http://rm.xunying.me/api/talent/distribution";
                     charts_type = bean.cf;
                     break;
                 case "人才流动":
@@ -144,8 +146,8 @@ define([], function() {
                     }
                     bean.city = "";
                     bean.top = 10;
-                    // url = "http://10.101.1.171:10110/api/talent/flow";
-                    url = "http://rm.xunying.me/api/talent/flow";
+                    url = "http://10.101.1.171:10110/api/talent/flow";
+                    // url = "http://rm.xunying.me/api/talent/flow";
                     charts_type = bean.cf;
                     break;
                 case "人才供需":
@@ -157,8 +159,8 @@ define([], function() {
                     }
                     bean.top = 5;
                     bean.city = "";
-                    // url = "http://10.101.1.171:10110/api/talent/exponential";
-                    url = "http://rm.xunying.me/api/talent/exponential";
+                    url = "http://10.101.1.171:10110/api/talent/exponential";
+                    // url = "http://rm.xunying.me/api/talent/exponential";
                     charts_type = bean.na;
                     break;
                 default:
@@ -168,13 +170,13 @@ define([], function() {
             return { bean: bean, tab: tab, url: url, charts_type: charts_type };
         },
         saveDesc: function(obj) {
-            var user_id = $("#report_info").attr("user_id") ? $("#report_info").attr("user_id") : $("#userinfoId").val();
+            var user_id = $("#report_info").attr("user_id") ? $("#report_info").attr("user_id") : vm._id;
             var bean = {};
             if (obj) {
                 var param = {
                     api_url: $(obj).attr("api_url"),
                     user_id: $(obj).attr("user_id"),
-                    report_info: $(".charts-warp").val(),
+                    report_info: vm.report_info,
                     params: JSON.stringify(vm.params)
                 }
                 bean = param;
@@ -183,18 +185,15 @@ define([], function() {
                 bean = {
                     api_url: vm.api_url,
                     user_id: user_id,
-                    report_info: $(".charts-warp").val(),
+                    report_info: vm.report_info,
                     params: JSON.stringify(vm.params)
                 };
                 console.log(bean);
             }
 
-            $.post("http://rm.xunying.me/api/info/write", bean, function(result) {
+            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
                 console.log(result);
-                // xy_util.restCallback(result, function(data) {;
-                //     jTip(STATICMSG["ok"]);
-                //     me.resetEditDesc(obj, bean.report_info);
-                // })
+                $(obj).prev().text(bean.report_info);
             })
         }
     });
@@ -228,16 +227,18 @@ define([], function() {
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
-            $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
-                if ($(this).children().attr("href") == location.hash) {
-                    $(this).addClass('md-accent-bg');
-                    return false; // 跳出循环
-                }
-            });
+            // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
+            //     if ($(this).children().attr("href") == location.hash) {
+            //         $(this).addClass('md-accent-bg');
+            //         return false; // 跳出循环
+            //     }
+            // });
 
-
+            $('#side_accordion div').removeClass('md-accent-bg').eq(0).addClass('md-accent-bg');
             //生成数据
             vm.analysisData();
+
+
 
 
 

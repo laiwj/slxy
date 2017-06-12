@@ -33,7 +33,7 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="accordion-group">
+                            <li class="accordion-group" ms-visible="type=='2'|| type=='1'">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/config" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-server"></i>配置管理
@@ -47,7 +47,7 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="accordion-group">
+                            <li class="accordion-group" ms-visible="type=='2'|| type=='1'">
                                 <div class="accordion-heading ver-middle J_menu_children">
                                     <a href="#!/account" class="accordion-toggle ver-middle">
                                         <i class="icon s16 fa fa-cog"></i>账号管理
@@ -98,16 +98,13 @@
                                         <form class="pure-form pure-form-stacked" ms-widget="validation,validationVM">
                                             <ul>
                                                 <li>
-                                                    <label>公司名称</label><input type="text" ms-duplex-required="user_username"
-                                                        class="disturb-warp" id="user_username">
+                                                    <label>公司名称</label><input type="text" ms-duplex-required="user_username" class="disturb-warp" id="user_username">
                                                 </li>
                                                 <li>
-                                                    <label>手机/Email</label><input type="text" ms-duplex-norequired-id="user_account"
-                                                        class="disturb-warp" id="user_account">
+                                                    <label>手机/Email</label><input type="text" ms-duplex-norequired-id="user_account" class="disturb-warp" id="user_account">
                                                 </li>
                                                 <li>
-                                                    <label>密码</label><input type="text" ms-duplex-norequired-id="user_password"
-                                                        class="disturb-warp" id="user_password">
+                                                    <label>密码</label><input type="text" ms-duplex-norequired-id="user_password" class="disturb-warp" id="user_password">
                                                 </li>
                                             </ul>
                                         </form>
@@ -139,7 +136,7 @@
                                                 {{el.username}}
                                             </li>
                                             <li>
-                                                {{el.createTime}}
+                                                {{el.createTime | date("yyyy-MM-dd")}}
                                             </li>
                                             <li class="tc">
                                                 <a class="fb J_click_pull" _index="0" ms-attr-_id="el._id">
@@ -147,7 +144,7 @@
                                                 </a>
                                             </li>
                                             <li class="tr" style="width: 10%">
-                                                <button class="btn btn-border J_create_account" style="display:none;" ms-attr_id="el._id"  ms-click="show('ee,1')">+添加子账号</button>
+                                                <button class="btn btn-border J_create_account" style="display:none;" ms-attr_id="el._id" ms-click="show('ee,1')">+添加子账号</button>
                                                 <button class="btn btn-primary J_power" ms-attr-data_userid="el._id" ms-attr-_powerList="el.power_list" ms-click="show('gg,'+$index)">权限</button>
                                             </li>
                                         </ul>
@@ -168,7 +165,7 @@
                                                     {{el.username}}
                                                 </li>
                                                 <li>
-                                                    {{el.createTime}}
+                                                    {{el.createTime | date("yyyy-MM-dd")}}
                                                 </li>
                                                 <li class="tc">
                                                     {{el.count}}
@@ -204,65 +201,37 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--<label class="mr30 mb15">
-                                                    <input type="checkbox" id="checkbox_a1" class="chk_1" value=""  /> 
-                                                    <label for="checkbox_a1"></label> 标签配置
-                                </label>
-                                <p class="power-warp-p">
-                                    <input type="checkbox" id="checkbox_a2" class="chk_1" value="" />
-                                    <label for="checkbox_a2"></label> 添加报告解释说明
-                                </p>
-                                <div class="reportList">
-                                    <label class="mr30">
-                                                        <input type="checkbox" id="checkbox_a3" class="chk_1" value=""  /> 
-                                                        <label for="checkbox_a3"></label>                                    报告1
-                                    </label>
-                                    <label class="mr30">
-                                                        <input type="checkbox" id="checkbox_a4" class="chk_1" value=""  /> 
-                                                        <label for="checkbox_a4"></label>                                    报告2
-                                    </label>
-                                    <label class="mr30">
-                                                        <input type="checkbox" id="checkbox_a5" class="chk_1" value=""  /> 
-                                                        <label for="checkbox_a5"></label>                                    报告3
-                                    </label>
-                                    <label class="mr30">
-                                                        <input type="checkbox" id="checkbox_a6" class="chk_1" value=""  /> 
-                                                        <label for="checkbox_a6"></label>                                    报告4
-                                    </label>
-
-
-                                </div>-->
                             </div>
                             <!--权限弹框结束-->
 
-                            <table class="table company_model" ms-visible="type=='2'">
+                            <table class="table company_model table_li" ms-visible="type=='2'">
                                 <thead>
                                     <tr class="fb cr6">
                                         <th style="width: 20%">序号</th>
                                         <th style="width: 25%">用户名称/手机号/Email</th>
                                         <th>邀请/注册时间</th>
                                         <th class="tc">隶属用户</th>
-                                        <th style="width: 10%">操作</th>
+                                        <th class="tr" style="width: 10%">操作</th>
                                     </tr>
                                 </thead>
                                 <tbody class="userList">
-                                    <tr>
+                                    <tr ms-repeat-el="userList">
                                         <td style="width: 20%">
-                                            1
+                                            {{$index+1}}
                                         </td>
                                         <td style="width: 25%">
-                                            admin
+                                            {{el.username}}
                                         </td>
                                         <td>
-                                            2016/09/08
+                                            {{el.createTime | date("yyyy-MM-dd")}}
                                         </td>
                                         <td class="tc">
-                                            <a class="fb" href="/index#/userInfo/<@=item._id@>" _id="<@=item._id@>">
-                                              3
+                                            <a class="fb J_click_skip" ms-attr-_id="el._id">
+                                              {{el.count}}
                                             </a>
                                         </td>
-                                        <td style="width: 10%">
-                                            <button class="btn btn-primary J_power" data-userid="<@=item._id@>" _powerList="<@=item.power_list@>">权限</button>
+                                        <td class="tr" style="width: 10%">
+                                            <button class="btn btn-primary J_power" ms-attr-data_userid="el._id" ms-attr-_powerList="el.power_list" ms-click="show('gg,'+$index)">权限</button>
                                         </td>
                                     </tr>
 
