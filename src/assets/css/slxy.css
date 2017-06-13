@@ -3313,6 +3313,7 @@ input[type="color"],
 @media (min-width: 980px) {
     .sidebar {
         position: fixed;
+        z-index: 10;
         top: 0px;
         left: 0;
         margin-left: 0
@@ -4049,4 +4050,22 @@ input[type="color"],
     color: #555555;
     font-size: 12px;
     text-align: center;
+}
+
+.foot-msg {
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 12px;
+    color: #999;
+    padding-left: 260px;
+    box-sizing: border-box;
+}
+
+.user_name {
+    margin: 10px 0;
 }

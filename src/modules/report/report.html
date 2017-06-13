@@ -18,7 +18,7 @@
                             <input type="hidden" value="数联寻英" id="g_company">
 
                             <p class="text-center user_position">
-                                管理员
+                                {{identity}}
                             </p>
                         </div>
                         <ul id="side_accordion" class="accordion">
@@ -197,7 +197,6 @@
                             <div ms-widget="dialog,bb,$bbOpts">
                                 <p class="disturb-warp-p">当前报告：全国互联网行业职能从业人员总体规模城市TOP10</p>
                                 <textarea class="charts-warp" placeholder="添加说明..." ms-duplex="report_info" /></textarea>
-                                {{report_info}}
                             </div>
                             <!--添加分析说明弹框-->
 
@@ -205,6 +204,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="foot-msg">
+            Copyright ©2017 数联寻英 All Rights Reserved.
         </div>
     </div>
 </div>

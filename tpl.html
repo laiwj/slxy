@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=10;IE=9;IE=8;IE=7;IE=EDGE">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <link rel="shortcut icon" href="./src/assets/images/favicon.ico" type="image/x-icon">
-    <!--<title>{%=o.htmlWebpackPlugin.options.title || 'Webpack App'%}</title>-->
+
     <title>登录</title>
     <!--{% if (o.htmlWebpackPlugin.files.favicon) { %}
     <link rel="shortcut icon" href="{%=o.htmlWebpackPlugin.files.favicon%}">
@@ -45,7 +45,6 @@
         }
     </script>
     <script>
-        // 子职位 悬浮菜单
         function SubLayer2(data) {
             var output = '',
                 width;
@@ -63,7 +62,7 @@
 
         function Chk2(data) {
             var tag = '';
-            tag = '<div class="tag">' + data + '<i> × </i></div>';
+            tag = '<div class="tag"><span>' + data + '</span><i> × </i></div>';
             $(".tags").each(function() {
                 if ($(this).attr("isMe")) {
                     $(this).append(tag);
@@ -82,9 +81,6 @@
 
 <body>
     <div ms-controller="app" class="container_body">
-        <input value="11" type="hidden" id="userinfoType" />
-        <input value="222" type="hidden" id="userinfoId" />
-        <input value="333" type="hidden" id="userinfoshortId" />
         <div ms-view="" class="container_body"></div>
     </div>
     {% for (var chunk in o.htmlWebpackPlugin.files.chunks) { %}

@@ -1,7 +1,7 @@
 /**
  * Created by WangMing on 15/12/9.
  */
-var dialog = require('art-dialog');
+var artdialog = require('art-dialog');
 define([], function(ialog) {
     // 定义所有相关的vmodel
     var vm = avalon.define({
@@ -16,11 +16,8 @@ define([], function(ialog) {
         type: "",
         short_id: "",
         username: "",
+        identity: "",
         toggle: false,
-        // list: {
-        //     page: 1,
-        //     user_id: ''
-        // },
         count: 0,
         userList: [],
         list: {},
@@ -117,7 +114,23 @@ define([], function(ialog) {
             window.location.href = "";
         },
         initList: function(obj) {
+            var d = artdialog().showModal();
             $.post('http://10.101.1.171:10110/user/list/b', obj, function(data) {
+                if (data.code == -10) {
+                    d.content(data.msg);
+                    setTimeout(function() {
+                        vm.clearPassToCookie();
+                        window.location.href = "";
+                        d.close().remove();
+                    }, 2000);
+                    return;
+                }
+                if (data.code != 0) {
+                    d.content(data.msg);
+                    setTimeout(function() {
+                        d.close().remove();
+                    }, 2000);
+                }
 
                 if (data.data.data.length == 0) {
                     $(".infolist").hide();
@@ -136,6 +149,7 @@ define([], function(ialog) {
                     }
 
                 }
+                d.close().remove();
             })
         },
         savePower: function(param, oldpowerlist) {
@@ -170,8 +184,16 @@ define([], function(ialog) {
 
 
             $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
-                console.log(data);
-                // jTip(STATICMSG["ok"]);
+                var d = artdialog()
+                if (data.code == 0) {
+                    d.content('设置权限成功');
+                } else {
+                    d.content('设置权限失败');
+                }
+                d.show();
+                setTimeout(function() {
+                    d.close().remove();
+                }, 2000);
                 vm.initList(vm.list.$model);
 
 
@@ -183,6 +205,8 @@ define([], function(ialog) {
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
+            // 定义title
+            document.title = '数联寻英';
             // if (location.hash.search("#!/userInfo")) {
             //     console.log(111);
             // }
@@ -209,6 +233,7 @@ define([], function(ialog) {
             var userBean = userinfo.split('|');
             vm._id = userBean[0];
             vm.type = userBean[1];
+            vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
             vm.short_id = userBean[2];
             vm.username = userBean[3];
         };

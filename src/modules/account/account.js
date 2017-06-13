@@ -1,6 +1,5 @@
+var artdialog = require('art-dialog');
 define([], function() {
-    var widget = avalon.vmodels.$opts;
-
     // 定义所有相关的vmodel
     var vm = avalon.define({
         $id: "account",
@@ -15,6 +14,7 @@ define([], function() {
         _type: null,
         short_id: "",
         username: "",
+        identity: "",
         toggle: false,
         list: {
             page: 1,
@@ -117,12 +117,28 @@ define([], function() {
             window.location.href = "";
         },
         initList: function(obj, objDom) {
+            var d = artdialog().showModal();
             $.post('http://10.101.1.171:10110/user/list', obj, function(data) {
+                if (data.code == -10) {
+                    d.content(data.msg);
+                    setTimeout(function() {
+                        vm.clearPassToCookie();
+                        window.location.href = "";
+                        d.close().remove();
+                    }, 2000);
+                    return;
+                }
+                if (data.code != 0) {
+                    d.content(data.msg);
+                    setTimeout(function() {
+                        d.close().remove();
+                    }, 2000);
+                }
                 if (data.data.data.length == 0) {
                     if (obj.user_id) {
                         objDom.text('暂无数据');
-                        me.list.user_id = '';
-                        me.list.page = 1;
+                        vm.list.user_id = '';
+                        vm.list.page = 1;
                     } else {
                         $(".table_li").hide();
                         $(".null-model").show();
@@ -151,6 +167,7 @@ define([], function() {
                         }
                     }
                 }
+                d.close().remove();
                 vm.domListener();
             })
         },
@@ -192,15 +209,27 @@ define([], function() {
 
             $.post('http://10.101.1.171:10110/user/regist', bean, function(data) {
                 vm.isSumbit = false;
-
+                var d = artdialog()
                 if (data.code == 0) {
-                    // jTip('添加成功');
+                    d.content('添加成功');
                     if (type == 0) {
                         vm.initList(vm.list.$model);
                     }
                 } else {
-                    alertDIV(data.msg);
+                    d.content('添加失败');
                 }
+                d.show();
+                setTimeout(function() {
+                    d.close().remove();
+                }, 2000);
+                // if (data.code == 0) {
+                //     // jTip('添加成功');
+                //     if (type == 0) {
+                //         vm.initList(vm.list.$model);
+                //     }
+                // } else {
+                //     alertDIV(data.msg);
+                // }
 
 
             })
@@ -237,8 +266,16 @@ define([], function() {
 
 
             $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
-                console.log(data);
-                // jTip(STATICMSG["ok"]);
+                var d = artdialog()
+                if (data.code == 0) {
+                    d.content('设置权限成功');
+                } else {
+                    d.content('设置权限失败');
+                }
+                d.show();
+                setTimeout(function() {
+                    d.close().remove();
+                }, 2000);
                 vm.initList(vm.list.$model);
                 var widget = avalon.vmodels.pp
                 if (widget) {
@@ -256,7 +293,7 @@ define([], function() {
         avalon.scan(document.body);
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
-
+            document.title = '数联寻英';
             // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
             //     if ($(this).children().attr("href") == location.hash) {
             //         $(this).addClass('md-accent-bg');
@@ -276,6 +313,7 @@ define([], function() {
             var userBean = userinfo.split('|');
             vm._id = userBean[0];
             vm.type = userBean[1];
+            vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
             vm.short_id = userBean[2];
             vm.username = userBean[3];
 

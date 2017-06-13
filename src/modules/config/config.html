@@ -14,11 +14,11 @@
                             <div class="person-photo pr">
                                 <img src="../../../src/assets/images/hdlogo.png" class="person-img">
                             </div>
-                            <p class="text-center user_name"> admin</p>
+                            <p class="text-center user_name"> {{username}}</p>
                             <input type="hidden" value="数联寻英" id="g_company">
 
                             <p class="text-center user_position">
-                                管理员
+                                {{identity}}
                             </p>
                         </div>
                         <ul id="side_accordion" class="accordion">
@@ -67,10 +67,10 @@
                         <div class="container-fluid">
                             <div class="btn-group fr mt20" style="right: 50px;">
 
-                                <div data-toggle="dropdown" class="dropdown-toggle hd-person cur" aria-expanded="false"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> admin</div>
-                                <ul class="dropdown-menu">
+                                <div class="dropdown-toggle hd-person cur" aria-expanded="false" ms-click="toggle_hiddle"><img class="hd-icon" src="../../../src/assets/images/hdlogo.png" /> {{username}}</div>
+                                <ul class="dropdown-menu" ms-visible="toggle" ms-click="logout">
 
-                                    <li><a href="/user/logout">退出登录</a></li>
+                                    <li><a href="javascript:">退出登录</a></li>
 
                                 </ul>
                             </div>
@@ -112,13 +112,16 @@
                                     <div class="add-body choiceList">
                                         <p class="cr3">点选展示给客户端的数据内容</p>
                                         <div class="tags">
-                                            <div class="tag">互联网金融
+                                            <div class="tag">
+                                                <span>互联网金融</span>
                                                 <i>×</i>
                                             </div>
-                                            <div class="tag">游戏娱乐
+                                            <div class="tag">
+                                                <span>游戏娱乐</span>
                                                 <i>×</i>
                                             </div>
-                                            <div class="tag bgcw">移动传媒
+                                            <div class="tag bgcw">
+                                                <span>移动传媒</span>
                                                 <i>×</i>
                                             </div>
                                         </div>
@@ -256,17 +259,18 @@
                                     </div>
                                 </div>-->
                                 <div class="hiddle clearfix">
-                                    <button class="btn btn-primary J_power fr mt30 mb50">保存</button>
+                                    <button class="btn btn-primary J_power fr mt30 mb50" ms-click="go">保存</button>
                                     <button class="btn J_power fr mt30 mr10 mb50">清空</button>
                                 </div>
                             </div>
-
-
 
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="foot-msg">
+            Copyright ©2017 数联寻英 All Rights Reserved.
         </div>
     </div>
 </div>

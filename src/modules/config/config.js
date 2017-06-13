@@ -1,6 +1,3 @@
-/**
- * Created by WangMing on 15/12/9.
- */
 define([], function() {
 
     function Show2(data) {
@@ -34,7 +31,27 @@ define([], function() {
     // 定义所有相关的 vmodel
     var vm = avalon.define({
         $id: "config",
+        _id: "",
+        type: "",
+        _type: null,
+        short_id: "",
+        username: "",
+        identity: "",
+        toggle: false,
         data: [],
+        getPassFromCookie: function() {
+            return window.$.cookie(location.host + "_userinfo");
+        },
+        clearPassToCookie: function() {
+            window.$.cookie(location.host + "_userinfo", "", { path: "/" });
+        },
+        toggle_hiddle: function() {
+            vm.toggle = !vm.toggle
+        },
+        logout: function() {
+            vm.clearPassToCookie();
+            window.location.href = "";
+        },
         doClick: function(data) {
             var top = $(this)[0].parentNode.offsetTop,
                 left = $(this)[0].parentNode.offsetWidth;
@@ -47,20 +64,38 @@ define([], function() {
             Show2(data.$model.tags);
             $('#maskLayer').css({ top: top + 44, left: left + 129 }).show();
             $("#sublist").css({ top: top + 44, left: left - 92 })
+        },
+        go: function() {
+            var bean = vm.getdatas();
+            bean.report_type = 204;
+            console.log(bean);
+            var url = "http://10.101.1.171:10110/report/config/allmodify";
+            var bean = {
+                    report_type: 204,
+                    industry: "金融行业,医疗行业,销售行业",
+                    demand: "TOP5,TOP10",
+                    experience: "3年以下,5年以下,5-10年",
+                    supply: "<=50%,<=30%",
+                    label: "年龄,学历,性别,技能"
+                }
+                // $.post(url, bean, function(data) {
+                //     console.log(data);
+                // })
+        },
+        getdatas: function() {
+            var bean = {};
+            var _util = ["industry", "demand", "experience", "supply", "label"];
+            $(".tags").each(function(i, v) {
+                var xy_Arr = [];
+                $(v).find("span").each(function(i, v) {
+                    xy_Arr.push($(this).text());
+                })
+                bean[_util[i]] = xy_Arr.join(",");
+            })
+            return bean;
         }
 
     });
-
-
-    // vm.$watch("DOMListener", function() {
-    //     // console.log(vm.data);
-    // })
-
-    vm.$watch('userinfodata', function(v) {
-        console.log(v);
-        avalon.log('ancestor.aaa事件被触发了')
-    })
-
 
 
     //开始扫描编译
@@ -68,12 +103,7 @@ define([], function() {
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
-            // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
-            //     if ($(this).children().attr("href") == location.hash) {
-            //         $(this).addClass('md-accent-bg');
-            //         return false; // 跳出循环
-            //     }
-            // });
+            document.title = '数联寻英';
             $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
 
 
@@ -87,6 +117,13 @@ define([], function() {
                 vm.data = jsonObj.data;
 
             });
+            var userinfo = vm.getPassFromCookie();
+            var userBean = userinfo.split('|');
+            vm._id = userBean[0];
+            vm.type = userBean[1];
+            vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
+            vm.short_id = userBean[2];
+            vm.username = userBean[3];
 
         };
         // 对应的视图销毁前

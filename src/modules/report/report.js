@@ -1,6 +1,7 @@
 /**
  * Created by WangMing on 15/12/9.
  */
+var artdialog = require('art-dialog');
 define([], function() {
     var validationVM;
     // 定义所有相关的 vmodel
@@ -10,6 +11,7 @@ define([], function() {
         type: "",
         short_id: "",
         username: "",
+        identity: "",
         toggle: false,
         api_url: "",
         params: {},
@@ -94,9 +96,27 @@ define([], function() {
         analysisData: function() {
             var param = vm.getBean();
             var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
+            var d = artdialog().showModal();
             $.post(param.url, param.bean, function(result) {
+                if (result.code == -10) {
+                    d.content(result.msg);
+                    setTimeout(function() {
+                        vm.clearPassToCookie();
+                        window.location.href = "";
+                        d.close().remove();
+                    }, 2000);
+                    return;
+                }
+                if (result.code != 0) {
+                    d.content(result.msg);
+                    setTimeout(function() {
+                        d.close().remove();
+                    }, 2000);
+                    return;
+                }
                 $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type);
                 $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                d.close().remove();
                 $("#report_info").attr("api_url", result.data.data.api_url);
                 if (result.data.info.length > 0) {
                     $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
@@ -192,7 +212,16 @@ define([], function() {
             }
 
             $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
-                console.log(result);
+                var d = artdialog()
+                if (result.code == 0) {
+                    d.content('添加分析说明成功');
+                } else {
+                    d.content('添加分析说明失败');
+                }
+                d.show();
+                setTimeout(function() {
+                    d.close().remove();
+                }, 2000);
                 $(obj).prev().text(bean.report_info);
             })
         }
@@ -243,8 +272,6 @@ define([], function() {
 
 
 
-
-
         };
         // 进入视图
         $ctrl.$onEnter = function(param, rs, rj) {
@@ -252,6 +279,7 @@ define([], function() {
             var userBean = userinfo.split('|');
             vm._id = userBean[0];
             vm.type = userBean[1];
+            vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
             vm.short_id = userBean[2];
             vm.username = userBean[3];
 
