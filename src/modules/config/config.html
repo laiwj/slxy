@@ -93,8 +93,10 @@
 
                                 <div class="pull-right">
                                     <select ms-duplex="configstype" class="select-warp fl mt10" id="J_configstype">
-                                            <option value="人才分布">请选择分析模板</option>
-                                            <option value="人才流动">热门岗位人群的薪酬及特征画像</option>
+                                            <option value="人才分布">人才分布</option>
+                                            <option value="人才流动">人才流动</option>
+                                             <option value="人才供需">人才供需</option>
+                                              <option value="热门岗位人群的薪酬及特征画像">热门岗位人群的薪酬及特征画像</option>
                                     </select>
 
                                 </div>
@@ -112,16 +114,8 @@
                                     <div class="add-body choiceList">
                                         <p class="cr3">点选展示给客户端的数据内容</p>
                                         <div class="tags">
-                                            <div class="tag">
-                                                <span>互联网金融</span>
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag">
-                                                <span>游戏娱乐</span>
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag bgcw">
-                                                <span>移动传媒</span>
+                                            <div class="tag" ms-repeat-tag="el.hasTag">
+                                                <span>{{tag}}</span>
                                                 <i>×</i>
                                             </div>
                                         </div>
@@ -138,126 +132,6 @@
                                 <!-- maskLayer end -->
                                 <!-- alpha div end -->
                                 <div id="sublist" style="display:none"></div>
-                                <!--<div class="addlist">
-                                    <div class="add-title fb cr3">
-                                        <span>行业</span>
-                                        <button class="btn btn-primary J_power fr mt10">添加</button>
-                                    </div>
-                                    <div class="add-body choiceList">
-                                        <p class="cr3">点选展示给客户端的数据内容</p>
-                                        <div class="tags">
-                                            <div class="tag">互联网金融
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag">游戏娱乐
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag bgcw">移动传媒
-                                                <i>×</i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="addlist">
-                                    <div class="add-title fb cr3">
-                                        <span>行业经验</span>
-                                        <button class="btn btn-primary J_power fr mt10">添加</button>
-                                    </div>
-                                    <div class="add-body choiceList">
-                                        <p class="cr3">点选展示给客户端的数据内容</p>
-                                        <div class="tags">
-                                            <div class="tag">3年以下
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag">3-5年
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag bgcw">5-10年
-                                                <i>×</i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="addlist">
-                                    <div class="add-title fb cr3">
-                                        <span>岗位需求量</span>
-                                        <button class="btn btn-primary J_power fr mt10">添加</button>
-                                    </div>
-                                    <div class="add-body choiceList">
-                                        <p class="cr3">点选展示给客户端的数据内容</p>
-                                        <div class="tags">
-                                            <div class="tag">TOP5
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag bgcw">TOP10
-                                                <i>×</i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="addlist">
-                                    <div class="add-title fb cr3">
-                                        <span>岗位供需指数</span>
-                                        <button class="btn btn-primary J_power fr mt10">添加</button>
-                                    </div>
-                                    <div class="add-body choiceList">
-                                        <p class="cr3">点选展示给客户端的数据内容</p>
-                                        <div class="tags">
-                                            <div class="tag">
-                                                <=50% <i>×</i>
-                                            </div>
-                                            <div class="tag bgcw">
-                                                <=30% <i>×</i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="addlist">
-                                    <div class="add-title fb cr3">
-                                        <span>分析标签</span>
-                                        <button class="btn btn-primary J_power fr mt10">添加</button>
-                                    </div>
-                                    <div class="add-body choiceList">
-                                        <p class="cr3">点选展示给客户端的数据内容</p>
-                                        <div class="tags">
-                                            <div class="tag">年龄
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag">学历
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag">性格
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag bgcw">技能
-                                                <i>×</i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="addlist">
-                                    <div class="add-title fb cr3">
-                                        <span>薪酬数据条件设置</span>
-                                        <button class="btn btn-primary J_power fr mt10">添加</button>
-                                    </div>
-                                    <div class="add-body choiceList">
-                                        <p class="cr3">点选展示给客户端的数据内容</p>
-                                        <div class="tags">
-                                            <div class="tag">互联网金融
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag">游戏娱乐
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag">互联网金融
-                                                <i>×</i>
-                                            </div>
-                                            <div class="tag bgcw">移动传媒
-                                                <i>×</i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>-->
                                 <div class="hiddle clearfix">
                                     <button class="btn btn-primary J_power fr mt30 mb50" ms-click="go">保存</button>
                                     <button class="btn J_power fr mt30 mr10 mb50">清空</button>

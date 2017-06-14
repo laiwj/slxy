@@ -112,10 +112,7 @@
                                 </div>-->
                                 <div class="fl report_tab" style="display: block;">
                                     <select ms-duplex="J_industry" class="select-warp s1 button1" id="J_industry">
-                                            <option value="互联网全行业">互联网全行业</option>
-                                            <option value="互联网金融">互联网金融</option>
-                                            <option value="游戏">游戏</option>
-                                            <option value="电商">电商</option>
+                                             <option ms-repeat-el="industry" ms-attr-value="el">{{el}}</option>
                                     </select>
                                 </div>
                                 <div class="fl report_tab" ms-visible="J_chartstype=='人才流动'">

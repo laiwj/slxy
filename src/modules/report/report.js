@@ -23,6 +23,7 @@ define([], function() {
         J_na: "需求量",
         J_cf: "热门城市",
         J_fp: "职能",
+        industry: [],
         report_info: "",
         show: function(id) {
             // validationVM.resetAll();
@@ -97,6 +98,7 @@ define([], function() {
             var param = vm.getBean();
             var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
             var d = artdialog().showModal();
+            jQuery.support.cors = true;
             $.post(param.url, param.bean, function(result) {
                 if (result.code == -10) {
                     d.content(result.msg);
@@ -114,7 +116,7 @@ define([], function() {
                     }, 2000);
                     return;
                 }
-                $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type);
+                $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
                 $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
                 d.close().remove();
                 $("#report_info").attr("api_url", result.data.data.api_url);
@@ -224,10 +226,39 @@ define([], function() {
                 }, 2000);
                 $(obj).prev().text(bean.report_info);
             })
+        },
+        getconfig: function(type) {
+            var _type = null;
+            switch (type) {
+                case "人才分布":
+                    _type = 201;
+                    break;
+                case "人才流动":
+                    _type = 202;
+                    break;
+                case "人才供需":
+                    _type = 203;
+                    break;
+                default:
+                    语句n
+                    break;
+            }
+            var url = "http://10.101.1.171:10110/report/config/all";
+            var bean = {
+                report_type: _type
+                    // config_type: "city"
+            }
+            $.post(url, bean, function(result) {
+
+                vm.industry = result.data[0].checks;
+                // console.log(vm.industry);
+
+            })
         }
     });
 
     vm.$watch("J_chartstype", function() {
+        vm.getconfig(vm.J_chartstype);
         vm.analysisData();
     });
     vm.$watch("J_type", function() {
@@ -256,18 +287,12 @@ define([], function() {
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
-            // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
-            //     if ($(this).children().attr("href") == location.hash) {
-            //         $(this).addClass('md-accent-bg');
-            //         return false; // 跳出循环
-            //     }
-            // });
 
             $('#side_accordion div').removeClass('md-accent-bg').eq(0).addClass('md-accent-bg');
             //生成数据
             vm.analysisData();
 
-
+            vm.getconfig(vm.J_chartstype);
 
 
 
