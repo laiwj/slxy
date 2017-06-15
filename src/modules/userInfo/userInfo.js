@@ -1,8 +1,4 @@
-/**
- * Created by WangMing on 15/12/9.
- */
-var artdialog = require('art-dialog');
-define([], function(ialog) {
+define(["../../lib/util.js"], function(util) {
     // 定义所有相关的vmodel
     var vm = avalon.define({
         $id: "userInfo",
@@ -114,24 +110,10 @@ define([], function(ialog) {
             window.location.href = "";
         },
         initList: function(obj) {
-            var d = artdialog().showModal();
+            util.lockScreen();
             $.post('http://10.101.1.171:10110/user/list/b', obj, function(data) {
-                if (data.code == -10) {
-                    d.content(data.msg);
-                    setTimeout(function() {
-                        vm.clearPassToCookie();
-                        window.location.href = "";
-                        d.close().remove();
-                    }, 2000);
-                    return;
-                }
-                if (data.code != 0) {
-                    d.content(data.msg);
-                    setTimeout(function() {
-                        d.close().remove();
-                    }, 2000);
-                }
-
+                util.hideLock();
+                util.resResult(data);
                 if (data.data.data.length == 0) {
                     $(".infolist").hide();
                     $(".null-model").show();
@@ -149,7 +131,7 @@ define([], function(ialog) {
                     }
 
                 }
-                d.close().remove();
+
             })
         },
         savePower: function(param, oldpowerlist) {
@@ -184,18 +166,13 @@ define([], function(ialog) {
 
 
             $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
-                var d = artdialog()
-                if (data.code == 0) {
-                    d.content('设置权限成功');
-                } else {
-                    d.content('设置权限失败');
-                }
-                d.show();
-                setTimeout(function() {
-                    d.close().remove();
-                }, 2000);
-                vm.initList(vm.list.$model);
-
+                util.resResult(data, "设置成功", function() {
+                    vm.initList(vm.list.$model);
+                    var widget = avalon.vmodels.pp
+                    if (widget) {
+                        widget.currentPage = 1;
+                    }
+                });
 
             })
         }

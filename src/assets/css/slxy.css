@@ -65,7 +65,7 @@ input {
     width: 100%;
     height: 100%;
     background: #fff;
-    z-index: 10000
+    z-index: 10000;
 }
 
 .js #loading_layer img {
@@ -992,6 +992,7 @@ a.rowlink {
     border: 0;
     border-bottom: 1px solid #dfdfdf;
     border-top: 2px solid #d8e0e9;
+    overflow: hidden;
 }
 
 .search_page .well select {

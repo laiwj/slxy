@@ -1,5 +1,4 @@
-var artdialog = require('art-dialog');
-define([], function() {
+define(["../../lib/util.js"], function(util) {
     function Show2(data) {
         var output = '',
             flag, output2 = '';
@@ -74,26 +73,8 @@ define([], function() {
             } else {
                 var url = "http://10.101.1.171:10110/report/config/modify";
             }
-            var d = artdialog().showModal();
             $.post(url, bean, function(data) {
-                if (data.code == -10) {
-                    d.content(data.msg);
-                    setTimeout(function() {
-                        vm.clearPassToCookie();
-                        window.location.href = "";
-                        d.close().remove();
-                    }, 2000);
-                    return;
-                }
-                if (data.code == 0) {
-                    d.content('配置成功');
-                } else {
-                    d.content('配置失败');
-                }
-                // d.show();
-                setTimeout(function() {
-                    d.close().remove();
-                }, 2000);
+                util.resResult(data, "配置成功");
             })
         },
         getdatas: function() {
@@ -127,7 +108,9 @@ define([], function() {
             //发送数据到后台
             num = vm.report_type == 204 ? 201 : 202;
             var url = "../../../config" + num + ".json";
+            util.lockScreen();
             $.get(url, function(jsonObj) {
+                util.hideLock();
                 vm.data = jsonObj.data;
                 vm.domLisenter();
             });

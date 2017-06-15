@@ -59,7 +59,6 @@ define([], function() {
             var url = "http://10.101.1.171:10110/user/login";
             // var url = "http://rm.xunying.me/user/login";
             vm.isSumbit = true;
-            jQuery.support.cors = true;
             $.post(url, bean, function(jsonObj) {
                 vm.isSumbit = false;
                 $("#J_login").text("登录");

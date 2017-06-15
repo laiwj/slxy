@@ -1,8 +1,8 @@
 /**
  * Created by WangMing on 15/12/9.
  */
-var artdialog = require('art-dialog');
-define([], function() {
+// var dialog = require('art-dialog');
+define(["../../lib/util.js"], function(util) {
     var validationVM;
     // 定义所有相关的 vmodel
     var vm = avalon.define({
@@ -97,28 +97,12 @@ define([], function() {
         analysisData: function() {
             var param = vm.getBean();
             var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
-            var d = artdialog().showModal();
-            jQuery.support.cors = true;
+            util.lockScreen();
             $.post(param.url, param.bean, function(result) {
-                if (result.code == -10) {
-                    d.content(result.msg);
-                    setTimeout(function() {
-                        vm.clearPassToCookie();
-                        window.location.href = "";
-                        d.close().remove();
-                    }, 2000);
-                    return;
-                }
-                if (result.code != 0) {
-                    d.content(result.msg);
-                    setTimeout(function() {
-                        d.close().remove();
-                    }, 2000);
-                    return;
-                }
+                util.hideLock();
+                util.resResult(result);
                 $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
                 $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
-                d.close().remove();
                 $("#report_info").attr("api_url", result.data.data.api_url);
                 if (result.data.info.length > 0) {
                     $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
@@ -214,17 +198,9 @@ define([], function() {
             }
 
             $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
-                var d = artdialog()
-                if (result.code == 0) {
-                    d.content('添加分析说明成功');
-                } else {
-                    d.content('添加分析说明失败');
-                }
-                d.show();
-                setTimeout(function() {
-                    d.close().remove();
-                }, 2000);
-                $(obj).prev().text(bean.report_info);
+                util.resResult(result, "添加分析说明成功", function() {
+                    $(obj).prev().text(bean.report_info);
+                });
             })
         },
         getconfig: function(type) {
@@ -249,7 +225,7 @@ define([], function() {
                     // config_type: "city"
             }
             $.post(url, bean, function(result) {
-
+                util.resResult(result);
                 vm.industry = result.data[0].checks;
                 // console.log(vm.industry);
 
@@ -287,7 +263,7 @@ define([], function() {
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
-
+            document.title = '数联寻英';
             $('#side_accordion div').removeClass('md-accent-bg').eq(0).addClass('md-accent-bg');
             //生成数据
             vm.analysisData();

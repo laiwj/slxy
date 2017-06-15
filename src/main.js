@@ -1,5 +1,4 @@
 var avalon = require("./assets/vendor/oniui/avalon.shim");
-// var dialog = require('../node_modules/art-dialog/dist/dialog.js');
 require('../node_modules/purecss/build/pure-min.css');
 require('./assets/css/common.css');
 

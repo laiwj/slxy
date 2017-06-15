@@ -102,10 +102,11 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="p20">
                             <div class="top-menu">
                                 <p class="tl null-model">请选择并设置用户端数据分析显示范围。</p>
-                                <!--<li ms-repeat="myDatas" ms-click="doClick(el)">{{$index}}{{el.name}}</li>-->
+
                                 <div class="addlist" ms-repeat="data">
                                     <div class="add-title fb cr3">
                                         <span>{{el.name}}</span>
@@ -121,16 +122,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- alpha div -->
+
                                 <div id="maskLayer" style="display:none">
                                     <div id="drag">
 
                                         <div id="drag_con"></div>
-                                        <!-- drag_con end -->
+
                                     </div>
                                 </div>
-                                <!-- maskLayer end -->
-                                <!-- alpha div end -->
+
                                 <div id="sublist" style="display:none"></div>
                                 <div class="hiddle clearfix">
                                     <button class="btn btn-primary J_power fr mt30 mb50" ms-click="go">保存</button>

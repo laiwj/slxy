@@ -8,6 +8,7 @@ body,
 #content_wrapper,
 .container_body {
     height: 100%;
+    overflow: hidden;
 }
 
 label {
@@ -189,17 +190,29 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(41, 41, 41, 0.38);
+    background: rgb(41, 41, 41);
+    -khtml-opacity: 0.38;
+    -moz-opacity: 0.38;
+    filter: alpha(opacity=38);
+    filter: "alpha(opacity=38)";
+    opacity: 0.38;
+    filter: progid: DXImageTransform.Microsoft.Alpha(opacity=38);
     z-index: 10000;
 }
 
-#loading_layer img {
+;
+#loading_layer .loading_layer_body {
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
-    /*width: 64px;
-    height: 10px;*/
+    background-color: #fff;
+    width: 127px;
+    height: 73px;
     margin: -5px 0 0 -32px;
+    border: 1px solid #999;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 73px;
 }
 
 .control-group-charts {
