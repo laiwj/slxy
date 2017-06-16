@@ -160,17 +160,23 @@ define(["../../lib/util.js"], function(util) {
         domListener: function() {
             /*展开子账号*/
             $(".J_click_pull").off().on('click', function() {
-                var me = this;
-                $(this).parent().parent().next().slideToggle("fast", function() {
-                    if ($(this).is(":hidden")) {
-                        vm.smallList = [];
-                    } else {
-                        var objDom = $(this).find('.smaillList');
-                        vm.list.user_id = $(me).attr('_id');
-                        vm.list.page = '';
-                        vm.initList(vm.list.$model, objDom);
-                    }
-                });
+                var num = $(this).text().trim();
+                if (num == "0") {
+                    util.tips("没有子账号");
+                    return;
+                };
+                var _this = $(this).parent().parent().next()
+                if (_this.is(":hidden")) {
+                    $(".pull_model").slideUp("fast");
+                    var objDom = $(this).find('.smaillList');
+                    vm.list.user_id = $(this).attr('_id');
+                    vm.list.page = '';
+                    vm.initList(vm.list.$model, objDom);
+                    _this.slideDown("fast");
+                } else {
+                    vm.smallList = [];
+                    _this.slideUp("fast");
+                }
 
             });
             /*跳转用户列表页*/

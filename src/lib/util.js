@@ -654,6 +654,24 @@ define(
                     xy_util.hideLock();
                     //error
                 }
+            },
+            tips: function(msg) {
+                try {
+                    $("#loading_layer").show();
+                    if (msg) {
+                        $(".loading_layer_body").empty();
+                        $(".loading_layer_body").text(msg);
+                        setTimeout(function() {
+                            xy_util.hideLock();
+                        }, 2000);
+                    } else {
+                        xy_util.hideLock();
+                    }
+
+                } catch (e) {
+                    xy_util.hideLock();
+                    //error
+                }
             }
 
 

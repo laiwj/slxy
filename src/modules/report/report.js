@@ -14,6 +14,7 @@ define(["../../lib/util.js"], function(util) {
         identity: "",
         toggle: false,
         api_url: "",
+        data_id: "",
         params: {},
         info: [],
         J_chartstype: "人才分布",
@@ -25,6 +26,7 @@ define(["../../lib/util.js"], function(util) {
         J_fp: "职能",
         industry: [],
         report_info: "",
+        data_disturb: [],
         show: function(id) {
             // validationVM.resetAll();
             if (id.charAt(0) == "b") {
@@ -59,7 +61,14 @@ define(["../../lib/util.js"], function(util) {
             title: "数据干预",
             width: 500,
             onConfirm: function() {
-                alert("你点击了确定");
+                var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
+                var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
+                $.post("http://10.101.1.171:10110/api/data/cheat", bean, function(result) {
+                    util.resResult(result, "数据干预成功", function() {
+                        $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
+                        $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                    });
+                })
             }
         },
         $bbOpts: {
@@ -101,6 +110,7 @@ define(["../../lib/util.js"], function(util) {
             $.post(param.url, param.bean, function(result) {
                 util.hideLock();
                 util.resResult(result);
+                vm.data_disturb = result.data.data.data;
                 $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
                 $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
                 $("#report_info").attr("api_url", result.data.data.api_url);
@@ -120,6 +130,7 @@ define(["../../lib/util.js"], function(util) {
                 }
                 vm.params = result.data.data.params;
                 vm.api_url = result.data.data.api_url;
+                vm.data_id = result.data.data._id;
 
 
             })

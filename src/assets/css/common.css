@@ -8,7 +8,7 @@ body,
 #content_wrapper,
 .container_body {
     height: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 label {
@@ -190,17 +190,13 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgb(41, 41, 41);
-    -khtml-opacity: 0.38;
-    -moz-opacity: 0.38;
+    background-color: rgb(41, 41, 41);
+    background-color: rgba(41, 41, 41, 0.38);
+    /*opacity: 0.38;*/
     filter: alpha(opacity=38);
-    filter: "alpha(opacity=38)";
-    opacity: 0.38;
-    filter: progid: DXImageTransform.Microsoft.Alpha(opacity=38);
     z-index: 10000;
 }
 
-;
 #loading_layer .loading_layer_body {
     position: fixed;
     top: 40%;
