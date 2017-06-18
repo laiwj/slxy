@@ -78,6 +78,29 @@ avalon.state("report", {
     }
 });
 
+avalon.state("compensation", {
+    url: "/compensation",
+    views: {
+        "": {
+            //配置模块模板和控制器
+            templateProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function(tt) {
+                        rs(require("text!./modules/compensation/compensation.html"))
+                    })
+                })
+            },
+            controllerProvider: function() {
+                return new Promise(function(rs) {
+                    require.ensure([], function() {
+                        rs(require("./modules/compensation/compensation.js"))
+                    })
+                })
+            }
+        }
+    }
+});
+
 avalon.state("config", {
     url: "/config",
     views: {

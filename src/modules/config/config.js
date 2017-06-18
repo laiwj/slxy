@@ -69,9 +69,9 @@ define(["../../lib/util.js"], function(util) {
             console.log(bean);
             bean.report_type = vm.report_type;
             if (vm.report_type == 204) {
-                var url = "http://10.101.1.171:10110/report/config/allmodify";
+                var url = "http://rm.xunying.me/report/config/allmodify";
             } else {
-                var url = "http://10.101.1.171:10110/report/config/modify";
+                var url = "http://rm.xunying.me/report/config/modify";
             }
             $.post(url, bean, function(data) {
                 util.resResult(data, "配置成功");
@@ -145,7 +145,7 @@ define(["../../lib/util.js"], function(util) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
             document.title = '数联寻英';
-            $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
+            $('#side_accordion div').removeClass('md-accent-bg').eq(2).addClass('md-accent-bg');
         };
 
         // 进入视图

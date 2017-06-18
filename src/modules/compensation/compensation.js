@@ -6,7 +6,7 @@ define(["../../lib/util.js"], function(util) {
     var validationVM;
     // 定义所有相关的 vmodel
     var vm = avalon.define({
-        $id: "report",
+        $id: "compensation",
         _id: "",
         type: "",
         short_id: "",
@@ -17,7 +17,7 @@ define(["../../lib/util.js"], function(util) {
         data_id: "",
         params: {},
         info: [],
-        J_chartstype: "人才分布",
+        J_compensationtype: "职能薪酬分析",
         J_type: "近一个月",
         J_industry: "互联网全行业",
         J_direction: "人才流入",
@@ -103,38 +103,38 @@ define(["../../lib/util.js"], function(util) {
             vm.clearPassToCookie();
             window.location.href = "";
         },
-        analysisData: function() {
-            var param = vm.getBean();
-            var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
-            util.lockScreen();
-            $.post(param.url, param.bean, function(result) {
-                util.hideLock();
-                util.resResult(result);
-                vm.data_disturb = result.data.data.data;
-                $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
-                $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
-                $("#report_info").attr("api_url", result.data.data.api_url);
-                if (result.data.info.length > 0) {
-                    $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
-                    $("#report_info").attr("data_id", result.data.info[0]._id);
-                    if (vm.type == "3") {
-                        $(".charts-warp").val('').val(result.data.info[0].info);
-                    }
-                } else {
-                    $("#report_info").attr("data_url", "").attr("data_id", "").val('');
-                }
+        // analysisData: function() {
+        //     var param = vm.getBean();
+        //     var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
+        //     util.lockScreen();
+        //     $.post(param.url, param.bean, function(result) {
+        //         util.hideLock();
+        //         util.resResult(result);
+        //         vm.data_disturb = result.data.data.data;
+        //         $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
+        //         $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+        //         $("#report_info").attr("api_url", result.data.data.api_url);
+        //         if (result.data.info.length > 0) {
+        //             $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
+        //             $("#report_info").attr("data_id", result.data.info[0]._id);
+        //             if (vm.type == "3") {
+        //                 $(".charts-warp").val('').val(result.data.info[0].info);
+        //             }
+        //         } else {
+        //             $("#report_info").attr("data_url", "").attr("data_id", "").val('');
+        //         }
 
-                //超管与公司权限
-                if (vm.type != "3") {
-                    vm.info = result.data.info;
-                }
-                vm.params = result.data.data.params;
-                vm.api_url = result.data.data.api_url;
-                vm.data_id = result.data.data._id;
+        //         //超管与公司权限
+        //         if (vm.type != "3") {
+        //             vm.info = result.data.info;
+        //         }
+        //         vm.params = result.data.data.params;
+        //         vm.api_url = result.data.data.api_url;
+        //         vm.data_id = result.data.data._id;
 
 
-            })
-        },
+        //     })
+        // },
         getBean: function() {
             var tab = vm.J_chartstype;
             var bean = {};
@@ -227,7 +227,6 @@ define(["../../lib/util.js"], function(util) {
                     _type = 203;
                     break;
                 default:
-                    语句n
                     break;
             }
             var url = "http://rm.xunying.me/report/config/all";
@@ -244,7 +243,7 @@ define(["../../lib/util.js"], function(util) {
         }
     });
 
-    vm.$watch("J_chartstype", function() {
+    vm.$watch("J_compensationtype", function() {
         vm.getconfig(vm.J_chartstype);
         vm.analysisData();
     });
@@ -275,7 +274,7 @@ define(["../../lib/util.js"], function(util) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
             document.title = '数联寻英';
-            $('#side_accordion div').removeClass('md-accent-bg').eq(0).addClass('md-accent-bg');
+            $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
             //生成数据
             vm.analysisData();
 

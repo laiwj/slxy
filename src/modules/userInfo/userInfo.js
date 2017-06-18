@@ -111,7 +111,7 @@ define(["../../lib/util.js"], function(util) {
         },
         initList: function(obj) {
             util.lockScreen();
-            $.post('http://10.101.1.171:10110/user/list/b', obj, function(data) {
+            $.post('http://rm.xunying.me/user/list/b', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
                 if (data.data.data.length == 0) {
@@ -165,7 +165,7 @@ define(["../../lib/util.js"], function(util) {
             // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
 
 
-            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
+            $.post("http://rm.xunying.me/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
                 util.resResult(data, "设置成功", function() {
                     vm.initList(vm.list.$model);
                     var widget = avalon.vmodels.pp
@@ -194,7 +194,7 @@ define(["../../lib/util.js"], function(util) {
             //         return false; // 跳出循环
             //     }
             // });
-            $('#side_accordion div').removeClass('md-accent-bg').eq(2).addClass('md-accent-bg');
+            $('#side_accordion div').removeClass('md-accent-bg').eq(3).addClass('md-accent-bg');
 
             //生成列表
             // console.log(vm.list.id)

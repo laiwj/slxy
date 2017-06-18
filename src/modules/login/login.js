@@ -56,8 +56,8 @@ define([], function() {
                     "password": vm.password
                 }
                 //发送数据到后台
-            var url = "http://10.101.1.171:10110/user/login";
-            // var url = "http://rm.xunying.me/user/login";
+            // var url = "http://10.101.1.171:10110/user/login";
+            var url = "http://rm.xunying.me/user/login";
             vm.isSumbit = true;
             $.post(url, bean, function(jsonObj) {
                 vm.isSumbit = false;

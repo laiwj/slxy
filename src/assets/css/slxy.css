@@ -4078,3 +4078,30 @@ input[type="color"],
 .hiddle {
     overflow: hidden;
 }
+
+
+/*薪酬分析页面*/
+
+.configbar {
+    width: 15%;
+    height: 500px;
+    /*background-color: red;*/
+    margin-top: -20px;
+    border-right: 1px solid #e3e3e3;
+    box-sizing: border-box;
+}
+
+.configbar li {
+    margin-bottom: 24px;
+    min-height: 56px;
+}
+.configbar li p{
+   text-align: left;
+}
+.configbar li div,.configbar li input{
+    cursor: pointer;
+   padding: 0 20px 0 10px;
+   font-size: 12px;
+   box-sizing: border-box;
+   line-height: 28px;
+}
