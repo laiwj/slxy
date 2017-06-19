@@ -115,23 +115,23 @@
                                         <ul class="pr30 pt20">
                                             <li>
                                                 <p>职能设置</p>
-                                                <div ms-duplex="c_function" class="select-warp fl mt10 u-tt-more" id="c_function">
+                                                <div ms-duplex="c_function" class="select-warp mb5 u-tt-more" id="c_function" ms-click="doClick('c_function')">
                                                     职能:
                                                 </div>
                                             </li>
                                             <li>
                                                 <p>分析数据筛选</p>
 
-                                                <div ms-duplex="c_data" class="select-warp fl mt10 u-tt-more" id="c_data">
+                                                <div ms-duplex="c_industry" class="select-warp mb5 u-tt-more" id="c_industry" ms-click="doClick('c_industry')">
                                                     行业:
                                                 </div>
-                                                 <div ms-duplex="c_data" class="select-warp fl mt10 u-tt-more" id="c_data">
+                                                <div ms-duplex="c_region" class="select-warp mb5 u-tt-more" id="c_region" ms-click="doClick('c_region')">
                                                     地区:
                                                 </div>
-                                                 <div ms-duplex="c_data" class="select-warp fl mt10 u-tt-more" id="c_data">
+                                                <div ms-duplex="c_valuation" class="select-warp mb5 u-tt-more" id="c_valuation" ms-click="doClick('c_valuation')">
                                                     估值:
                                                 </div>
-                                                 <div ms-duplex="c_data" class="select-warp fl mt10 u-tt-more" id="c_data">
+                                                <div ms-duplex="c_experience" class="select-warp mb5 u-tt-more" id="c_experience" ms-click="doClick('c_experience')">
                                                     行业经验:
                                                 </div>
 
@@ -139,7 +139,7 @@
                                             <li>
                                                 <p>分析周期</p>
 
-                                                <div ms-duplex="c_time" class="select-warp fl mt10 u-tt-more" id="c_time">
+                                                <div ms-duplex="c_time" class="select-warp mb5 u-tt-more" id="c_time" ms-click="doClick('c_time')">
                                                     周期:
                                                 </div>
 
@@ -147,8 +147,8 @@
                                             <li>
                                                 <p>技能设置</p>
 
-                                                <input ms-duplex="c_skill" class="select-warp fl mt10 u-tt-more" id="c_skill" placeholder="技能搜索...">
-                                               
+                                                <input ms-duplex="c_skill" class="select-warp mb5 u-tt-more" id="c_skill" placeholder="技能搜索...">
+
                                             </li>
                                         </ul>
                                     </div>
@@ -166,9 +166,7 @@
                                     <i class="icon icon-circle fl">·</i>
                                     <div class="fl ml10">
                                         <p><b>{{el.pm_username}}</b><span class="f10 cr9 ml10">{{el.modify_time | date("yyyy/MM/dd HH:mm:ss")}}</span></p>
-                                        <p class="text_desc_p"><span class="text_desc">{{el.info}}</span><button class="button1 edit_desc J_edit_desc ml20"
-                                                ms-click="show('bb,'+$index)" ms-attr-api_url="el.api_url" ms-attr-data_id="el._id"
-                                                ms-attr-user_id="el.pm_user_id">编辑</button></p>
+                                        <p class="text_desc_p"><span class="text_desc">{{el.info}}</span><button class="button1 edit_desc J_edit_desc ml20" ms-click="show('bb,'+$index)" ms-attr-api_url="el.api_url" ms-attr-data_id="el._id" ms-attr-user_id="el.pm_user_id">编辑</button></p>
                                     </div>
                                 </div>
                             </div>

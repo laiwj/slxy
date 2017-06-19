@@ -2,7 +2,7 @@
  * Created by WangMing on 15/12/9.
  */
 // var dialog = require('art-dialog');
-define(["../../lib/util.js"], function(util) {
+define(["../../lib/util.js", "../../lib/positionSelect.js"], function(util, positionSelect) {
     var validationVM;
     // 定义所有相关的 vmodel
     var vm = avalon.define({
@@ -18,15 +18,10 @@ define(["../../lib/util.js"], function(util) {
         params: {},
         info: [],
         J_compensationtype: "职能薪酬分析",
-        J_type: "近一个月",
-        J_industry: "互联网全行业",
-        J_direction: "人才流入",
-        J_na: "需求量",
-        J_cf: "热门城市",
-        J_fp: "职能",
         industry: [],
         report_info: "",
         data_disturb: [],
+        data: {},
         show: function(id) {
             // validationVM.resetAll();
             if (id.charAt(0) == "b") {
@@ -63,7 +58,7 @@ define(["../../lib/util.js"], function(util) {
             onConfirm: function() {
                 var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
                 var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-                $.post("http://rm.xunying.me/api/data/cheat", bean, function(result) {
+                $.post("http://10.101.1.171:10110/api/data/cheat", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
                         $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
@@ -150,8 +145,8 @@ define(["../../lib/util.js"], function(util) {
                     bean.city = "";
                     bean.top = 10;
 
-                    // url = "http://10.101.1.171:10110/api/talent/distribution";
-                     url = "http://rm.xunying.me/api/talent/distribution";
+                    url = "http://10.101.1.171:10110/api/talent/distribution";
+                    //  url = "http://rm.xunying.me/api/talent/distribution";
                     charts_type = bean.cf;
                     break;
                 case "人才流动":
@@ -163,8 +158,8 @@ define(["../../lib/util.js"], function(util) {
                     }
                     bean.city = "";
                     bean.top = 10;
-                    // url = "http://10.101.1.171:10110/api/talent/flow";
-                    url = "http://rm.xunying.me/api/talent/flow";
+                    url = "http://10.101.1.171:10110/api/talent/flow";
+                    // url = "http://rm.xunying.me/api/talent/flow";
                     charts_type = bean.cf;
                     break;
                 case "人才供需":
@@ -176,8 +171,8 @@ define(["../../lib/util.js"], function(util) {
                     }
                     bean.top = 5;
                     bean.city = "";
-                    // url = "http://10.101.1.171:10110/api/talent/exponential";
-                    url = "http://rm.xunying.me/api/talent/exponential";
+                    url = "http://10.101.1.171:10110/api/talent/exponential";
+                    // url = "http://rm.xunying.me/api/talent/exponential";
                     charts_type = bean.na;
                     break;
                 default:
@@ -208,63 +203,41 @@ define(["../../lib/util.js"], function(util) {
                 console.log(bean);
             }
 
-            $.post("http://rm.xunying.me/api/info/write", bean, function(result) {
+            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
                 util.resResult(result, "添加分析说明成功", function() {
                     $(obj).prev().text(bean.report_info);
                 });
             })
         },
-        getconfig: function(type) {
-            var _type = null;
-            switch (type) {
-                case "人才分布":
-                    _type = 201;
-                    break;
-                case "人才流动":
-                    _type = 202;
-                    break;
-                case "人才供需":
-                    _type = 203;
-                    break;
-                default:
-                    break;
-            }
-            var url = "http://rm.xunying.me/report/config/all";
-            var bean = {
-                report_type: _type
-                    // config_type: "city"
-            }
-            $.post(url, bean, function(result) {
-                util.resResult(result);
-                vm.industry = result.data[0].checks;
-                // console.log(vm.industry);
+        domLisenter: function() {
+            $(".tag").find("i").on("click", function() {
+                $(this).parent().remove();
+            });
+        },
+        getJson: function() {
+            //发送数据到后台
+            var url = "../../../config203.json";
+            util.lockScreen();
+            $.get(url, function(jsonObj) {
+                util.hideLock();
+                vm.data = jsonObj;
+                vm.domLisenter();
+            });
+        },
+        doClick: function(str) {
+            var _this = this;
+            var obj = {};
+            obj[str] = vm.data[str];
+            positionSelect.doClick.call(_this, obj);
 
-            })
         }
     });
 
     vm.$watch("J_compensationtype", function() {
         vm.getconfig(vm.J_chartstype);
-        vm.analysisData();
+        // vm.analysisData();
     });
-    vm.$watch("J_type", function() {
-        vm.analysisData();
-    });
-    vm.$watch("J_industry", function() {
-        vm.analysisData();
-    });
-    vm.$watch("J_direction", function() {
-        vm.analysisData();
-    });
-    vm.$watch("J_na", function() {
-        vm.analysisData();
-    });
-    vm.$watch("J_cf", function() {
-        vm.analysisData();
-    });
-    vm.$watch("J_fp", function() {
-        vm.analysisData();
-    });
+
 
 
     //开始扫描编译
@@ -276,10 +249,7 @@ define(["../../lib/util.js"], function(util) {
             document.title = '数联寻英';
             $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
             //生成数据
-            vm.analysisData();
-
-            vm.getconfig(vm.J_chartstype);
-
+            // vm.analysisData();
 
 
 
@@ -293,7 +263,7 @@ define(["../../lib/util.js"], function(util) {
             vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
             vm.short_id = userBean[2];
             vm.username = userBean[3];
-
+            vm.getJson();
         };
         // 对应的视图销毁前
         $ctrl.$onBeforeUnload = function() {

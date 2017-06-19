@@ -103,13 +103,13 @@
                                             <option value="人才分布">人才分布</option>
                                             <option value="人才流动">人才流动</option>
                                             <option value="人才供需">人才供需</option>
+                                            <option value="人才薪酬">人才薪酬</option>
                                     </select>
-
                                 </div>
                             </div>
                         </div>
                         <div class="p20">
-                            <div class="top-menu">
+                            <div class="top-menu clearfix">
                                 <!--<div class="fl report_tab" ms-visible="chartstype=='人才分布'">
                                     <select ms-duplex="city" class="select-warp s1 button1" id="J_city">
                                             <option value="北京">北京</option>
@@ -134,13 +134,19 @@
                                     <select ms-duplex="J_na" class="select-warp s1 button1" id="J_na">
                                             <option value="需求量">需求量</option>
                                             <option value="供需指数">供需指数</option>
-                                        
+                                    </select>
+                                </div>
+
+                                <div class="fl report_tab" ms-visible="J_chartstype=='人才薪酬'">
+                                    <select ms-duplex="J_experience" class="select-warp s1 button1" id="J_experience">
+                                             <option ms-repeat-el="demand" ms-attr-value="el">{{el}}</option>
                                     </select>
                                 </div>
 
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;display: block;" ms-visible="J_chartstype=='人才分布'">从业人员的</div>
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才供需'">排名前五的</div>
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才流动'">的</div>
+                                <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才薪酬'">热门岗位人群薪酬及特征画像</div>
                                 <div class="fl report_tab" ms-visible="J_chartstype=='人才流动'|| J_chartstype=='人才分布'" style="display: block;">
                                     <select ms-duplex="J_cf" class="select-warp s1 button1" id="J_cf">
                                             <option value="热门城市">热门城市</option>
@@ -184,8 +190,19 @@
                                 </div>
                             </div>
 
-                            <div class="charts-wrapper">
+                            <div class="charts-wrapper" style="margin-top:0;">
                                 <div class="charts-content">
+                                    <div class="paybar" ms-visible="J_chartstype=='人才薪酬'">
+                                        <span>岗位需求量:</span>
+                                        <select ms-duplex="J_experience" class="select-warp mt10" id="J_experience" style="width: 100px;">
+                                             <option ms-repeat-el="experience" ms-attr-value="el">{{el}}</option>
+                                        </select>
+                                        <span>岗位供需指数:</span>
+                                        <select ms-duplex="J_supply" class="select-warp mt10" id="J_supply" style="width: 100px;">
+                                            <option ms-repeat-el="supply" ms-attr-value="el">{{el}}</option>
+                                        </select>
+                                    </div>
+
                                     <input id="J_charts_data" type="hidden" />
                                     <iframe id="report_iframe" width="100%" height="500px" frameborder="0">
                                     </iframe>

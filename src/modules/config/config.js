@@ -69,9 +69,9 @@ define(["../../lib/util.js"], function(util) {
             console.log(bean);
             bean.report_type = vm.report_type;
             if (vm.report_type == 204) {
-                var url = "http://rm.xunying.me/report/config/allmodify";
+                var url = "http://10.101.1.171:10110/report/config/allmodify";
             } else {
-                var url = "http://rm.xunying.me/report/config/modify";
+                var url = "http://10.101.1.171:10110/report/config/modify";
             }
             $.post(url, bean, function(data) {
                 util.resResult(data, "配置成功");
