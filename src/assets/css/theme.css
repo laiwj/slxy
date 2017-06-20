@@ -657,6 +657,7 @@ a {
 
 .dropdown-menu {
     min-width: 100px;
+    padding: 0;
 }
 
 .sidebar .accordion-heading,

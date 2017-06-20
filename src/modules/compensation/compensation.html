@@ -96,8 +96,8 @@
 
                         <div class="well  clearfix">
                             <div class="row-fluid">
-                                <p class="pull-left mt10 "><b>{{J_compensationtype}}</b></p>
 
+                                <p class="pull-left mt10 "><b>{{J_compensationtype}}</b></p>
                                 <div class="pull-right">
                                     <select ms-duplex="J_compensationtype" class="select-warp fl mt10" id="J_compensationtype">
                                             <option value="职能薪酬分析">职能薪酬分析</option>
@@ -105,6 +105,7 @@
                                     </select>
 
                                 </div>
+                                <button class="btn btn-primary fr data_disturb m10" id="J_data_disturb" ms-click="analysisData">分析</button>
                             </div>
                         </div>
                         <div class="pl20 pr20 pb20">
@@ -115,40 +116,42 @@
                                         <ul class="pr30 pt20">
                                             <li>
                                                 <p>职能设置</p>
-                                                <div ms-duplex="c_function" class="select-warp mb5 u-tt-more" id="c_function" ms-click="doClick('c_function')">
-                                                    职能:
+                                                <div class="select-warp mb5" id="c_function" ms-click="doClick('c_function')">
+                                                    职能:<input ms-duplex="c_function" class="u-tt-more">
                                                 </div>
                                             </li>
                                             <li>
                                                 <p>分析数据筛选</p>
 
-                                                <div ms-duplex="c_industry" class="select-warp mb5 u-tt-more" id="c_industry" ms-click="doClick('c_industry')">
-                                                    行业:
+                                                <div class="select-warp mb5" id="c_industry" ms-click="doClick('c_industry')">
+                                                    行业:<input ms-duplex="c_industry" class="u-tt-more">
                                                 </div>
-                                                <div ms-duplex="c_region" class="select-warp mb5 u-tt-more" id="c_region" ms-click="doClick('c_region')">
-                                                    地区:
+                                                <div class="select-warp mb5" id="c_region" ms-click="doClick('c_region')">
+                                                    地区:<input ms-duplex="c_region" class="u-tt-more">
                                                 </div>
-                                                <div ms-duplex="c_valuation" class="select-warp mb5 u-tt-more" id="c_valuation" ms-click="doClick('c_valuation')">
-                                                    估值:
+                                                <div class="select-warp mb5" id="c_valuation" ms-click="doClick('c_valuation')">
+                                                    估值:<input ms-duplex="c_valuation" class="u-tt-more">
                                                 </div>
-                                                <div ms-duplex="c_experience" class="select-warp mb5 u-tt-more" id="c_experience" ms-click="doClick('c_experience')">
-                                                    行业经验:
+                                                <div class="select-warp mb5" id="c_experience" ms-click="doClick('c_experience')">
+                                                    经验:<input ms-duplex="c_experience" class="u-tt-more">
                                                 </div>
 
                                             </li>
                                             <li>
                                                 <p>分析周期</p>
 
-                                                <div ms-duplex="c_time" class="select-warp mb5 u-tt-more" id="c_time" ms-click="doClick('c_time')">
-                                                    周期:
+                                                <div class="select-warp mb5" id="c_time" ms-click="doClick('c_time')">
+                                                    周期:<input ms-duplex="c_time" class="u-tt-more">
                                                 </div>
 
                                             </li>
                                             <li>
                                                 <p>技能设置</p>
 
-                                                <input ms-duplex="c_skill" class="select-warp mb5 u-tt-more" id="c_skill" placeholder="技能搜索...">
+                                                <input ms-duplex="c_skill" class="select-warp mb5" id="c_skill" placeholder="技能搜索...">
+                                                <div class="tags">
 
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>

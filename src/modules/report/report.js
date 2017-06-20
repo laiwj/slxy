@@ -24,6 +24,8 @@ define(["../../lib/util.js"], function(util) {
         J_na: "需求量",
         J_cf: "热门城市",
         J_fp: "职能",
+        J_experience: "",
+        J_supply: "",
         industry: [],
         demand: [],
         experience: [],
@@ -186,16 +188,15 @@ define(["../../lib/util.js"], function(util) {
                     break;
                 case "人才薪酬":
                     bean = {
-                        industry: vm.J_industry,
-                        na: vm.J_na == "需求量" ? "need" : "all",
-                        fp: vm.J_fp == "职能" ? "func" : "position",
-                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
-                    }
-                    bean.top = 5;
-                    bean.city = "";
+                            industry: vm.J_industry,
+                            index: vm.J_supply == "<=30%" ? 30 : 50,
+                            top: vm.J_experience == "TOP5" ? 5 : 10,
+                            type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
+                        }
+                        // bean.city = "";
                     url = "http://10.101.1.171:10110/api/talent/salary/analysis";
                     // url = "http://rm.xunying.me/api/talent/exponential";
-                    charts_type = bean.na;
+                    charts_type = bean.industry;
                     break;
                 default:
                     break;
@@ -290,6 +291,12 @@ define(["../../lib/util.js"], function(util) {
     vm.$watch("J_fp", function() {
         vm.analysisData();
     });
+    vm.$watch("J_experience", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_supply", function() {
+        vm.analysisData();
+    });
 
 
     //开始扫描编译
@@ -301,10 +308,9 @@ define(["../../lib/util.js"], function(util) {
             document.title = '数联寻英';
             $('#side_accordion div').removeClass('md-accent-bg').eq(0).addClass('md-accent-bg');
             //生成数据
-            vm.analysisData();
 
             vm.getconfig(vm.J_chartstype);
-
+            vm.analysisData();
 
 
 

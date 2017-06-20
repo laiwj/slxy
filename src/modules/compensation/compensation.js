@@ -1,8 +1,4 @@
-/**
- * Created by WangMing on 15/12/9.
- */
-// var dialog = require('art-dialog');
-define(["../../lib/util.js", "../../lib/positionSelect.js"], function(util, positionSelect) {
+define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap-typeahead.js"], function(util, positionSelect, typeahead) {
     var validationVM;
     // 定义所有相关的 vmodel
     var vm = avalon.define({
@@ -18,6 +14,13 @@ define(["../../lib/util.js", "../../lib/positionSelect.js"], function(util, posi
         params: {},
         info: [],
         J_compensationtype: "职能薪酬分析",
+        c_function: "",
+        c_industry: "",
+        c_region: "",
+        c_valuation: "",
+        c_experience: "",
+        c_time: "",
+        c_skill: "",
         industry: [],
         report_info: "",
         data_disturb: [],
@@ -98,88 +101,83 @@ define(["../../lib/util.js", "../../lib/positionSelect.js"], function(util, posi
             vm.clearPassToCookie();
             window.location.href = "";
         },
-        // analysisData: function() {
-        //     var param = vm.getBean();
-        //     var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
-        //     util.lockScreen();
-        //     $.post(param.url, param.bean, function(result) {
-        //         util.hideLock();
-        //         util.resResult(result);
-        //         vm.data_disturb = result.data.data.data;
-        //         $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
-        //         $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
-        //         $("#report_info").attr("api_url", result.data.data.api_url);
-        //         if (result.data.info.length > 0) {
-        //             $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
-        //             $("#report_info").attr("data_id", result.data.info[0]._id);
-        //             if (vm.type == "3") {
-        //                 $(".charts-warp").val('').val(result.data.info[0].info);
-        //             }
-        //         } else {
-        //             $("#report_info").attr("data_url", "").attr("data_id", "").val('');
-        //         }
+        analysisData: function() {
+            var param = vm.getBean();
+            // var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
+            util.lockScreen();
+            $.post(param.url, param.bean, function(result) {
+                util.hideLock();
+                util.resResult(result);
+                vm.data_disturb = result.data.data.data;
+                $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
+                $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                $("#report_info").attr("api_url", result.data.data.api_url);
+                if (result.data.info.length > 0) {
+                    $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
+                    $("#report_info").attr("data_id", result.data.info[0]._id);
+                    if (vm.type == "3") {
+                        $(".charts-warp").val('').val(result.data.info[0].info);
+                    }
+                } else {
+                    $("#report_info").attr("data_url", "").attr("data_id", "").val('');
+                }
 
-        //         //超管与公司权限
-        //         if (vm.type != "3") {
-        //             vm.info = result.data.info;
-        //         }
-        //         vm.params = result.data.data.params;
-        //         vm.api_url = result.data.data.api_url;
-        //         vm.data_id = result.data.data._id;
+                //超管与公司权限
+                if (vm.type != "3") {
+                    vm.info = result.data.info;
+                }
+                vm.params = result.data.data.params;
+                vm.api_url = result.data.data.api_url;
+                vm.data_id = result.data.data._id;
 
 
-        //     })
-        // },
+            })
+        },
         getBean: function() {
-            var tab = vm.J_chartstype;
+            var tab = vm.J_compensationtype;
             var bean = {};
             var url = "";
-            var charts_type = "";
+            // var charts_type = "";
             switch (tab) {
-                case "人才分布":
+                case "职能薪酬分析":
+                    var tagArr = $(".tags").find("span"),
+                        arr = [];
+                    $.each(tagArr, function(i, v) {
+                        arr.push($(v).text());
+                    })
                     bean = {
-                        industry: vm.J_industry,
-                        cf: vm.J_cf == "热门城市" ? "city" : "func",
-                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
-                    }
-                    bean.city = "";
-                    bean.top = 10;
-
-                    url = "http://10.101.1.171:10110/api/talent/distribution";
+                            position: vm.c_function,
+                            industry: vm.c_industry,
+                            experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
+                            city: vm.c_region,
+                            t: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
+                        }
+                        // bean.position = "";
+                    bean.skill = arr.join(",");
+                    url = "http://10.101.1.171:10110/api/func/salary/analysis";
                     //  url = "http://rm.xunying.me/api/talent/distribution";
-                    charts_type = bean.cf;
+                    // charts_type = bean.cf;
                     break;
-                case "人才流动":
+                case "岗位薪酬分析":
+
                     bean = {
-                        industry: vm.J_industry,
-                        direction: vm.J_direction == "人才流入" ? "in" : "out",
-                        cf: vm.J_cf == "热门城市" ? "city" : "func",
-                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
-                    }
-                    bean.city = "";
-                    bean.top = 10;
-                    url = "http://10.101.1.171:10110/api/talent/flow";
-                    // url = "http://rm.xunying.me/api/talent/flow";
-                    charts_type = bean.cf;
-                    break;
-                case "人才供需":
-                    bean = {
-                        industry: vm.J_industry,
-                        na: vm.J_na == "需求量" ? "need" : "all",
-                        fp: vm.J_fp == "职能" ? "func" : "position",
-                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
-                    }
-                    bean.top = 5;
-                    bean.city = "";
-                    url = "http://10.101.1.171:10110/api/talent/exponential";
-                    // url = "http://rm.xunying.me/api/talent/exponential";
-                    charts_type = bean.na;
+                            position: vm.c_function,
+                            industry: vm.c_industry,
+                            experience: vm.c_experience,
+                            city: vm.c_region,
+                            t: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
+                            skill: vm.c_skill
+                        }
+                        // bean.position = "",
+                    url = "http://10.101.1.171:10110/api/position/salary/analysis";
+                    //  url = "http://rm.xunying.me/api/talent/distribution";
+                    // charts_type = bean.cf;
                     break;
                 default:
                     break;
             }
 
-            return { bean: bean, tab: tab, url: url, charts_type: charts_type };
+            return { bean: bean, tab: tab, url: url };
         },
         saveDesc: function(obj) {
             var user_id = $("#report_info").attr("user_id") ? $("#report_info").attr("user_id") : vm._id;
@@ -210,8 +208,22 @@ define(["../../lib/util.js", "../../lib/positionSelect.js"], function(util, posi
             })
         },
         domLisenter: function() {
-            $(".tag").find("i").on("click", function() {
-                $(this).parent().remove();
+            // $(".configbar").find("input").blur(function() {
+            //     $('#maskLayer').remove();
+            // })
+            $('#c_skill').typeahead({
+                source: [
+                    { id: 1, name: '交互设计' },
+                    { id: 2, name: '体验' },
+                    { id: 3, name: '中国' },
+                    { id: 4, name: 'Buffalo' },
+                    { id: 5, name: 'Boston' },
+                    { id: 6, name: 'Columbus' },
+                    { id: 7, name: 'Dallas' },
+                    { id: 8, name: 'Vancouver' },
+                    { id: 9, name: 'Seattle' },
+                    { id: 10, name: 'Los Angeles' }
+                ]
             });
         },
         getJson: function() {
@@ -234,7 +246,6 @@ define(["../../lib/util.js", "../../lib/positionSelect.js"], function(util, posi
     });
 
     vm.$watch("J_compensationtype", function() {
-        vm.getconfig(vm.J_chartstype);
         // vm.analysisData();
     });
 

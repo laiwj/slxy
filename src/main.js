@@ -22,7 +22,7 @@ require("./assets/vendor/oniui/validation/avalon.validation");
 // jquery.cookie
 require("./lib/jquery-1.8.3.min");
 require("./lib/jquery.cookie.min");
-
+require("./lib/bootstrap-typeahead");
 
 // 定义一个顶层的vmodel，用来放置全局共享数据
 var root = avalon.define({
