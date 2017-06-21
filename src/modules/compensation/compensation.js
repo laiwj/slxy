@@ -1,4 +1,5 @@
-define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap-typeahead.js"], function(util, positionSelect, typeahead) {
+define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap-typeahead.js", "../../lib/jquery.position.select.js"], function(util, positionSelect, typeahead, xy_select) {
+    console.log(xy_select);
     var validationVM;
     // 定义所有相关的 vmodel
     var vm = avalon.define({
@@ -15,8 +16,8 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
         info: [],
         J_compensationtype: "职能薪酬分析",
         c_function: "",
-        c_industry: "",
-        c_region: "",
+        c_industry: "互联网全行业",
+        c_region: "全国",
         c_valuation: "",
         c_experience: "",
         c_time: "",
@@ -261,7 +262,13 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
             $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
             //生成数据
             // vm.analysisData();
-
+            $("#result").bind("click", function() {
+                xy_select.init({
+                    containerId: "positionDiv",
+                    className: "big-window",
+                    nameId: "result"
+                });
+            });
 
 
         };

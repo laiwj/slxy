@@ -276,7 +276,7 @@ define(["../../lib/util.js"], function(util) {
     vm.$watch("J_type", function() {
         vm.analysisData();
     });
-    vm.$watch("J_industry", function() {
+    vm.$watch("J_industry", function(newValue, oldValue) {
         vm.analysisData();
     });
     vm.$watch("J_direction", function() {
