@@ -280,7 +280,7 @@ define(
                     //lock_overlay.css({width:width+'px',height:height+'px'});
                     lock_overlay.show();
                 } else {
-                    lock_overlay = '<div id="loading_small"><img src="/images/ajax_loader.gif" alt="" /></div>';
+                    lock_overlay = '<div id="loading_small"><img src="../images/ajax_loader.gif" alt="" /></div>';
                     $("#navigation").append(lock_overlay);
                 }
                 //obj.addClass("position-re");
@@ -389,11 +389,11 @@ define(
                 var lock_overlay = $("#loading_layer");
                 if (lock_overlay.length != 0) {
                     $(".loading_layer_body").empty();
-                    $(".loading_layer_body").html("<img src='../../src/assets/images/ajax_loader.gif' alt='' />");
+                    $(".loading_layer_body").html("<img src='../images/ajax_loader.gif' alt='' />");
                     lock_overlay.css({ width: width + 'px', height: height + 'px' });
                     lock_overlay.show();
                 } else {
-                    lock_overlay = '<div id="loading_layer" style="width:' + width + 'px;height:' + height + 'px;"><div class="loading_layer_body"><img src="../../src/assets/images/ajax_loader.gif" alt="" /></div></div>';
+                    lock_overlay = '<div id="loading_layer" style="width:' + width + 'px;height:' + height + 'px;"><div class="loading_layer_body"><img src="../images/ajax_loader.gif" alt="" /></div></div>';
                 }
                 $("body").append($(lock_overlay));
             },

@@ -9,7 +9,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin'); //html模板插入代码
 //webpck插件
 var plugins = [
     //提公用js到common.js文件中
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.optimize.CommonsChunkPlugin('js/common.js'),
     new HtmlWebpackPlugin({
         title: "avalon webpack gulp spa 实践",
         template: "tpl.html",
@@ -17,7 +17,7 @@ var plugins = [
         hash: true
     }),
     //将样式统一发布到style.css中
-    new ExtractTextPlugin("style.css", {
+    new ExtractTextPlugin("css/style.css", {
         allChunks: true,
         disable: false
     }),
@@ -27,16 +27,16 @@ var plugins = [
     })
 ];
 var entry = ['./src/main'],
-    buildPath = "/dist/";
+    buildPath = "/dist";
 //编译输出路径
 module.exports = {
     debug: true,
     entry: entry,
     output: {
         path: __dirname + buildPath,
-        filename: 'build.js',
-        publicPath: '',
-        chunkFilename: "[name].chunk.[chunkhash:8].js" //给require.ensure用
+        filename: 'js/build.js',
+        publicPath: '/',
+        chunkFilename: "js/[name].chunk.[chunkhash:8].js" //给require.ensure用
     },
     module: {
         loaders: [{
@@ -47,11 +47,8 @@ module.exports = {
                 test: /\.(jpg|png|gif)$/,
                 loader: "file-loader?name=images/[name].[hash].[ext]"
             }, {
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "url-loader?limit=10000&minetype=application/font-woff"
-            }, {
-                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "file-loader"
+                test: /\.(eot|svg|ttf|woff|woff2)\w*/,
+                loader: 'url-loader?limit=1000000'
             },
             {
                 test: /\.json$/,

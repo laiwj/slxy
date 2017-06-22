@@ -3954,6 +3954,7 @@
         padding: 0 20px 0 10px;
         font-size: 12px;
         box-sizing: border-box;
+        height: 28px;
         line-height: 28px;
         float: none!important;
     }
@@ -4089,6 +4090,7 @@
     
     .sele-tag dd {
         display: table-cell;
+        line-height: 30px;
     }
     
     .sele-tag dd a {
@@ -4189,7 +4191,7 @@
     .industry-list dd a {
         background: url(../images/select000.png) no-repeat left center;
         padding: 0 0 0 20px;
-        margin: 1px 3px;
+        margin: 1px 3px 20px 3px;
         color: #666;
         display: block;
         float: left;

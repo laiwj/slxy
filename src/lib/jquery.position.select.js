@@ -5,9 +5,9 @@
                if (this.length < 1) { return; };
                // 默认值
                settings = $.extend({
-                   containerId: null,
-                   className: null,
-                   nameId: null,
+                   containerId: "positionDiv",
+                   className: "big-window",
+                   nameId: "result",
                    required: true,
                    maxCount: 5,
                    onConfirm: null
@@ -144,7 +144,7 @@
                $("#" + num + "_bg").show();
            },
            setValue: function(value) {
-               var type = $("#" + settings.nameId);
+               var type = $("#result");
                if (type.attr("type") == "text") {
                    type.val(value);
                } else

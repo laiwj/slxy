@@ -1,5 +1,4 @@
 define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap-typeahead.js", "../../lib/jquery.position.select.js"], function(util, positionSelect, typeahead, xy_select) {
-    console.log(xy_select);
     var validationVM;
     // 定义所有相关的 vmodel
     var vm = avalon.define({
@@ -62,10 +61,10 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
             onConfirm: function() {
                 var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
                 var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-                $.post("http://10.101.1.171:10110/api/data/cheat", bean, function(result) {
+                $.post("/api/data/cheat", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
-                        $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                        $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
                     });
                 })
             }
@@ -229,7 +228,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
         },
         getJson: function() {
             //发送数据到后台
-            var url = "../../../config203.json";
+            var url = "../data/config203.json";
             util.lockScreen();
             $.get(url, function(jsonObj) {
                 util.hideLock();
