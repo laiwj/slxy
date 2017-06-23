@@ -1,4 +1,4 @@
-define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap-typeahead.js", "../../lib/jquery.position.select.js"], function(util, positionSelect, typeahead, xy_select) {
+define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.position.select.js"], function(util, positionSelect, xy_select) {
     var validationVM;
     // 定义所有相关的 vmodel
     var vm = avalon.define({
@@ -17,10 +17,8 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
         c_function: "",
         c_industry: "互联网全行业",
         c_region: "全国",
-        c_valuation: "",
         c_experience: "",
         c_time: "",
-        c_skill: "",
         industry: [],
         report_info: "",
         data_disturb: [],
@@ -61,10 +59,10 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
             onConfirm: function() {
                 var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
                 var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-                $.post("/api/data/cheat", bean, function(result) {
+                $.post("http://10.101.1.171:10110/api/data/cheat", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
-                        $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
+                        $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
                     });
                 })
             }
@@ -110,7 +108,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
                 util.resResult(result);
                 vm.data_disturb = result.data.data.data;
                 $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
-                $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                $("#report_iframe").attr("src", "../../../src/lib/resource-report/remuneration.html");
                 $("#report_info").attr("api_url", result.data.data.api_url);
                 if (result.data.info.length > 0) {
                     $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
@@ -140,11 +138,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
             // var charts_type = "";
             switch (tab) {
                 case "职能薪酬分析":
-                    var tagArr = $(".tags").find("span"),
-                        arr = [];
-                    $.each(tagArr, function(i, v) {
-                        arr.push($(v).text());
-                    })
+
                     bean = {
                             position: vm.c_function,
                             industry: vm.c_industry,
@@ -153,10 +147,9 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
                             t: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
                         }
                         // bean.position = "";
-                    bean.skill = arr.join(",");
                     url = "http://10.101.1.171:10110/api/func/salary/analysis";
                     //  url = "http://rm.xunying.me/api/talent/distribution";
-                    // charts_type = bean.cf;
+                    charts_type = "tab2";
                     break;
                 case "岗位薪酬分析":
 
@@ -171,7 +164,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
                         // bean.position = "",
                     url = "http://10.101.1.171:10110/api/position/salary/analysis";
                     //  url = "http://rm.xunying.me/api/talent/distribution";
-                    // charts_type = bean.cf;
+                    charts_type = "tab2";
                     break;
                 default:
                     break;
@@ -211,24 +204,10 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/bootstrap
             // $(".configbar").find("input").blur(function() {
             //     $('#maskLayer').remove();
             // })
-            $('#c_skill').typeahead({
-                source: [
-                    { id: 1, name: '交互设计' },
-                    { id: 2, name: '体验' },
-                    { id: 3, name: '中国' },
-                    { id: 4, name: 'Buffalo' },
-                    { id: 5, name: 'Boston' },
-                    { id: 6, name: 'Columbus' },
-                    { id: 7, name: 'Dallas' },
-                    { id: 8, name: 'Vancouver' },
-                    { id: 9, name: 'Seattle' },
-                    { id: 10, name: 'Los Angeles' }
-                ]
-            });
         },
         getJson: function() {
             //发送数据到后台
-            var url = "../data/config203.json";
+            var url = "../../../../config203.json";
             util.lockScreen();
             $.get(url, function(jsonObj) {
                 util.hideLock();

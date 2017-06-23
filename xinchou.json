@@ -1,0 +1,83 @@
+{
+    "code": 0,
+    "msg": "OK",
+    "data": {
+        "_id": "3c1194477c0e25a9f335c893c9edd07a",
+        "data": [
+            {
+                "产品经理": [
+                    {
+                        "name": "p100",
+                        "max_salary": "29166",
+                        "min_salary": "17499",
+                        "keywords": [
+                            "专业课程",
+                            "PROJECT",
+                            "间里",
+                            "ISO",
+                            "馈给"
+                        ],
+                    "keywords_num": 5
+                    },
+                    {
+                        "name": "p50",
+                        "max_salary": "12499",
+                        "min_salary": "12499",
+                        "keywords": [
+                            "数据仓库",
+                            "MINDMANAGER",
+                            "迭代",
+                            "BI",
+                            "英语六级"
+                        ],
+                        "keywords_num": 35
+                    },
+                    {
+                        "name": "p25",
+                        "max_salary": "12499",
+                        "min_salary": "6999",
+                        "keywords": [
+                            "相关内容",
+                            "资料片",
+                            "戏中",
+                            "跟进",
+                            "X-MIND"
+                        ],
+                        "keywords_num": 5
+                    },
+                    {
+                        "name": "p75",
+                        "max_salary": "17499",
+                        "min_salary": "12500",
+                        "keywords": [
+                            "优劣势",
+                            "网站",
+                            "爬虫",
+                            "总监",
+                            "SQL"
+                        ],
+                        "keywords_num": 5
+                    }
+                ],
+                "position_nums": 10
+            }
+        ],
+        "api_url": "/api/position/salary/analysis",
+        "create_time": null,
+        "params": {
+            "t": 3,
+            "city": [
+                "北京"
+            ],
+            "name": [
+                "产品经理"
+            ],
+            "industry": [],
+            "experience": []
+        },
+        "total_data": 3320,
+        "accord_data": 10,
+        "end_time": "2017/03/31",
+        "api_time": "2017-04-12"
+    }
+}

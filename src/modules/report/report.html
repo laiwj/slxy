@@ -137,12 +137,6 @@
                                     </select>
                                 </div>
 
-                                <div class="fl report_tab" ms-visible="J_chartstype=='人才薪酬'">
-                                    <select ms-duplex="J_experience" class="select-warp s1 button1" id="J_experience">
-                                             <option ms-repeat-el="demand" ms-attr-value="el">{{el}}</option>
-                                    </select>
-                                </div>
-
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;display: block;" ms-visible="J_chartstype=='人才分布'">从业人员的</div>
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才供需'">排名前五的</div>
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才流动'">的</div>
@@ -192,17 +186,6 @@
 
                             <div class="charts-wrapper" style="margin-top:0;">
                                 <div class="charts-content">
-                                    <div class="paybar" ms-visible="J_chartstype=='人才薪酬'">
-                                        <span>岗位需求量:</span>
-                                        <select ms-duplex="J_experience" class="select-warp mt10" id="J_experience" style="width: 100px;">
-                                             <option ms-repeat-el="experience" ms-attr-value="el">{{el}}</option>
-                                        </select>
-                                        <span>岗位供需指数:</span>
-                                        <select ms-duplex="J_supply" class="select-warp mt10" id="J_supply" style="width: 100px;">
-                                            <option ms-repeat-el="supply" ms-attr-value="el">{{el}}</option>
-                                        </select>
-                                    </div>
-
                                     <input id="J_charts_data" type="hidden" />
                                     <iframe id="report_iframe" width="100%" height="500px" frameborder="0">
                                     </iframe>

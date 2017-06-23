@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+
+<style type="text/css">
+    body {
+        width: 100%;
+        font-family: "Microsoft Yahei";
+    }
+    
+    .view_warp {
+        height: 500px;
+        width: 600px;
+        margin: auto;
+    }
+    
+    .view {
+        height: 500px;
+        width: 600px;
+        margin: auto;
+        text-align: center;
+    }
+    
+    .no_data {
+        margin-top: 20px;
+        font-size: 18px;
+        display: none;
+    }
+</style>
+
+<body>
+
+    <div class="view_warp">
+        <div class="col-md-4 view" id="charts_wrap">
+            <p class="no_data">暂无数据！</p>
+        </div>
+    </div>
+
+</body>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/echarts.v3.min.js"></script>
+<script src="js/visual/public.js?v=1.1"></script>
+<script src="js/visual/visualBarV.js?v=1.2"></script>
+
+<script language="JavaScript">
+    "use strict";
+    $(document).ready(function() {
+        var node = $('#J_charts_data', window.parent.document);
+        // var data = node.val();
+        // if (!data) {
+        //     $(".no_data").show();
+        //     return;
+        // }
+        // data = JSON.parse(data);
+        var datas = [{
+            "产品经理": [{
+                "name": "p50",
+                "max_salary": "12499",
+                "min_salary": "12499",
+                "keywords": [
+                    "数据仓库",
+                    "MINDMANAGER",
+                    "迭代",
+                    "BI",
+                    "英语六级"
+                ],
+                "keywords_num": 35
+            }, {
+                "name": "p25",
+                "max_salary": "12499",
+                "min_salary": "6999",
+                "keywords": [
+                    "相关内容",
+                    "资料片",
+                    "戏中",
+                    "跟进",
+                    "X-MIND"
+                ],
+                "keywords_num": 5
+            }, {
+                "name": "p75",
+                "max_salary": "17499",
+                "min_salary": "12500",
+                "keywords": [
+                    "优劣势",
+                    "网站",
+                    "爬虫",
+                    "总监",
+                    "SQL"
+                ],
+                "keywords_num": 5
+            }],
+            "position_nums": 10
+        }, {
+            "UI设计": [{
+                "name": "p50",
+                "max_salary": "12499",
+                "min_salary": "12499",
+                "keywords": [
+                    "数据仓库",
+                    "MINDMANAGER",
+                    "迭代",
+                    "BI",
+                    "英语六级"
+                ],
+                "keywords_num": 35
+            }, {
+                "name": "p25",
+                "max_salary": "12499",
+                "min_salary": "6999",
+                "keywords": [
+                    "相关内容",
+                    "资料片",
+                    "戏中",
+                    "跟进",
+                    "X-MIND"
+                ],
+                "keywords_num": 5
+            }, {
+                "name": "p75",
+                "max_salary": "17499",
+                "min_salary": "12500",
+                "keywords": [
+                    "优劣势",
+                    "网站",
+                    "爬虫",
+                    "总监",
+                    "SQL"
+                ],
+                "keywords_num": 5
+            }],
+            "position_nums": 10
+        }]
+
+        var data = [{
+            name: '一般收入',
+            value: []
+        }, {
+            name: '中等收入',
+            value: []
+        }, {
+            name: '高薪收入',
+            value: []
+        }];
+        var tips = {};
+        $.each(datas, function(i, v) {
+            var obj = v;
+            $.each(data, function(i, v) {
+
+            })
+        })
+
+
+
+        var _w = document.documentElement.clientWidth - 200;
+        $(".view_warp,#charts_wrap").width(_w);
+
+        LoadGraphExample();
+
+        //图形加载 - 人才流动，人才流动数据格式示例
+        function LoadGraphExample() {
+            var type = node.attr("charts_type");
+            var data = [{
+                name: '一般收入',
+                value: [{
+                    name: 'JAVA',
+                    value: 15
+                }, {
+                    name: 'UI',
+                    value: 13
+                }, {
+                    name: '产品',
+                    value: 14
+                }]
+            }, {
+                name: '中等收入',
+                value: [{
+                    name: 'JAVA',
+                    value: 19
+                }, {
+                    name: 'UI',
+                    value: 19
+                }, {
+                    name: '产品',
+                    value: 19
+                }]
+            }, {
+                name: '高薪收入',
+                value: [{
+                    name: 'JAVA',
+                    value: 12
+                }, {
+                    name: 'UI',
+                    value: 12
+                }, {
+                    name: '产品',
+                    value: 12
+                }]
+            }];
+            var tips = {
+                'JAVA': [{
+                    name: "用户体验",
+                    value: 12
+                }, {
+                    name: "友好度",
+                    value: 10
+                }, {
+                    name: "快捷性",
+                    value: 2
+                }, {
+                    name: "美观程度",
+                    value: 8
+                }, {
+                    name: "操作灵活",
+                    value: 5
+                }, {
+                    name: "测试",
+                    value: 8
+                }],
+                'UI': [{
+                    name: "用户体验",
+                    value: 12
+                }, {
+                    name: "友好度",
+                    value: 10
+                }, {
+                    name: "快捷性",
+                    value: 2
+                }, {
+                    name: "美观程度",
+                    value: 8
+                }, {
+                    name: "操作灵活",
+                    value: 5
+                }, {
+                    name: "测试",
+                    value: 8
+                }],
+                '产品': [{
+                    name: "用户体验",
+                    value: 15
+                }, {
+                    name: "友好度",
+                    value: 16
+                }]
+            };
+
+            if (type == "tab1") {
+                ShowBarJob("charts_wrap", data, tips, function(x, y) {
+                    console.log(x);
+                    console.log(y);
+                });
+            } else {
+
+                ShowBarMoney("charts_wrap", data, tips, function(x, y) {
+                    console.log(x);
+                    console.log(y);
+                });
+            }
+
+
+
+        }
+
+
+
+    });
+</script>
+
+</html>
