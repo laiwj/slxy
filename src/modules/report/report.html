@@ -118,8 +118,17 @@
                                     </select>
                                 </div>-->
                                 <div class="fl report_tab" style="display: block;">
-                                    <select ms-duplex="J_industry" class="select-warp s1 button1" id="J_industry">
-                                             <option ms-repeat-el="industry" ms-attr-value="el">{{el}}</option>
+                                    <select ms-duplex="J_industry201" class="select-warp s1 button1" id="J_industry201" ms-visible="J_chartstype=='人才分布'">
+                                             <option ms-repeat-el="industry201" ms-attr-value="el">{{el}}</option>
+                                    </select>
+                                    <select ms-duplex="J_industry202" class="select-warp s1 button1" id="J_industry202" ms-visible="J_chartstype=='人才流动'">
+                                             <option ms-repeat-el="industry202" ms-attr-value="el">{{el}}</option>
+                                    </select>
+                                    <select ms-duplex="J_industry203" class="select-warp s1 button1" id="J_industry203" ms-visible="J_chartstype=='人才供需'">
+                                             <option ms-repeat-el="industry203" ms-attr-value="el">{{el}}</option>
+                                    </select>
+                                    <select ms-duplex="J_industry204" class="select-warp s1 button1" id="J_industry204" ms-visible="J_chartstype=='人才薪酬'">
+                                             <option ms-repeat-el="industry204" ms-attr-value="el">{{el}}</option>
                                     </select>
                                 </div>
                                 <div class="fl report_tab" ms-visible="J_chartstype=='人才流动'">
@@ -218,6 +227,34 @@
         </div>
         <div class="foot-msg">
             Copyright ©2017 数联寻英 All Rights Reserved.
+        </div>
+    </div>
+</div>
+
+<div class="mask" id="myModal">
+    <div class="mask-dialog">
+        <div class="mask-header">
+            <div class="mask-close">X</div>
+            <span class="mask-title" id="myModalLabel"></span>
+        </div>
+        <div class="mask-body">
+            <div class="mask-icon">UI设计特征画像</div>
+            <div class="mask-tag tag1">
+                <h4>性别</h4>
+                <span>都是分开觉得风景的六块腹肌</span>
+            </div>
+            <div class="mask-tag tag2">
+                <h4>性别</h4>
+                <span>都是分开觉得风景的六块腹肌</span>
+            </div>
+            <div class="mask-tag tag3">
+                <h4>性别</h4>
+                <span>都是分开觉得风景的六块腹肌</span>
+            </div>
+            <div class="mask-tag tag4">
+                <h4>性别</h4>
+                <span>都是分开觉得风景的六块腹肌</span>
+            </div>
         </div>
     </div>
 </div>

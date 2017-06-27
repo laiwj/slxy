@@ -6,7 +6,7 @@ webpackJsonp([2,13],{
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {/**
 	 * Created by WangMing on 15/12/9.
 	 */
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function(api) {
 	    var validationVM
 	        // 定义所有相关的 vmodel
 	    var vm = avalon.define({
@@ -136,4 +136,4 @@ webpackJsonp([2,13],{
 /***/ })
 
 });
-//# sourceMappingURL=2.chunk.e5910e2a.js.map
+//# sourceMappingURL=2.chunk.ca2fd4d6.js.map

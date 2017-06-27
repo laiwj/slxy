@@ -1786,7 +1786,7 @@ webpackJsonp([6,13],{
 /***/ 43:
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38), __webpack_require__(44), __webpack_require__(32), __webpack_require__(45)], __WEBPACK_AMD_DEFINE_RESULT__ = function(util, positionSelect, typeahead, xy_select) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38), __webpack_require__(44), __webpack_require__(45)], __WEBPACK_AMD_DEFINE_RESULT__ = function(util, positionSelect, xy_select) {
 	    var validationVM;
 	    // 定义所有相关的 vmodel
 	    var vm = avalon.define({
@@ -1803,13 +1803,10 @@ webpackJsonp([6,13],{
 	        info: [],
 	        J_compensationtype: "职能薪酬分析",
 	        c_function: "",
-	        c_industry: "互联网全行业",
-	        c_region: "全国",
-	        c_valuation: "",
+	        c_industry: "",
+	        c_region: "",
 	        c_experience: "",
 	        c_time: "",
-	        c_skill: "",
-	        industry: [],
 	        report_info: "",
 	        data_disturb: [],
 	        data: {},
@@ -1889,8 +1886,13 @@ webpackJsonp([6,13],{
 	            vm.clearPassToCookie();
 	            window.location.href = "";
 	        },
-	        analysisData: function() {
-	            var param = vm.getBean();
+	        analysisData: function(obj) {
+	            var param = {};
+	            if (obj.url) {
+	                param = obj;
+	            } else {
+	                param = vm.getBean();
+	            }
 	            // var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
 	            util.lockScreen();
 	            $.post(param.url, param.bean, function(result) {
@@ -1898,7 +1900,7 @@ webpackJsonp([6,13],{
 	                util.resResult(result);
 	                vm.data_disturb = result.data.data.data;
 	                $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
-	                $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+	                $("#report_iframe").attr("src", "../lib/resource-report/remuneration.html");
 	                $("#report_info").attr("api_url", result.data.data.api_url);
 	                if (result.data.info.length > 0) {
 	                    $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
@@ -1925,47 +1927,36 @@ webpackJsonp([6,13],{
 	            var tab = vm.J_compensationtype;
 	            var bean = {};
 	            var url = "";
-	            // var charts_type = "";
+	            var charts_type = "";
 	            switch (tab) {
 	                case "职能薪酬分析":
-	                    var tagArr = $(".tags").find("span"),
-	                        arr = [];
-	                    $.each(tagArr, function(i, v) {
-	                        arr.push($(v).text());
-	                    })
 	                    bean = {
-	                            position: vm.c_function,
-	                            industry: vm.c_industry,
-	                            experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
-	                            city: vm.c_region,
-	                            t: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
-	                        }
-	                        // bean.position = "";
-	                    bean.skill = arr.join(",");
-	                    url = "http://10.101.1.171:10110/api/func/salary/analysis";
-	                    //  url = "http://rm.xunying.me/api/talent/distribution";
-	                    // charts_type = bean.cf;
+	                        name: vm.c_function,
+	                        industry: vm.c_industry,
+	                        experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
+	                        city: vm.c_region,
+	                        type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
+	                        top: 10
+	                    }
+	                    url = "/api/func/salary/analysis";
 	                    break;
 	                case "岗位薪酬分析":
 	
 	                    bean = {
-	                            position: vm.c_function,
-	                            industry: vm.c_industry,
-	                            experience: vm.c_experience,
-	                            city: vm.c_region,
-	                            t: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
-	                            skill: vm.c_skill
-	                        }
-	                        // bean.position = "",
-	                    url = "http://10.101.1.171:10110/api/position/salary/analysis";
-	                    //  url = "http://rm.xunying.me/api/talent/distribution";
-	                    // charts_type = bean.cf;
+	                        name: vm.c_function,
+	                        industry: vm.c_industry,
+	                        experience: vm.c_experience,
+	                        city: vm.c_region,
+	                        type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
+	                        top: 10
+	                    }
+	                    url = "/api/position/salary/analysis";
 	                    break;
 	                default:
 	                    break;
 	            }
 	
-	            return { bean: bean, tab: tab, url: url };
+	            return { bean: bean, url: url };
 	        },
 	        saveDesc: function(obj) {
 	            var user_id = $("#report_info").attr("user_id") ? $("#report_info").attr("user_id") : vm._id;
@@ -1989,7 +1980,7 @@ webpackJsonp([6,13],{
 	                console.log(bean);
 	            }
 	
-	            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
+	            $.post("/api/info/write", bean, function(result) {
 	                util.resResult(result, "添加分析说明成功", function() {
 	                    $(obj).prev().text(bean.report_info);
 	                });
@@ -1999,20 +1990,6 @@ webpackJsonp([6,13],{
 	            // $(".configbar").find("input").blur(function() {
 	            //     $('#maskLayer').remove();
 	            // })
-	            $('#c_skill').typeahead({
-	                source: [
-	                    { id: 1, name: '交互设计' },
-	                    { id: 2, name: '体验' },
-	                    { id: 3, name: '中国' },
-	                    { id: 4, name: 'Buffalo' },
-	                    { id: 5, name: 'Boston' },
-	                    { id: 6, name: 'Columbus' },
-	                    { id: 7, name: 'Dallas' },
-	                    { id: 8, name: 'Vancouver' },
-	                    { id: 9, name: 'Seattle' },
-	                    { id: 10, name: 'Los Angeles' }
-	                ]
-	            });
 	        },
 	        getJson: function() {
 	            //发送数据到后台
@@ -2048,7 +2025,16 @@ webpackJsonp([6,13],{
 	            document.title = '数联寻英';
 	            $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
 	            //生成数据
-	            // vm.analysisData();
+	            vm.analysisData({
+	                bean: {
+	                    industry: "互联网全行业",
+	                    type: 2,
+	                    index: 140,
+	                    label: "年龄,学历,性别",
+	                    top: 10
+	                },
+	                url: "/api/talent/salary/analysis"
+	            })
 	            $("#result").bind("click", function() {
 	                xy_select.init({
 	                    containerId: "positionDiv",
@@ -2319,4 +2305,4 @@ webpackJsonp([6,13],{
 /***/ })
 
 });
-//# sourceMappingURL=6.chunk.6aa97409.js.map
+//# sourceMappingURL=6.chunk.e4cf2efa.js.map

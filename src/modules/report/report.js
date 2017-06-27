@@ -19,12 +19,18 @@ define(["../../lib/util.js"], function(util) {
         info: [],
         J_chartstype: "人才分布",
         J_type: "近一个月",
-        J_industry: "互联网全行业",
+        J_industry201: "",
+        J_industry202: "",
+        J_industry203: "",
+        J_industry204: "",
         J_direction: "人才流入",
         J_na: "需求量",
         J_cf: "热门城市",
         J_fp: "职能",
-        industry: [],
+        industry201: [],
+        industry202: [],
+        industry203: [],
+        industry204: [],
         label: [],
         report_info: "",
         data_disturb: [],
@@ -63,11 +69,12 @@ define(["../../lib/util.js"], function(util) {
             width: 500,
             onConfirm: function() {
                 var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
-                var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-                $.post("/api/data/cheat", bean, function(result) {
+                var bean = { data: JSON.stringify(vm.data_disturb), api_url: vm.api_url, id: vm.data_id, api_time: vm.api_time, params: JSON.stringify(vm.params) };
+                console.log(bean);
+                $.post("/api/data/interpose", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
-                        $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                        $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
                     });
                 })
             }
@@ -113,7 +120,7 @@ define(["../../lib/util.js"], function(util) {
                 util.resResult(result);
                 vm.data_disturb = result.data.data.data;
                 $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
-                $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
                 $("#report_info").attr("api_url", result.data.data.api_url);
                 if (result.data.info.length > 0) {
                     $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
@@ -132,8 +139,7 @@ define(["../../lib/util.js"], function(util) {
                 vm.params = result.data.data.params;
                 vm.api_url = result.data.data.api_url;
                 vm.data_id = result.data.data._id;
-
-
+                vm.api_time = result.data.data.api_time;
             })
         },
         getBean: function() {
@@ -144,49 +150,50 @@ define(["../../lib/util.js"], function(util) {
             switch (tab) {
                 case "人才分布":
                     bean = {
-                        industry: vm.J_industry,
+                        industry: vm.J_industry201,
                         cf: vm.J_cf == "热门城市" ? "city" : "func",
                         type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
                     }
                     bean.city = "";
                     bean.top = 10;
 
-                    url = "http://10.101.1.171:10110/api/talent/distribution";
+                    url = "/api/talent/distribution";
                     charts_type = bean.cf;
                     break;
                 case "人才流动":
                     bean = {
-                        industry: vm.J_industry,
+                        industry: vm.J_industry202,
                         direction: vm.J_direction == "人才流入" ? "in" : "out",
                         cf: vm.J_cf == "热门城市" ? "city" : "func",
                         type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
                     }
                     bean.city = "";
                     bean.top = 10;
-                    url = "http://10.101.1.171:10110/api/talent/flow";
+                    url = "/api/talent/flow";
                     charts_type = bean.cf;
                     break;
                 case "人才供需":
                     bean = {
-                        industry: vm.J_industry,
+                        industry: vm.J_industry203,
                         na: vm.J_na == "需求量" ? "need" : "all",
                         fp: vm.J_fp == "职能" ? "func" : "position",
                         type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
                     }
                     bean.top = 5;
                     bean.city = "";
-                    url = "http://10.101.1.171:10110/api/talent/exponential";
+                    url = "/api/talent/exponential";
                     charts_type = bean.na;
                     break;
                 case "人才薪酬":
                     bean = {
-                            industry: vm.J_industry,
+                            industry: vm.J_industry204,
                             type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4,
-                            index: 50,
-                            label: "年龄,学历,性别"
+                            index: 140,
+                            label: vm.label.join(","),
+                            top: 10
                         }
                         // bean.city = "";
-                    url = "http://10.101.1.171:10110/api/talent/salary/analysis";
+                    url = "/api/talent/salary/analysis";
                     charts_type = "tab1";
                     break;
                 default:
@@ -217,7 +224,7 @@ define(["../../lib/util.js"], function(util) {
                 console.log(bean);
             }
 
-            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
+            $.post("/api/info/write", bean, function(result) {
                 util.resResult(result, "添加分析说明成功", function() {
                     $(obj).prev().text(bean.report_info);
                 });
@@ -241,18 +248,35 @@ define(["../../lib/util.js"], function(util) {
                 default:
                     break;
             }
-            var url = "http://10.101.1.171:10110/report/config/all";
+            var url = "/report/config/all";
             var bean = {
                 report_type: _type
                     // config_type: "city"
             }
             $.post(url, bean, function(result) {
                 util.resResult(result);
-                vm.industry = result.data[0].checks;
-                if (result.data.length > 1) {
-                    vm.label = result.data[1].checks;
+                switch (bean.report_type) {
+                    case 201:
+                        vm.industry201 = result.data[0].checks;
+                        vm.J_industry201 = vm.industry201[0];
+                        break;
+                    case 202:
+                        vm.industry202 = result.data[0].checks;
+                        vm.J_industry202 = vm.industry202[0];
+                        break;
+                    case 203:
+                        vm.industry203 = result.data[0].checks;
+                        vm.J_industry203 = vm.industry203[0];
+                        break;
+                    case 204:
+                        vm.industry204 = result.data[0].checks;
+                        vm.label = result.data[4].checks;
+                        vm.J_industry204 = vm.industry204[0];
+                        break;
+                    default:
+                        break;
                 }
-                vm.J_industry = vm.industry[0];
+
             })
         }
     });
@@ -264,7 +288,16 @@ define(["../../lib/util.js"], function(util) {
     vm.$watch("J_type", function() {
         vm.analysisData();
     });
-    vm.$watch("J_industry", function(newValue, oldValue) {
+    vm.$watch("J_industry201", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_industry202", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_industry203", function() {
+        vm.analysisData();
+    });
+    vm.$watch("J_industry204", function() {
         vm.analysisData();
     });
     vm.$watch("J_direction", function() {

@@ -15,11 +15,10 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
         info: [],
         J_compensationtype: "职能薪酬分析",
         c_function: "",
-        c_industry: "互联网全行业",
-        c_region: "全国",
+        c_industry: "",
+        c_region: "",
         c_experience: "",
         c_time: "",
-        industry: [],
         report_info: "",
         data_disturb: [],
         data: {},
@@ -59,10 +58,10 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             onConfirm: function() {
                 var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
                 var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-                $.post("http://10.101.1.171:10110/api/data/cheat", bean, function(result) {
+                $.post("/api/data/cheat", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
-                        $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                        $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
                     });
                 })
             }
@@ -99,8 +98,13 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             vm.clearPassToCookie();
             window.location.href = "";
         },
-        analysisData: function() {
-            var param = vm.getBean();
+        analysisData: function(obj) {
+            var param = {};
+            if (obj.url) {
+                param = obj;
+            } else {
+                param = vm.getBean();
+            }
             // var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
             util.lockScreen();
             $.post(param.url, param.bean, function(result) {
@@ -108,7 +112,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                 util.resResult(result);
                 vm.data_disturb = result.data.data.data;
                 $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
-                $("#report_iframe").attr("src", "../../../src/lib/resource-report/remuneration.html");
+                $("#report_iframe").attr("src", "../lib/resource-report/remuneration.html");
                 $("#report_info").attr("api_url", result.data.data.api_url);
                 if (result.data.info.length > 0) {
                     $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
@@ -135,42 +139,36 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             var tab = vm.J_compensationtype;
             var bean = {};
             var url = "";
-            // var charts_type = "";
+            var charts_type = "";
             switch (tab) {
                 case "职能薪酬分析":
-
                     bean = {
-                            position: vm.c_function,
-                            industry: vm.c_industry,
-                            experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
-                            city: vm.c_region,
-                            t: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
-                        }
-                        // bean.position = "";
-                    url = "http://10.101.1.171:10110/api/func/salary/analysis";
-                    //  url = "http://rm.xunying.me/api/talent/distribution";
-                    charts_type = "tab2";
+                        name: vm.c_function,
+                        industry: vm.c_industry,
+                        experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
+                        city: vm.c_region,
+                        type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
+                        top: 10
+                    }
+                    url = "/api/func/salary/analysis";
                     break;
                 case "岗位薪酬分析":
 
                     bean = {
-                            position: vm.c_function,
-                            industry: vm.c_industry,
-                            experience: vm.c_experience,
-                            city: vm.c_region,
-                            t: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
-                            skill: vm.c_skill
-                        }
-                        // bean.position = "",
-                    url = "http://10.101.1.171:10110/api/position/salary/analysis";
-                    //  url = "http://rm.xunying.me/api/talent/distribution";
-                    charts_type = "tab2";
+                        name: vm.c_function,
+                        industry: vm.c_industry,
+                        experience: vm.c_experience,
+                        city: vm.c_region,
+                        type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
+                        top: 10
+                    }
+                    url = "/api/position/salary/analysis";
                     break;
                 default:
                     break;
             }
 
-            return { bean: bean, tab: tab, url: url };
+            return { bean: bean, url: url };
         },
         saveDesc: function(obj) {
             var user_id = $("#report_info").attr("user_id") ? $("#report_info").attr("user_id") : vm._id;
@@ -194,7 +192,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                 console.log(bean);
             }
 
-            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
+            $.post("/api/info/write", bean, function(result) {
                 util.resResult(result, "添加分析说明成功", function() {
                     $(obj).prev().text(bean.report_info);
                 });
@@ -207,7 +205,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
         },
         getJson: function() {
             //发送数据到后台
-            var url = "../../../../config203.json";
+            var url = "../data/config203.json";
             util.lockScreen();
             $.get(url, function(jsonObj) {
                 util.hideLock();
@@ -239,7 +237,16 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             document.title = '数联寻英';
             $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
             //生成数据
-            // vm.analysisData();
+            vm.analysisData({
+                bean: {
+                    industry: "互联网全行业",
+                    type: 2,
+                    index: 140,
+                    label: "年龄,学历,性别",
+                    top: 10
+                },
+                url: "/api/talent/salary/analysis"
+            })
             $("#result").bind("click", function() {
                 xy_select.init({
                     containerId: "positionDiv",

@@ -24,17 +24,18 @@ webpackJsonp([4,13],{
 	        info: [],
 	        J_chartstype: "人才分布",
 	        J_type: "近一个月",
-	        J_industry: "互联网全行业",
+	        J_industry201: "",
+	        J_industry202: "",
+	        J_industry203: "",
+	        J_industry204: "",
 	        J_direction: "人才流入",
 	        J_na: "需求量",
 	        J_cf: "热门城市",
 	        J_fp: "职能",
-	        J_experience: "",
-	        J_supply: "",
-	        industry: [],
-	        demand: [],
-	        experience: [],
-	        supply: [],
+	        industry201: [],
+	        industry202: [],
+	        industry203: [],
+	        industry204: [],
 	        label: [],
 	        report_info: "",
 	        data_disturb: [],
@@ -73,8 +74,9 @@ webpackJsonp([4,13],{
 	            width: 500,
 	            onConfirm: function() {
 	                var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
-	                var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-	                $.post("/api/data/cheat", bean, function(result) {
+	                var bean = { data: JSON.stringify(vm.data_disturb), api_url: vm.api_url, id: vm.data_id, api_time: vm.api_time, params: JSON.stringify(vm.params) };
+	                console.log(bean);
+	                $.post("/api/data/interpose", bean, function(result) {
 	                    util.resResult(result, "数据干预成功", function() {
 	                        $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
 	                        $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
@@ -116,7 +118,7 @@ webpackJsonp([4,13],{
 	        },
 	        analysisData: function() {
 	            var param = vm.getBean();
-	            var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
+	            var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : param.tab == "人才供需" ? "supplydemand" : "remuneration";
 	            util.lockScreen();
 	            $.post(param.url, param.bean, function(result) {
 	                util.hideLock();
@@ -142,8 +144,7 @@ webpackJsonp([4,13],{
 	                vm.params = result.data.data.params;
 	                vm.api_url = result.data.data.api_url;
 	                vm.data_id = result.data.data._id;
-	
-	
+	                vm.api_time = result.data.data.api_time;
 	            })
 	        },
 	        getBean: function() {
@@ -154,7 +155,7 @@ webpackJsonp([4,13],{
 	            switch (tab) {
 	                case "人才分布":
 	                    bean = {
-	                        industry: vm.J_industry,
+	                        industry: vm.J_industry201,
 	                        cf: vm.J_cf == "热门城市" ? "city" : "func",
 	                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
 	                    }
@@ -166,7 +167,7 @@ webpackJsonp([4,13],{
 	                    break;
 	                case "人才流动":
 	                    bean = {
-	                        industry: vm.J_industry,
+	                        industry: vm.J_industry202,
 	                        direction: vm.J_direction == "人才流入" ? "in" : "out",
 	                        cf: vm.J_cf == "热门城市" ? "city" : "func",
 	                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
@@ -178,7 +179,7 @@ webpackJsonp([4,13],{
 	                    break;
 	                case "人才供需":
 	                    bean = {
-	                        industry: vm.J_industry,
+	                        industry: vm.J_industry203,
 	                        na: vm.J_na == "需求量" ? "need" : "all",
 	                        fp: vm.J_fp == "职能" ? "func" : "position",
 	                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
@@ -190,14 +191,15 @@ webpackJsonp([4,13],{
 	                    break;
 	                case "人才薪酬":
 	                    bean = {
-	                            industry: vm.J_industry,
-	                            index: vm.J_supply == "<=30%" ? 30 : 50,
-	                            top: vm.J_experience == "TOP5" ? 5 : 10,
-	                            type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
+	                            industry: vm.J_industry204,
+	                            type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4,
+	                            index: 140,
+	                            label: vm.label.join(","),
+	                            top: 10
 	                        }
 	                        // bean.city = "";
 	                    url = "/api/talent/salary/analysis";
-	                    charts_type = bean.industry;
+	                    charts_type = "tab1";
 	                    break;
 	                default:
 	                    break;
@@ -258,14 +260,28 @@ webpackJsonp([4,13],{
 	            }
 	            $.post(url, bean, function(result) {
 	                util.resResult(result);
-	                vm.industry = result.data[0].checks;
-	                if (result.data.length > 1) {
-	                    vm.demand = result.data[1].checks;
-	                    vm.experience = result.data[2].checks;
-	                    vm.supply = result.data[3].checks;
-	                    vm.label = result.data[4].checks;
+	                switch (bean.report_type) {
+	                    case 201:
+	                        vm.industry201 = result.data[0].checks;
+	                        vm.J_industry201 = vm.industry201[0];
+	                        break;
+	                    case 202:
+	                        vm.industry202 = result.data[0].checks;
+	                        vm.J_industry202 = vm.industry202[0];
+	                        break;
+	                    case 203:
+	                        vm.industry203 = result.data[0].checks;
+	                        vm.J_industry203 = vm.industry203[0];
+	                        break;
+	                    case 204:
+	                        vm.industry204 = result.data[0].checks;
+	                        vm.label = result.data[4].checks;
+	                        vm.J_industry204 = vm.industry204[0];
+	                        break;
+	                    default:
+	                        break;
 	                }
-	                vm.J_industry = vm.industry[0];
+	
 	            })
 	        }
 	    });
@@ -277,7 +293,16 @@ webpackJsonp([4,13],{
 	    vm.$watch("J_type", function() {
 	        vm.analysisData();
 	    });
-	    vm.$watch("J_industry", function(newValue, oldValue) {
+	    vm.$watch("J_industry201", function() {
+	        vm.analysisData();
+	    });
+	    vm.$watch("J_industry202", function() {
+	        vm.analysisData();
+	    });
+	    vm.$watch("J_industry203", function() {
+	        vm.analysisData();
+	    });
+	    vm.$watch("J_industry204", function() {
 	        vm.analysisData();
 	    });
 	    vm.$watch("J_direction", function() {
@@ -290,12 +315,6 @@ webpackJsonp([4,13],{
 	        vm.analysisData();
 	    });
 	    vm.$watch("J_fp", function() {
-	        vm.analysisData();
-	    });
-	    vm.$watch("J_experience", function() {
-	        vm.analysisData();
-	    });
-	    vm.$watch("J_supply", function() {
 	        vm.analysisData();
 	    });
 	
@@ -2123,4 +2142,4 @@ webpackJsonp([4,13],{
 /***/ })
 
 });
-//# sourceMappingURL=4.chunk.a60f326d.js.map
+//# sourceMappingURL=4.chunk.246672e9.js.map

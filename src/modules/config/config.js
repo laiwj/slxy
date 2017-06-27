@@ -69,9 +69,9 @@ define(["../../lib/util.js"], function(util) {
             console.log(bean);
             bean.report_type = vm.report_type;
             if (vm.report_type == 204) {
-                var url = "http://10.101.1.171:10110/report/config/allmodify";
+                var url = "/report/config/allmodify";
             } else {
-                var url = "http://10.101.1.171:10110/report/config/modify";
+                var url = "/report/config/modify";
             }
             $.post(url, bean, function(data) {
                 util.resResult(data, "配置成功");
@@ -107,7 +107,7 @@ define(["../../lib/util.js"], function(util) {
         getJson: function() {
             //发送数据到后台
             num = vm.report_type == 204 ? 201 : 202;
-            var url = "../../../../config" + num + ".json";
+            var url = "../data/config" + num + ".json";
             util.lockScreen();
             $.get(url, function(jsonObj) {
                 util.hideLock();

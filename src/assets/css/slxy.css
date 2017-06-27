@@ -4244,3 +4244,119 @@
     .industry-btn a.btn:hover {
         background: #2b76d1;
     }
+    
+    .mask {
+        background: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        display: none;
+        /*position: relative;*/
+    }
+    
+    .mask-dialog {
+        width: 840px;
+        height: 500px;
+        position: absolute;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: white;
+    }
+    
+    .mask-header {
+        height: 50px;
+        width: 100%;
+        background-color: #eee;
+        position: relative;
+        line-height: 50px;
+        box-sizing: border-box;
+        padding: 0 20px;
+        /*border-bottom: 1px solid #eee;*/
+    }
+    
+    .mask-close {
+        position: absolute;
+        right: 10px;
+        top: 16px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+    
+    .mask-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #000;
+    }
+    
+    .mask-body {
+        width: 100%;
+        height: 450px;
+        position: relative;
+    }
+    
+    .mask-icon {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #006dcc;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        text-align: center;
+        line-height: 150px;
+        color: #fff;
+        font-weight: 700;
+    }
+    
+    .mask-tag {
+        position: absolute;
+        width: 300px;
+        height: 80px;
+        border: 1px dashed #ccc;
+        text-align: center;
+        color: black;
+        padding: 10px 0;
+        box-sizing: border-box;
+        display: none;
+    }
+    
+    .tag1 {
+        top: 50px;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+    
+    .tag2 {
+        bottom: 50px;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+    
+    .tag3 {
+        top: 0;
+        bottom: 0px;
+        left: 30px;
+        margin: auto;
+    }
+    
+    .tag4 {
+        top: 0;
+        bottom: 0px;
+        right: 30px;
+        margin: auto;
+    }
