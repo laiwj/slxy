@@ -111,7 +111,7 @@ define(["../../lib/util.js"], function(util) {
         },
         initList: function(obj) {
             util.lockScreen();
-            $.post('/user/list/b', obj, function(data) {
+            $.post('http://10.101.1.171:10110/user/list/b', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
                 if (data.data.data.length == 0) {
@@ -165,7 +165,7 @@ define(["../../lib/util.js"], function(util) {
             // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
 
 
-            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
+            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
                 util.resResult(data, "设置成功", function() {
                     vm.initList(vm.list.$model);
                     var widget = avalon.vmodels.pp

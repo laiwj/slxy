@@ -56,7 +56,7 @@ define([], function(api) {
                     "password": vm.password
                 }
                 //发送数据到后台
-            var url = "/user/login";
+            var url = "http://10.101.1.171:10110/user/login";
             vm.isSumbit = true;
             $.post(url, bean, function(jsonObj) {
                 vm.isSumbit = false;
