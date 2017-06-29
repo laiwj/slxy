@@ -147,8 +147,9 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                         industry: vm.c_industry,
                         experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
                         city: vm.c_region,
+                        // index: 180,
                         type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
-                        top: 10
+                        top: 5
                     }
                     url = "http://10.101.1.171:10110/api/func/salary/analysis";
                     break;
@@ -159,6 +160,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                         industry: vm.c_industry,
                         experience: vm.c_experience,
                         city: vm.c_region,
+                        // index: 180,
                         type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
                         top: 10
                     }
@@ -241,9 +243,9 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                 bean: {
                     industry: "互联网全行业",
                     type: 2,
-                    index: 140,
+                    index: 180,
                     label: "年龄,学历,性别",
-                    top: 10
+                    top: 5
                 },
                 url: "http://10.101.1.171:10110/api/talent/salary/analysis"
             })

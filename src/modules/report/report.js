@@ -188,9 +188,9 @@ define(["../../lib/util.js"], function(util) {
                     bean = {
                             industry: vm.J_industry204,
                             type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4,
-                            index: 140,
+                            index: 180,
                             label: vm.label.join(","),
-                            top: 10
+                            top: 5
                         }
                         // bean.city = "";
                     url = "http://10.101.1.171:10110/api/talent/salary/analysis";

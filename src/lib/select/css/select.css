@@ -5,7 +5,7 @@
     height: 28px;
     background: #f6f8fa url(img/select.png) no-repeat right 6px;
     width: 100%;
-    text-indent: 2px;
+    /*text-indent: 2px;*/
     border-radius: 5px;
 }
 

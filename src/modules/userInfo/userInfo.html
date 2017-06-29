@@ -123,10 +123,11 @@
                                     <!--邀请用户弹框-->
 
                                     <div class="clearfix fr" ms-visible="type=='1'||type=='2'">
-                                        <select ms-duplex="serviceName" class="select-warp fl mt10" id="service_id" style="width: 100px;">
-                                            <option value="客户名称">客户名称</option>
-                                            <option value="罗春">罗春</option>
-                                            <option value="刘杰">刘杰</option>
+                                        <select ms-duplex="serviceName" class="select-warp fl mt10" id="service_id">
+                                            <option value="请选择客户名称">请选择客户名称</option>
+                                            <!--<option value="罗春">罗春</option>
+                                            <option value="刘杰">刘杰</option>-->
+                                            <option ms-attr-value="el"  ms-repeat-el="serviceNameList">{{el}}</option>                                         
                                     </select>
 
                                     </div>
@@ -147,7 +148,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="userList">
-                                    <tr ms-repeat-el="userList">
+                                    <tr ms-repeat-el="userList" ms-visible="serviceName=='请选择客户名称'||el.pm_user_name==serviceName">
                                         <td>
                                             {{$index+1}}
                                         </td>

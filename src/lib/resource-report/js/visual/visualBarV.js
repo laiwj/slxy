@@ -17,10 +17,10 @@ function getOptionBar1(data, tips) {
         return new echarts.graphic.LinearGradient(0, 1, 0, 0, cg)
     };
     var colorCfg = [
-        ['#87BCFC', '#86BCFC'],
-        ['#286FC8', '#286FC8'],
-        ['#498FE6', '#498FE6'],
-        ['#094dc3', '#498FE6']
+        ['#60acfa', '#60acfa'],
+        ['#21c9d0', '#21c9d0'],
+        ['#9c44c4', '#9c44c4'],
+        ['#2b76d1', '#2b76d1']
     ];
     var color = [GDC(colorCfg[0]), GDC(colorCfg[1]), GDC(colorCfg[2]), GDC(colorCfg[3])];
 
@@ -42,8 +42,9 @@ function getOptionBar1(data, tips) {
             trigger: 'item',
             textStyle: { fontFamily: "宋体", fontSize: 12 },
             formatter: function(p) {
-                return "<p align='left'>该岗位热门关键词</p><div>" +
-                    getWordCloudHtml(tips[p.name]) + "</div><p align='right'>数据量：11234</p>";
+                var wordC = "";
+                if (p.seriesName in tips && p.name in tips[p.seriesName]) wordC = getWordCloudHtml(tips[p.seriesName][p.name]);
+                return "<p align='left'>该岗位热门关键词</p><div>" + wordC + "</div><p align='right'>数据量：11234</p>";
             }
         },
         legend: { data: legend, show: true },
@@ -64,7 +65,7 @@ function getOptionBar2(data, tips) {
         ['#EAF3FE', '#ADD1FC'],
         ['#498FE6', '#2D74CD'],
         ['#286FC8', '#286FC8'],
-        ['#094dc3', '#498FE6']
+        ['#185eb6', '#0a4fa5'],
     ];
     var color = [GDC(colorCfg[0]), GDC(colorCfg[1]), GDC(colorCfg[2]), GDC(colorCfg[3])];
 
@@ -95,8 +96,9 @@ function getOptionBar2(data, tips) {
             trigger: 'item',
             textStyle: { fontFamily: "宋体", fontSize: 12 },
             formatter: function(p) {
-                return "<p>该岗位热门关键词（点击查看详情）</p><div>" +
-                    getWordCloudHtml(tips[p.name]) + "</div><p align='right'>数据量：11234</p>";
+                var wordC = "";
+                if (p.seriesName in tips && p.name in tips[p.seriesName]) wordC = getWordCloudHtml(tips[p.seriesName][p.name]);
+                return "<p>该岗位热门关键词（点击查看详情）</p><div>" + wordC + "</div><p align='right'>数据量：11234</p>";
             }
         },
         legend: { data: legend, show: false },
@@ -120,13 +122,13 @@ function getWordCloudHtml(dt, color) {
         color = color || "#fff"; //标签内右边距， 标签字体颜色
     var tempId = "WorldCloudTemp";
     if ($("#" + tempId).length == 0) $(document.body).append("<div style='position: absolute; top:10px'><label id='" + tempId + "'></label></div>");
-    var tpv = dt.map(function(d) { return d.value; }),
+    var tpv = dt.map(function(d) { return d[1]; }),
         maxV = Math.max.apply(null, tpv),
         minV = Math.min.apply(null, tpv),
         disV = maxV - minV;
 
     // 数据值映射字体大小
-    var data = dt.map(function(d) { return [d.name, parseInt(1.0 * (d.value - minV) * disF / disV + minFontSize)]; });
+    var data = dt.map(function(d) { return [d[0], parseInt(1.0 * (d[1] - minV) * disF / disV + minFontSize)]; });
 
     var div = $("#" + tempId);
 
@@ -139,9 +141,9 @@ function getWordCloudHtml(dt, color) {
     function sortMiddle(_dt) {
         var temp = _dt.sort(function(a, b) { return b[1] - a[1]; }),
             rst = _dt.map(function(d) { return ["", 0]; });
-        var mid = parseInt(temp.length / 2) - 1;
+        var mid = Math.ceil(temp.length / 2) - 1;
         temp.forEach(function(d, i) {
-            var index = mid + ((i % 2 == 0) ? (-1 * i / 2) : parseInt((i + 1) / 2));
+            var index = mid + ((i % 2 == 0) ? parseInt(-1 * i / 2) : parseInt((i + 1) / 2));
             rst[index][0] = temp[i][0];
             rst[index][1] = temp[i][1];
         });

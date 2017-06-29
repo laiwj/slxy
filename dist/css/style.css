@@ -477,7 +477,7 @@ input, select, textarea, button {
     height: 28px;
     background: #f6f8fa url(/images/select.6b244d01d403db9e031ddbfee11bb449.png) no-repeat right 6px;
     width: 100%;
-    text-indent: 2px;
+    /*text-indent: 2px;*/
     border-radius: 5px;
 }
 

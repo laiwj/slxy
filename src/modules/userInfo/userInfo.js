@@ -16,6 +16,8 @@ define(["../../lib/util.js"], function(util) {
         toggle: false,
         count: 0,
         userList: [],
+        serviceName: "请选择客户名称",
+        serviceNameList: [],
         list: {},
         pager: {
             currentPage: 1,
@@ -129,7 +131,13 @@ define(["../../lib/util.js"], function(util) {
                             widget.totalItems = data.data.count;
                         }
                     }
-
+                    // 存储客户名称列表
+                    vm.serviceNameList = [];
+                    vm.serviceName = "请选择客户名称";
+                    $.each(vm.userList, function(i, v) {
+                        vm.serviceNameList.push(v.pm_user_name);
+                        vm.serviceNameList = vm.unique(vm.serviceNameList);
+                    })
                 }
 
             })
@@ -175,9 +183,21 @@ define(["../../lib/util.js"], function(util) {
                 });
 
             })
+        },
+        unique: function(opt) {
+            var res = [];
+            var json = {};
+            for (var i = 0; i < opt.length; i++) {
+                if (!json[opt[i]]) {
+                    res.push(opt[i]);
+                    json[opt[i]] = 1;
+                }
+            }
+            return res;
         }
     });
     vm.$skipArray = ["pager"]
+
 
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成

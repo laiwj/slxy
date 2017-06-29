@@ -1905,7 +1905,7 @@ webpackJsonp([12,13],{
 	        },
 	        initList: function(obj, objDom) {
 	            util.lockScreen();
-	            $.post('/user/list', obj, function(data) {
+	            $.post('http://10.101.1.171:10110/user/list', obj, function(data) {
 	                util.hideLock();
 	                util.resResult(data);
 	                if (data.data.data.length == 0) {
@@ -1987,7 +1987,7 @@ webpackJsonp([12,13],{
 	            }
 	            vm.isSumbit = true;
 	
-	            $.post('/user/regist', bean, function(data) {
+	            $.post('http://10.101.1.171:10110/user/regist', bean, function(data) {
 	                vm.isSumbit = false;
 	                util.resResult(data, "添加账户成功", function() {
 	                    if (type == 0) {
@@ -2028,7 +2028,7 @@ webpackJsonp([12,13],{
 	            // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
 	
 	
-	            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
+	            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
 	                util.resResult(data, "设置成功", function() {
 	                    vm.initList(vm.list.$model);
 	                    var widget = avalon.vmodels.pp
@@ -2085,4 +2085,4 @@ webpackJsonp([12,13],{
 /***/ })
 
 });
-//# sourceMappingURL=12.chunk.f0035536.js.map
+//# sourceMappingURL=12.chunk.11d95baf.js.map
