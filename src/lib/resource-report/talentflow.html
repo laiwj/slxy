@@ -114,7 +114,7 @@
 
             if (type == "city") {
                 ShowMapTop("charts_wrap", datas, function(city, obj) {
-                    $.post("http://10.101.1.171:10110/api/talent/flow", {
+                    $.post("/api/talent/flow", {
                         "city": city,
                         'industry': bean.industry,
                         'type': bean.type,

@@ -13,7 +13,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
         data_id: "",
         params: {},
         info: [],
-        J_compensationtype: "职能薪酬分析",
+        J_compensationtype: "职能",
         c_function: "",
         c_industry: "",
         c_region: "",
@@ -58,10 +58,10 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             onConfirm: function() {
                 var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
                 var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-                $.post("http://10.101.1.171:10110/api/data/cheat", bean, function(result) {
+                $.post("/api/data/cheat", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
-                        $("#report_iframe").attr("src", "../../../src/lib/resource-report/" + tab + ".html");
+                        $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
                     });
                 })
             }
@@ -112,7 +112,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                 util.resResult(result);
                 vm.data_disturb = result.data.data.data;
                 $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
-                $("#report_iframe").attr("src", "../../../src/lib/resource-report/remuneration.html");
+                $("#report_iframe").attr("src", "../lib/resource-report/remuneration.html");
                 $("#report_info").attr("api_url", result.data.data.api_url);
                 if (result.data.info.length > 0) {
                     $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
@@ -141,7 +141,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             var url = "";
             var charts_type = "";
             switch (tab) {
-                case "职能薪酬分析":
+                case "职能":
                     bean = {
                         name: vm.c_function,
                         industry: vm.c_industry,
@@ -151,9 +151,9 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                         type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
                         top: 5
                     }
-                    url = "http://10.101.1.171:10110/api/func/salary/analysis";
+                    url = "/api/func/salary/analysis";
                     break;
-                case "岗位薪酬分析":
+                case "岗位":
 
                     bean = {
                         name: vm.c_function,
@@ -164,7 +164,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                         type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
                         top: 10
                     }
-                    url = "http://10.101.1.171:10110/api/position/salary/analysis";
+                    url = "/api/position/salary/analysis";
                     break;
                 default:
                     break;
@@ -194,7 +194,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                 console.log(bean);
             }
 
-            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
+            $.post("/api/info/write", bean, function(result) {
                 util.resResult(result, "添加分析说明成功", function() {
                     $(obj).prev().text(bean.report_info);
                 });
@@ -207,7 +207,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
         },
         getJson: function() {
             //发送数据到后台
-            var url = "../../../../config203.json";
+            var url = "../data/config203.json";
             util.lockScreen();
             $.get(url, function(jsonObj) {
                 util.hideLock();
@@ -225,7 +225,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
     });
 
     vm.$watch("J_compensationtype", function() {
-        // vm.analysisData();
+        $("#positionDiv").html("");
     });
 
 
@@ -241,13 +241,14 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             //生成数据
             vm.analysisData({
                 bean: {
-                    industry: "互联网全行业",
+                    name: "产品,设计,开发,数据,测试",
+                    experience: "",
+                    city: "",
+                    industry: "",
                     type: 2,
-                    index: 180,
-                    label: "年龄,学历,性别",
                     top: 5
                 },
-                url: "http://10.101.1.171:10110/api/talent/salary/analysis"
+                url: "/api/func/salary/analysis"
             })
             $("#result").bind("click", function() {
                 xy_select.init({

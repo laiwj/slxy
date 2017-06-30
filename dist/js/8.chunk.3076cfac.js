@@ -1,4 +1,4 @@
-webpackJsonp([12,13],{
+webpackJsonp([8,13],{
 
 /***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
@@ -1783,19 +1783,37 @@ webpackJsonp([12,13],{
 
 /***/ }),
 
-/***/ 51:
+/***/ 47:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38)], __WEBPACK_AMD_DEFINE_RESULT__ = function(util) {
-	    // 定义所有相关的vmodel
+	    function Show2(data) {
+	        var output = '',
+	            flag, output2 = '';
+	        for (var i in data) {
+	            output += '<li onclick="SubLayer2(\'' + data[i] + '\')"><label class="mr30"><input type="radio" id="checkbox_a3" class="chk_1" value="chk_1" name="chk_1" /> <label for="checkbox_a3"></label>' + i + '</label></li>';
+	        }
+	        $('#drag').width('150px');
+	        $('#FuntypeList').html('<ul>' + output + '</ul>');
+	        // 鼠标悬停变色
+	        $('#FuntypeAlpha li').hover(
+	            function() { $(this).addClass('over') },
+	            function() { $(this).removeClass('over') }
+	        );
+	        // 点击弹出子菜单
+	        $('#FuntypeList li').click(
+	            function(e) {
+	                $("#sublist")
+	                    .hover(function() {
+	                            $(this).show()
+	                        },
+	                        function() { $(this).hide() })
+	            })
+	    }
+	
+	    // 定义所有相关的 vmodel
 	    var vm = avalon.define({
-	        $id: "account",
-	        isSumbit: false,
-	        user_username: null,
-	        user_account: null,
-	        user_password: null,
-	        newlist: [],
-	        uid: "",
+	        $id: "config",
 	        _id: "",
 	        type: "",
 	        _type: null,
@@ -1803,93 +1821,9 @@ webpackJsonp([12,13],{
 	        username: "",
 	        identity: "",
 	        toggle: false,
-	        list: {
-	            page: 1,
-	            force: true,
-	            user_id: ''
-	        },
-	        count: 0,
-	        bigList: [],
-	        smallList: [],
-	        userList: [],
-	        skipId: {},
-	        pager: {
-	            currentPage: 1,
-	            totalItems: 0,
-	            showJumper: true,
-	            alwaysShowNext: true,
-	            alwaysShowPrev: true,
-	            prevText: "上一页",
-	            nextText: "下一页",
-	            onJump: function(e, page) {
-	                var param = {
-	                        force: false,
-	                        page: page.currentPage,
-	                        user_id: ''
-	                    }
-	                    // console.log(param);
-	                vm.initList(param);
-	            }
-	
-	        },
-	        show: function(id) {
-	            var arr = id.split(",");
-	            var id = arr[0];
-	            var index = arr[1];
-	            if (id.charAt(0) == "g") {
-	                for (var i = 0; i < $(".J_power").length; i++) {
-	                    if (i == index) {
-	                        $(this).attr("isClick", "yes");
-	                        break;
-	                    }
-	                }
-	                var dialog = avalon.vmodels[id];
-	
-	            } else {
-	                vm._type = index - 0;
-	                var dialog = avalon.vmodels[id];
-	            }
-	            if (!dialog) {
-	
-	            } else {
-	                dialog.toggle = true;
-	            }
-	        },
-	        $eeOpts: {
-	            title: "创建账号",
-	            width: 500,
-	            onConfirm: function() {
-	                vm.addAcount(vm._type);
-	            }
-	        },
-	        $ggOpts: {
-	            title: "操作报告",
-	            width: 500,
-	            onOpen: function() {
-	                var oldpowerlist = [];
-	                $(".J_power").each(function(i, v) {
-	                    if ($(v).attr("isClick")) {
-	                        vm.uid = $(v).attr("data_userid");
-	                        oldpowerlist = $(v).attr('_powerList').split(',');
-	                        $.each(oldpowerlist, function(index, val) {
-	                            $.each($("#powerPM_dialog input[type='checkbox']"), function(i, v) {
-	                                var boxval = v.value;
-	                                if (boxval == val) {
-	                                    $(this).attr('checked', 'checked');
-	                                    vm.newlist.push(val);
-	                                }
-	                            });
-	
-	                        });
-	
-	                        $(v).attr("isClick", "");
-	                    }
-	                });
-	            },
-	            onConfirm: function() {
-	                vm.savePower({ user_id: vm.uid }, vm.newlist);
-	            }
-	        },
+	        data: [],
+	        configstype: "人才分布",
+	        report_type: 201,
 	        getPassFromCookie: function() {
 	            return window.$.cookie(location.host + "_userinfo");
 	        },
@@ -1903,166 +1837,108 @@ webpackJsonp([12,13],{
 	            vm.clearPassToCookie();
 	            window.location.href = "";
 	        },
-	        initList: function(obj, objDom) {
+	        doClick: function(data) {
+	            $("#sublist").empty();
+	            $(".tags").attr("isMe", "");
+	            var top = $(this)[0].parentNode.offsetTop,
+	                left = $(this)[0].parentNode.offsetWidth;
+	            var el = $(this)[0].parentNode.nextElementSibling.lastElementChild;
+	            $(el).attr("isMe", "yes");
+	            var dragHtml = '<div id="FuntypeAlpha">'; //职能类别
+	            dragHtml += '<div id="FuntypeList"></div>'; //职能类别列表
+	            dragHtml += '</div>';
+	            $('#drag_con').html(dragHtml);
+	            Show2(data.$model.tags);
+	            $('#maskLayer').css({ top: top + 44, left: left + 129 }).show();
+	            $("#sublist").css({ top: top + 44, left: left - 92 })
+	        },
+	        go: function() {
+	            var bean = vm.getdatas();
+	            console.log(bean);
+	            bean.report_type = vm.report_type;
+	            if (vm.report_type == 204) {
+	                var url = "/report/config/allmodify";
+	            } else {
+	                var url = "/report/config/modify";
+	            }
+	            $.post(url, bean, function(data) {
+	                util.resResult(data, "配置成功");
+	            })
+	        },
+	        getdatas: function() {
+	            var bean = {};
+	            var _util = ["industry", "demand", "experience", "supply", "label"];
+	            $(".tags").each(function(i, v) {
+	                    var xy_Arr = [];
+	                    if (vm.report_type == 204) {
+	                        $(v).find("span").each(function(i, v) {
+	                            xy_Arr.push($(this).text());
+	                        })
+	                        bean[_util[i]] = xy_Arr.join(",");
+	                    } else {
+	                        $(v).find("span").each(function(i, v) {
+	                            xy_Arr.push($(this).text());
+	                        })
+	                        bean.check = xy_Arr.join(",");
+	                        bean.config_type = "industry";
+	                    }
+	
+	                })
+	                // console.log(bean);
+	            return bean;
+	        },
+	        domLisenter: function() {
+	            $(".tag").find("i").on("click", function() {
+	                $(this).parent().remove();
+	            });
+	        },
+	        getJson: function() {
+	            //发送数据到后台
+	            num = vm.report_type == 204 ? 201 : 202;
+	            var url = "../data/config" + num + ".json";
 	            util.lockScreen();
-	            $.post('http://10.101.1.171:10110/user/list', obj, function(data) {
+	            $.get(url, function(jsonObj) {
 	                util.hideLock();
-	                util.resResult(data);
-	                if (data.data.data.length == 0) {
-	                    if (obj.user_id) {
-	                        objDom.text('暂无数据');
-	                        vm.list.user_id = '';
-	                        vm.list.page = 1;
-	                    } else {
-	                        $(".table_li").hide();
-	                        $(".null-model").show();
-	                    }
-	                } else {
-	
-	                    $(".null-model").hide();
-	                    if (obj.user_id) {
-	                        vm.smallList = data.data.data;
-	                        vm.list.user_id = '';
-	                        vm.list.page = 1;
-	                    } else {
-	                        vm.count = data.data.count;
-	                        if (vm.type == "2") {
-	                            vm.userList = data.data.data;
-	                        } else if (vm.type == "1") {
-	                            // $(".table_li").show();
-	                            vm.bigList = data.data.data;
-	                        }
-	                        if (obj.page == 1) {
-	                            var widget = avalon.vmodels.pp
-	                            if (widget) {
-	                                widget.totalItems = data.data.count;
-	                            }
-	
-	                        }
-	                    }
-	                }
-	
-	                vm.domListener();
-	            })
-	        },
-	        domListener: function() {
-	            /*展开子账号*/
-	            $(".J_click_pull").off().on('click', function() {
-	                var num = $(this).text().trim();
-	                if (num == "0") {
-	                    util.tips("没有子账号");
-	                    return;
-	                };
-	                var _this = $(this).parent().parent().next()
-	                if (_this.is(":hidden")) {
-	                    $(".pull_model").slideUp("fast");
-	                    var objDom = $(this).find('.smaillList');
-	                    vm.list.user_id = $(this).attr('_id');
-	                    vm.list.page = '';
-	                    vm.initList(vm.list.$model, objDom);
-	                    _this.slideDown("fast");
-	                } else {
-	                    vm.smallList = [];
-	                    _this.slideUp("fast");
-	                }
-	
+	                vm.data = jsonObj.data;
+	                vm.domLisenter();
 	            });
-	            /*跳转用户列表页*/
-	            $(".J_click_skip").off().on('click', function() {
-	                var param = $(this).attr("_id");
-	                window.location.href = "/#!/userInfo/" + param;
-	            });
-	
-	
-	        },
-	        addAcount: function(type) {
-	
-	            if (vm.isSumbit) {
-	                return;
-	            }
-	            var bean = {
-	                username: vm.user_username,
-	                account: vm.user_account,
-	                password: vm.user_password - 0
-	            }
-	            vm.isSumbit = true;
-	
-	            $.post('http://10.101.1.171:10110/user/regist', bean, function(data) {
-	                vm.isSumbit = false;
-	                util.resResult(data, "添加账户成功", function() {
-	                    if (type == 0) {
-	                        vm.initList(vm.list.$model);
-	                    }
-	                });
-	
-	            })
-	        },
-	        savePower: function(param, oldpowerlist) {
-	            var newpower = [];
-	            $.each($("#powerPM_dialog").find("input[type='checkbox']"), function(index) {
-	                if ($(this).is(':checked')) {
-	                    newpower.push($(this).attr("value"))
-	                }
-	
-	            });
-	            var contactArr = [];
-	            $.each(newpower, function(i) {
-	                if ($.inArray(newpower[i], oldpowerlist) > -1) {
-	                    contactArr.push(newpower[i]);
-	                }
-	            })
-	
-	            var remove = [];
-	            $.each(oldpowerlist, function(i) {
-	                if ($.inArray(oldpowerlist[i], contactArr) == -1) {
-	                    remove.push(oldpowerlist[i]);
-	                }
-	            })
-	            var add = [];
-	            $.each(newpower, function(i) {
-	                if ($.inArray(newpower[i], contactArr) == -1) {
-	                    add.push(newpower[i]);
-	                }
-	            })
-	
-	            // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
-	
-	
-	            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
-	                util.resResult(data, "设置成功", function() {
-	                    vm.initList(vm.list.$model);
-	                    var widget = avalon.vmodels.pp
-	                    if (widget) {
-	                        widget.currentPage = 1;
-	                    }
-	                });
-	
-	            })
 	        }
+	
+	    });
+	    vm.$watch("configstype", function() {
+	        switch (vm.configstype) {
+	            case "人才分布":
+	                vm.report_type = 201;
+	                break;
+	            case "人才流动":
+	                vm.report_type = 202;
+	                break;
+	            case "人才供需":
+	                vm.report_type = 203;
+	                break;
+	            case "热门岗位人群的薪酬及特征画像":
+	                vm.report_type = 204;
+	                break;
+	            default:
+	                break;
+	        }
+	
+	        vm.getJson();
+	
 	    });
 	
-	    vm.$skipArray = ["pager"]
-	
+	    //开始扫描编译
+	    avalon.scan(document.body);
 	    return avalon.controller(function($ctrl) {
-	        avalon.scan(document.body);
 	        // 视图渲染后，意思是avalon.scan完成
 	        $ctrl.$onRendered = function() {
 	            document.title = '数联寻英';
-	            // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
-	            //     if ($(this).children().attr("href") == location.hash) {
-	            //         $(this).addClass('md-accent-bg');
-	            //         return false; // 跳出循环
-	            //     }
-	            // });
-	            $('#side_accordion div').removeClass('md-accent-bg').eq(4).addClass('md-accent-bg');
-	
-	            //生成列表
-	            vm.initList(vm.list.$model);
-	
-	
+	            $('#side_accordion div').removeClass('md-accent-bg').eq(2).addClass('md-accent-bg');
 	        };
+	
 	        // 进入视图
 	        $ctrl.$onEnter = function(param, rs, rj) {
+	            vm.getJson();
 	            var userinfo = vm.getPassFromCookie();
 	            var userBean = userinfo.split('|');
 	            vm._id = userBean[0];
@@ -2075,7 +1951,6 @@ webpackJsonp([12,13],{
 	        // 对应的视图销毁前
 	        $ctrl.$onBeforeUnload = function() {
 	
-	
 	        };
 	        $ctrl.$vmodels = [vm];
 	    })
@@ -2085,4 +1960,4 @@ webpackJsonp([12,13],{
 /***/ })
 
 });
-//# sourceMappingURL=12.chunk.11d95baf.js.map
+//# sourceMappingURL=8.chunk.3076cfac.js.map

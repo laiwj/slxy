@@ -61,7 +61,7 @@ webpackJsonp([2,13],{
 	                    "password": vm.password
 	                }
 	                //发送数据到后台
-	            var url = "http://10.101.1.171:10110/user/login";
+	            var url = "/user/login";
 	            vm.isSumbit = true;
 	            $.post(url, bean, function(jsonObj) {
 	                vm.isSumbit = false;
@@ -136,4 +136,4 @@ webpackJsonp([2,13],{
 /***/ })
 
 });
-//# sourceMappingURL=2.chunk.7b8d05b9.js.map
+//# sourceMappingURL=2.chunk.ca2fd4d6.js.map
