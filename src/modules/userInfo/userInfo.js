@@ -29,12 +29,19 @@ define(["../../lib/util.js"], function(util) {
             nextText: "下一页",
             onJump: function(e, page) {
                 var param = {
-                        force: false,
-                        page: page.currentPage,
-                        user_id: vm.list.id ? vm.list.id : ''
-                    }
-                    // console.log(param);
-                vm.initList(param);
+                    force: false,
+                    page: page.currentPage,
+                    user_id: vm.list.id ? vm.list.id : ''
+                }
+                vm.initList(param, function() {
+                    // 存储客户名称列表
+                    vm.serviceNameList = [];
+                    vm.serviceName = "请选择客户名称";
+                    $.each(vm.userList, function(i, v) {
+                        vm.serviceNameList.push({ id: v.pm_user_id, name: v.pm_user_name });
+                    })
+                    vm.serviceNameList = vm.unique(vm.serviceNameList);
+                });
             }
 
         },
@@ -42,13 +49,18 @@ define(["../../lib/util.js"], function(util) {
             var arr = id.split(",");
             var id = arr[0];
             var index = arr[1];
-            if (id.charAt(0) == "g") {
-                for (var i = 0; i < $(".J_power").length; i++) {
-                    if (i == index) {
-                        $(this).attr("isClick", "yes");
-                        break;
-                    }
-                }
+            if (id.charAt(0) == "d") {
+                var oldpowerlist = [];
+                vm.newlist = [];
+                var $el = $(".J_power").eq(index);
+                vm.uid = $el.attr("data_userid");
+                oldpowerlist = $el.attr('_powerList').split(',');
+                $("#powerB_dialog input[type='checkbox']").each(function() {
+                    $(this).removeAttr("checked");
+                });
+                $.each(oldpowerlist, function(index, val) {
+                    $("#powerB_dialog input:checkbox[value='" + val + "']").prop('checked', true);
+                });
                 var dialog = avalon.vmodels[id];
 
             } else {
@@ -70,30 +82,9 @@ define(["../../lib/util.js"], function(util) {
                 alert("你点击了确定");
             }
         },
-        $ggOpts: {
+        $ddOpts: {
             title: "操作报告",
             width: 500,
-            onOpen: function() {
-                var oldpowerlist = [];
-                $(".J_power").each(function(i, v) {
-                    if ($(v).attr("isClick")) {
-                        vm.uid = $(v).attr("data_userid");
-                        oldpowerlist = $(v).attr('_powerList').split(',');
-                        $.each(oldpowerlist, function(index, val) {
-                            $.each($("#powerB_dialog input[type='checkbox']"), function(i, v) {
-                                var boxval = v.value;
-                                if (boxval == val) {
-                                    $(this).attr('checked', 'checked');
-                                    vm.newlist.push(val);
-                                }
-                            });
-
-                        });
-
-                        $(v).attr("isClick", "");
-                    }
-                });
-            },
             onConfirm: function() {
                 vm.savePower({ user_id: vm.uid }, vm.newlist);
             }
@@ -111,9 +102,9 @@ define(["../../lib/util.js"], function(util) {
             vm.clearPassToCookie();
             window.location.href = "";
         },
-        initList: function(obj) {
+        initList: function(obj, callback) {
             util.lockScreen();
-            $.post('/user/list/b', obj, function(data) {
+            $.post('http://10.101.1.171:10110/user/list/b', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
                 if (data.data.data.length == 0) {
@@ -131,20 +122,20 @@ define(["../../lib/util.js"], function(util) {
                             widget.totalItems = data.data.count;
                         }
                     }
-                    // 存储客户名称列表
-                    vm.serviceNameList = [];
-                    vm.serviceName = "请选择客户名称";
-                    $.each(vm.userList, function(i, v) {
-                        vm.serviceNameList.push(v.pm_user_name);
-                        vm.serviceNameList = vm.unique(vm.serviceNameList);
-                    })
+
+                }
+                try {
+                    callback();
+                } catch (error) {
+
                 }
 
             })
+
         },
         savePower: function(param, oldpowerlist) {
             var newpower = [];
-            $.each($("#powerPM_dialog").find("input[type='checkbox']"), function(index) {
+            $.each($("#powerB_dialog").find("input[type='checkbox']"), function(index) {
                 if ($(this).is(':checked')) {
                     newpower.push($(this).attr("value"))
                 }
@@ -170,10 +161,7 @@ define(["../../lib/util.js"], function(util) {
                 }
             })
 
-            // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
-
-
-            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
+            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'b' }, function(data) {
                 util.resResult(data, "设置成功", function() {
                     vm.initList(vm.list.$model);
                     var widget = avalon.vmodels.pp
@@ -185,46 +173,50 @@ define(["../../lib/util.js"], function(util) {
             })
         },
         unique: function(opt) {
-            var res = [];
-            var json = {};
-            for (var i = 0; i < opt.length; i++) {
-                if (!json[opt[i]]) {
-                    res.push(opt[i]);
-                    json[opt[i]] = 1;
+            var kv = {}
+            for (var i = 0; i < opt.length;) {
+                if (kv[opt[i].id + ',' + opt[i].name]) {
+                    opt.splice(i, 1);
+                } else {
+                    kv[opt[i].id + ',' + opt[i].name] = true;
+                    i++;
                 }
             }
-            return res;
         }
     });
     vm.$skipArray = ["pager"]
 
-
+    vm.$watch("serviceName", function() {
+        if (vm.serviceName == "请选择客户名称") {
+            vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '' });
+        } else {
+            vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '', pm_user_id: vm.serviceName });
+        }
+    })
     return avalon.controller(function($ctrl) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
             // 定义title
             document.title = '数联寻英';
-            // if (location.hash.search("#!/userInfo")) {
-            //     console.log(111);
-            // }
-            // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
 
-            //     if ($(this).children().attr("href") == location.hash) {
-            //         $(this).addClass('md-accent-bg');
-            //         return false; // 跳出循环
-            //     }
-            // });
             $('#side_accordion div').removeClass('md-accent-bg').eq(3).addClass('md-accent-bg');
 
             //生成列表
-            // console.log(vm.list.id)
-            vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '' });
+            vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '' }, function() {
+                // 存储客户名称列表
+                vm.serviceNameList = [];
+                vm.serviceName = "请选择客户名称";
+                $.each(vm.userList, function(i, v) {
+                    vm.serviceNameList.push({ id: v.pm_user_id, name: v.pm_user_name });
+                })
+                vm.serviceNameList = vm.unique(vm.serviceNameList);
+            });
+
 
 
         };
         // 进入视图
         $ctrl.$onEnter = function(param, rs, rj) {
-            // console.log(param.id)
             vm.list = param;
             var userinfo = vm.getPassFromCookie();
             var userBean = userinfo.split('|');
@@ -236,7 +228,7 @@ define(["../../lib/util.js"], function(util) {
         };
         // 对应的视图销毁前
         $ctrl.$onBeforeUnload = function() {
-
+            $(".oni-dialog").empty();
         };
         $ctrl.$vmodels = [vm];
     })

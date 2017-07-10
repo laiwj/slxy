@@ -13,12 +13,13 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
         data_id: "",
         params: {},
         info: [],
+        hasInfo: "请添加分析说明...",
         J_compensationtype: "职能",
-        c_function: "",
+        c_function: "产品,设计,开发",
         c_industry: "",
         c_region: "",
         c_experience: "",
-        c_time: "",
+        c_time: "近一个月",
         report_info: "",
         data_disturb: [],
         data: {},
@@ -58,7 +59,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             onConfirm: function() {
                 var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
                 var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-                $.post("/api/data/cheat", bean, function(result) {
+                $.post("http://10.101.1.171:10110/api/data/cheat", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
                         $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
@@ -99,12 +100,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             window.location.href = "";
         },
         analysisData: function(obj) {
-            var param = {};
-            if (obj.url) {
-                param = obj;
-            } else {
-                param = vm.getBean();
-            }
+            var param = vm.getBean();
             // var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
             util.lockScreen();
             $.post(param.url, param.bean, function(result) {
@@ -119,9 +115,14 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                     $("#report_info").attr("data_id", result.data.info[0]._id);
                     if (vm.type == "3") {
                         $(".charts-warp").val('').val(result.data.info[0].info);
+                        vm.hasInfo = result.data.info[0].info;
                     }
                 } else {
                     $("#report_info").attr("data_url", "").attr("data_id", "").val('');
+                    if (vm.type == "3") {
+                        $(".charts-warp").val('');
+                        vm.hasInfo = "请添加分析说明...";
+                    }
                 }
 
                 //超管与公司权限
@@ -149,22 +150,28 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                         city: vm.c_region,
                         // index: 180,
                         type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
-                        top: 5
+                        top: 10
                     }
-                    url = "/api/func/salary/analysis";
+                    if (bean.experience == "3") {
+                        bean.experience = "0-3";
+                    }
+                    if (bean.experience == "12") {
+                        bean.experience = "12+";
+                    }
+                    url = "http://10.101.1.171:10110/api/func/salary/analysis";
                     break;
                 case "岗位":
 
                     bean = {
                         name: vm.c_function,
                         industry: vm.c_industry,
-                        experience: vm.c_experience,
+                        experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
                         city: vm.c_region,
                         // index: 180,
                         type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
                         top: 10
                     }
-                    url = "/api/position/salary/analysis";
+                    url = "http://10.101.1.171:10110/api/position/salary/analysis";
                     break;
                 default:
                     break;
@@ -194,7 +201,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                 console.log(bean);
             }
 
-            $.post("/api/info/write", bean, function(result) {
+            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
                 util.resResult(result, "添加分析说明成功", function() {
                     $(obj).prev().text(bean.report_info);
                 });
@@ -226,6 +233,17 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
 
     vm.$watch("J_compensationtype", function() {
         $("#positionDiv").html("");
+        switch (vm.J_compensationtype) {
+            case "职能":
+                vm.c_function = "产品,设计,开发";
+                break;
+            case "岗位":
+                vm.c_function = "产品经理,UI设计师,web前端开发";
+                break;
+            default:
+                break;
+        }
+        vm.analysisData();
     });
 
 
@@ -239,17 +257,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             document.title = '数联寻英';
             $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
             //生成数据
-            vm.analysisData({
-                bean: {
-                    name: "产品,设计,开发,数据,测试",
-                    experience: "",
-                    city: "",
-                    industry: "",
-                    type: 2,
-                    top: 5
-                },
-                url: "/api/func/salary/analysis"
-            })
+            vm.analysisData();
             $("#result").bind("click", function() {
                 xy_select.init({
                     containerId: "positionDiv",
@@ -273,7 +281,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
         };
         // 对应的视图销毁前
         $ctrl.$onBeforeUnload = function() {
-
+            $(".oni-dialog").empty();
         };
         $ctrl.$vmodels = [vm];
     })

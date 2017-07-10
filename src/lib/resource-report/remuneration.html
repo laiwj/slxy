@@ -152,36 +152,9 @@
                 }
             })
 
-            // $.each(datas, function(i, v) {
-            //     var obj = v;
-            //     for (var key in obj) {
-            //         if (key == "position_nums") {
-            //             continue;
-            //         }
-            //         var keyobj = obj[key];
-            //         var keyname = key;
-            //         var tipsArr = [];
-            //         for (var key in tips) {
-            //             var p = key;
-            //             var obj = tips[key];
-            //             $.each(keyobj, function(i, v) {
-            //                 if (p == v.name) {
-            //                     var keywordsArr = v.keywords;
-            //                     var resultArr = [];
-            //                     $.each(keywordsArr, function(i, v) {
-            //                         var sonArr = []
-            //                         sonArr.push(v, parseInt(Math.random() * 20))
-            //                         resultArr.push(sonArr);
-            //                     })
-            //                     obj[keyname] = resultArr;
-            //                 }
-            //             })
-            //         }
-            //     }
-            // })
-
             if (type == "tab1") {
                 ShowBarJob("charts_wrap", data, tips, function(x, y) {
+                    console.log(111)
                     var maskarr1 = [],
                         maskarr2 = [];
 

@@ -617,7 +617,7 @@ define(
                 try {
                     $("#loading_layer").show();
                     //登录失效
-                    if (result.code == -10) {
+                    if (result.code == -10 || result.code == -11) {
                         //var msg = this.getMessage(xy_resultCode[result.retcode]);
                         $(".loading_layer_body").empty();
                         var msg = result.msg;

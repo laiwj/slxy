@@ -118,17 +118,9 @@
                                     </select>
                                 </div>-->
                                 <div class="fl report_tab" style="display: block;">
-                                    <select ms-duplex="J_industry201" class="select-warp s1 button1" id="J_industry201" ms-visible="J_chartstype=='人才分布'">
-                                             <option ms-repeat-el="industry201" ms-attr-value="el">{{el}}</option>
-                                    </select>
-                                    <select ms-duplex="J_industry202" class="select-warp s1 button1" id="J_industry202" ms-visible="J_chartstype=='人才流动'">
-                                             <option ms-repeat-el="industry202" ms-attr-value="el">{{el}}</option>
-                                    </select>
-                                    <select ms-duplex="J_industry203" class="select-warp s1 button1" id="J_industry203" ms-visible="J_chartstype=='人才供需'">
-                                             <option ms-repeat-el="industry203" ms-attr-value="el">{{el}}</option>
-                                    </select>
-                                    <select ms-duplex="J_industry204" class="select-warp s1 button1" id="J_industry204" ms-visible="J_chartstype=='人才薪酬'">
-                                             <option ms-repeat-el="industry204" ms-attr-value="el">{{el}}</option>
+                                    <select ms-duplex="J_industry" class="select-warp s1 button1" id="J_industry">
+                                        <option value="互联网全行业">互联网全行业</option>
+                                        <option ms-repeat-el="industry" ms-attr-value="el">{{el}}</option>
                                     </select>
                                 </div>
                                 <div class="fl report_tab" ms-visible="J_chartstype=='人才流动'">
@@ -150,6 +142,10 @@
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才供需'">排名前五的</div>
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才流动'">的</div>
                                 <div class="fl ml5 report_tab" style="height: 28px;line-height: 28px;font-size: 14px;" ms-visible="J_chartstype=='人才薪酬'">热门岗位人群薪酬及特征画像</div>
+                                <div class="fl report_tab" ms-visible="J_chartstype=='人才薪酬'" style="display: block;">
+                                    <input type="text" ms-duplex="r_ltnum" style="margin-left:50px;text-align:center;"><b>-</b><input type="text" ms-duplex="r_gtnum" style="margin-right:10px;text-align:center;"><button class="btn btn-primary fr data_disturb ml10"
+                                        ms-click="consfigClick">供需指数配置</button><span id="errorMsg" style="display:none;color:red;">请配置0-200之间的数值</span>
+                                </div>
                                 <div class="fl report_tab" ms-visible="J_chartstype=='人才流动'|| J_chartstype=='人才分布'" style="display: block;">
                                     <select ms-duplex="J_cf" class="select-warp s1 button1" id="J_cf">
                                             <option value="热门城市">热门城市</option>
@@ -174,12 +170,18 @@
                                     <div style="max-height:400px;overflow:auto;">
                                         <div class="control-group" ms-repeat-el="data_disturb">
                                             <p class="f14" style="margin-bottom:10px;">{{el.name}}</p>
-                                            <div>
+                                            <div style="margin-bottom:10px;">
+                                                <input class="input data" ms-duplex="el.value" maxlength="50" ms-attr-placeholder="'请输入'+el.name+'的数据'" />
+                                            </div>
+                                        </div>
+                                        <div class="control-group" ms-repeat-el="data_disturb_flow">
+                                            <p class="f14" style="margin-bottom:10px;" ms-visible="$index%11">{{el.name}}</p>
+                                            <p class="f14" style="margin-bottom:10px;color:red" ms-visible="!($index%11)">{{el.name}}</p>
+                                            <div style="margin-bottom:10px;" ms-visible="$index%11">
                                                 <input class="input data" ms-duplex="el.value" maxlength="50" ms-attr-placeholder="'请输入'+el.name+'的数据'" />
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <!--数据干预弹框结束-->
 
@@ -200,6 +202,7 @@
                                     </iframe>
                                 </div>
                                 <div class="charts-desc" id="report_info" ms-visible="type=='3'">
+                                    {{hasInfo}}
                                     <div class="add_tag" ms-click="show('bb')"> <i>+</i>添加分析说明</div>
                                 </div>
                             </div>

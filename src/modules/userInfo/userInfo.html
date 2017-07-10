@@ -125,9 +125,7 @@
                                     <div class="clearfix fr" ms-visible="type=='1'||type=='2'">
                                         <select ms-duplex="serviceName" class="select-warp fl mt10" id="service_id">
                                             <option value="请选择客户名称">请选择客户名称</option>
-                                            <!--<option value="罗春">罗春</option>
-                                            <option value="刘杰">刘杰</option>-->
-                                            <option ms-attr-value="el"  ms-repeat-el="serviceNameList">{{el}}</option>                                         
+                                            <option ms-attr-value="el.id"  ms-repeat-el="serviceNameList">{{el.name}}</option>                                         
                                     </select>
 
                                     </div>
@@ -148,7 +146,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="userList">
-                                    <tr ms-repeat-el="userList" ms-visible="serviceName=='请选择客户名称'||el.pm_user_name==serviceName">
+                                    <tr ms-repeat-el="userList">
                                         <td>
                                             {{$index+1}}
                                         </td>
@@ -165,12 +163,12 @@
                                             {{el.pm_user_name}}
                                         </td>
                                         <td class="tr">
-                                            <button class="btn btn-primary J_power" ms-attr-data_userid="el._id" ms-attr-_powerList="el.power_list" ms-click="show('gg,'+$index)">权限</button>
+                                            <button class="btn btn-primary J_power" ms-attr-data_userid="el._id" ms-attr-_powerList="el.power_list" ms-click="show('dd,'+$index)">权限</button>
 
                                         </td>
                                     </tr>
                                     <!--权限弹框-->
-                                    <div ms-widget="dialog,gg,$ggOpts">
+                                    <div ms-widget="dialog,dd,$ddOpts">
                                         <div class=" powerB_dialog p20 clearfix" id="powerB_dialog" title="权限设置">
                                             <div class="control-group-warp">
 
@@ -196,6 +194,18 @@
                                                     <div class="ver-middle fl ml20">
                                                         <input type="checkbox" value="203" />
                                                         <label>供需指数</label>
+                                                    </div>
+                                                    <div class="ver-middle fl ml20">
+                                                        <input type="checkbox" value="204" />
+                                                        <label>人才薪酬分析</label>
+                                                    </div>
+                                                    <div class="ver-middle fl ml20">
+                                                        <input type="checkbox" value="205" />
+                                                        <label>人才职能薪酬分析</label>
+                                                    </div>
+                                                    <div class="ver-middle fl ml20">
+                                                        <input type="checkbox" value="206" />
+                                                        <label>人才岗位薪酬分析</label>
                                                     </div>
                                                 </div>
 

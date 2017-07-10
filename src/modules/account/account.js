@@ -35,11 +35,10 @@ define(["../../lib/util.js"], function(util) {
             nextText: "下一页",
             onJump: function(e, page) {
                 var param = {
-                        force: false,
-                        page: page.currentPage,
-                        user_id: ''
-                    }
-                    // console.log(param);
+                    force: false,
+                    page: page.currentPage,
+                    user_id: ''
+                }
                 vm.initList(param);
             }
 
@@ -49,14 +48,19 @@ define(["../../lib/util.js"], function(util) {
             var id = arr[0];
             var index = arr[1];
             if (id.charAt(0) == "g") {
-                for (var i = 0; i < $(".J_power").length; i++) {
-                    if (i == index) {
-                        $(this).attr("isClick", "yes");
-                        break;
-                    }
-                }
-                var dialog = avalon.vmodels[id];
+                var oldpowerlist = [];
+                vm.newlist = [];
+                var $el = $(".J_power").eq(index);
+                vm.uid = $el.attr("data_userid");
+                oldpowerlist = $el.attr('_powerList').split(',');
+                $("#powerPM_dialog input[type='checkbox']").each(function() {
+                    $(this).removeAttr("checked");
+                });
+                $.each(oldpowerlist, function(index, val) {
+                    $("#powerPM_dialog input:checkbox[value='" + val + "']").prop('checked', true);
+                });
 
+                var dialog = avalon.vmodels[id];
             } else {
                 vm._type = index - 0;
                 var dialog = avalon.vmodels[id];
@@ -77,27 +81,6 @@ define(["../../lib/util.js"], function(util) {
         $ggOpts: {
             title: "操作报告",
             width: 500,
-            onOpen: function() {
-                var oldpowerlist = [];
-                $(".J_power").each(function(i, v) {
-                    if ($(v).attr("isClick")) {
-                        vm.uid = $(v).attr("data_userid");
-                        oldpowerlist = $(v).attr('_powerList').split(',');
-                        $.each(oldpowerlist, function(index, val) {
-                            $.each($("#powerPM_dialog input[type='checkbox']"), function(i, v) {
-                                var boxval = v.value;
-                                if (boxval == val) {
-                                    $(this).attr('checked', 'checked');
-                                    vm.newlist.push(val);
-                                }
-                            });
-
-                        });
-
-                        $(v).attr("isClick", "");
-                    }
-                });
-            },
             onConfirm: function() {
                 vm.savePower({ user_id: vm.uid }, vm.newlist);
             }
@@ -117,7 +100,7 @@ define(["../../lib/util.js"], function(util) {
         },
         initList: function(obj, objDom) {
             util.lockScreen();
-            $.post('/user/list', obj, function(data) {
+            $.post('http://10.101.1.171:10110/user/list', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
                 if (data.data.data.length == 0) {
@@ -199,7 +182,7 @@ define(["../../lib/util.js"], function(util) {
             }
             vm.isSumbit = true;
 
-            $.post('/user/regist', bean, function(data) {
+            $.post('http://10.101.1.171:10110/user/regist', bean, function(data) {
                 vm.isSumbit = false;
                 util.resResult(data, "添加账户成功", function() {
                     if (type == 0) {
@@ -211,6 +194,7 @@ define(["../../lib/util.js"], function(util) {
         },
         savePower: function(param, oldpowerlist) {
             var newpower = [];
+
             $.each($("#powerPM_dialog").find("input[type='checkbox']"), function(index) {
                 if ($(this).is(':checked')) {
                     newpower.push($(this).attr("value"))
@@ -240,7 +224,7 @@ define(["../../lib/util.js"], function(util) {
             // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
 
 
-            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
+            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
                 util.resResult(data, "设置成功", function() {
                     vm.initList(vm.list.$model);
                     var widget = avalon.vmodels.pp
@@ -260,12 +244,7 @@ define(["../../lib/util.js"], function(util) {
         // 视图渲染后，意思是avalon.scan完成
         $ctrl.$onRendered = function() {
             document.title = '数联寻英';
-            // $('#side_accordion div').removeClass('md-accent-bg').each(function(i, v) {
-            //     if ($(this).children().attr("href") == location.hash) {
-            //         $(this).addClass('md-accent-bg');
-            //         return false; // 跳出循环
-            //     }
-            // });
+
             $('#side_accordion div').removeClass('md-accent-bg').eq(4).addClass('md-accent-bg');
 
             //生成列表
@@ -286,8 +265,7 @@ define(["../../lib/util.js"], function(util) {
         };
         // 对应的视图销毁前
         $ctrl.$onBeforeUnload = function() {
-
-
+            $(".oni-dialog").empty();
         };
         $ctrl.$vmodels = [vm];
     })

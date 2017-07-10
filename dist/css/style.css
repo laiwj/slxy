@@ -1429,7 +1429,7 @@ a {
 }
 
 .control-group {
-    height: 85px;
+    /*height: 85px;*/
 }
 
 .company_model {
@@ -7300,6 +7300,35 @@ a {
         margin-right: 6px;
     }
     
+    .tags input[type='text'] {
+        height: 32px;
+        line-height: 32px;
+        background-color: #e5eaee;
+        border-radius: 5px;
+        width: 100px;
+        border: 1px solid #d0d5d9;
+    }
+    
+    .report_tab input[type='text'] {
+        height: 25px;
+        line-height: 25px;
+        background-color: none;
+        /*border-radius: 5px;*/
+        width: 50px;
+        border-bottom: 1px solid #d0d5d9;
+    }
+    
+    .tags b {
+        margin: 0 20px;
+    }
+    
+    .tags label {
+        float: left;
+        position: relative;
+        top: 6px;
+        margin: 0 10px;
+    }
+    
     .bgcw {
         background-color: white!important;
     }
@@ -7687,7 +7716,7 @@ a {
     
     .big-window {
         width: 980px;
-        height: 560px;
+        height: 604px;
         position: absolute;
         box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
         border: #ccc 3px solid;
@@ -7807,7 +7836,7 @@ a {
         width: 815px;
         padding: 10px;
         margin-left: 159px;
-        height: 469px;
+        height: 518px;
         overflow: auto;
         border: #eee 1px solid;
         float: left;

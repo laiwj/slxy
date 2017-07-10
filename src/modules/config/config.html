@@ -114,18 +114,60 @@
                             <div class="top-menu">
                                 <p class="tl null-model">请选择并设置用户端数据分析显示范围。</p>
 
-                                <div class="addlist" ms-repeat="data">
+                                <div class="addlist" ms-repeat-el="data">
                                     <div class="add-title fb cr3">
                                         <span>{{el.name}}</span>
                                         <button class="btn btn-primary J_power fr mt10" ms-click="doClick(el)">添加</button>
                                     </div>
                                     <div class="add-body choiceList">
                                         <p class="cr3">点选展示给客户端的数据内容</p>
-                                        <div class="tags">
+                                        <div class="tags" ms-attr-name="el.name">
                                             <div class="tag" ms-repeat-tag="el.hasTag">
                                                 <span>{{tag}}</span>
                                                 <i>×</i>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="addlist" ms-visible="configstype=='热门岗位人群的薪酬及特征画像'">
+                                    <div class="add-title fb cr3">
+                                        <span>岗位供需指数</span>
+                                        <button class="btn btn-primary J_power fr mt10" ms-click="generate">添加</button>
+                                    </div>
+                                    <div class="add-body choiceList">
+                                        <p class="cr3">点选展示给客户端的数据内容<span style="color:red;" id="msgTips">(右侧点击添加配置标签)</span><span style="color:red;display:none;" id="errorMsg">(请输入0-200之间的数值)</span><span style="color:red;display:none;" id="errorMsg2">(请配置合理范围)</span></p>
+                                        <div class="tags">
+                                            <input type="text" ms-duplex="ltnum"><b>-</b><input type="text" ms-duplex="gtnum" style="margin-right:50px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="addlist" ms-visible="configstype=='热门岗位人群的薪酬及特征画像'">
+                                    <div class="add-title fb cr3">
+                                        <span>薪酬数据条件设置</span>
+                                        <button class="btn btn-primary J_power fr mt10" ms-click="condition">添加</button>
+                                    </div>
+                                    <div class="add-body choiceList">
+                                        <p class="cr3">点选展示给客户端的数据内容</p>
+                                        <div class="tags">
+                                            <label>条件</label>
+
+                                            <select ms-duplex="condition_l" class="select-warp fl" style="width:100px;height:32px;">
+                                                    <option value="=">=</option>
+                                                    <option value="&lt">&lt</option>
+                                                    <option value="&gt">&gt</option>
+                                                    <option value="&lt=">&lt=</option>
+                                                    <option value="&gt=">&gt=</option>
+                                                </select>
+
+                                            <label>内容</label>
+
+                                            <select ms-duplex="condition_r" class="select-warp fl" style="width:100px;height:32px;margin-right:20px;">
+                                                    <option value="p25">p25</option>
+                                                    <option value="p50">p50</option>
+                                                    <option value="p75">p75</option>
+                                                    <option value="p100">p100</option>
+                                                </select>
+
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +183,7 @@
                                 <div id="sublist" style="display:none"></div>
                                 <div class="hiddle clearfix">
                                     <button class="btn btn-primary J_power fr mt30 mb50" ms-click="go">保存</button>
-                                    <button class="btn J_power fr mt30 mr10 mb50">清空</button>
+                                    <button class="btn J_power fr mt30 mr10 mb50" ms-click="clearAll">清空</button>
                                 </div>
                             </div>
 
