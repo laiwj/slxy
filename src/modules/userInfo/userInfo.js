@@ -60,6 +60,9 @@ define(["../../lib/util.js"], function(util) {
                 });
                 $.each(oldpowerlist, function(index, val) {
                     $("#powerB_dialog input:checkbox[value='" + val + "']").prop('checked', true);
+                    if (val.length == 3) {
+                        vm.newlist.push(val);
+                    }
                 });
                 var dialog = avalon.vmodels[id];
 
@@ -104,7 +107,7 @@ define(["../../lib/util.js"], function(util) {
         },
         initList: function(obj, callback) {
             util.lockScreen();
-            $.post('http://10.101.1.171:10110/user/list/b', obj, function(data) {
+            $.post('/user/list/b', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
                 if (data.data.data.length == 0) {
@@ -117,7 +120,7 @@ define(["../../lib/util.js"], function(util) {
                     $(".null-model").hide();
 
                     if (obj.page == 1) {
-                        var widget = avalon.vmodels.bb
+                        var widget = avalon.vmodels.pp
                         if (widget) {
                             widget.totalItems = data.data.count;
                         }
@@ -161,13 +164,16 @@ define(["../../lib/util.js"], function(util) {
                 }
             })
 
-            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'b' }, function(data) {
+            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'b' }, function(data) {
                 util.resResult(data, "设置成功", function() {
-                    vm.initList(vm.list.$model);
                     var widget = avalon.vmodels.pp
                     if (widget) {
-                        widget.currentPage = 1;
+                        var obj = {
+                            page: widget.currentPage,
+                            user_id: ""
+                        }
                     }
+                    vm.initList(obj);
                 });
 
             })

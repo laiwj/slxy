@@ -7525,7 +7525,7 @@ a {
     
     #FuntypeAlpha li {
         float: left;
-        width: 100%;
+        width: 150px;
         cursor: pointer;
         /*text-indent: 34px;*/
         height: 36px;

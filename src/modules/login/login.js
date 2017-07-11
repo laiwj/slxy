@@ -16,6 +16,9 @@ define([], function(api) {
             onError: function(reasons) {
                 var str = reasons[0].message;
                 $(".alert-login").text(str).show();
+                setTimeout(function() {
+                    $(".alert-login").text("").hide();
+                }, 2000)
                 $("#J_login").attr("disabled", true);
             },
             onSuccess: function() {
@@ -53,7 +56,7 @@ define([], function(api) {
                     "password": vm.password
                 }
                 //发送数据到后台
-            var url = "http://10.101.1.171:10110/user/login";
+            var url = "/user/login";
             vm.isSumbit = true;
             $.post(url, bean, function(jsonObj) {
                 vm.isSumbit = false;

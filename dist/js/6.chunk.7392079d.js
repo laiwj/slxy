@@ -1,4 +1,4 @@
-webpackJsonp([12,13],{
+webpackJsonp([6,13],{
 
 /***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
@@ -1783,94 +1783,95 @@ webpackJsonp([12,13],{
 
 /***/ }),
 
-/***/ 51:
+/***/ 43:
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38)], __WEBPACK_AMD_DEFINE_RESULT__ = function(util) {
-	    // 定义所有相关的vmodel
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38), __webpack_require__(44), __webpack_require__(45)], __WEBPACK_AMD_DEFINE_RESULT__ = function(util, positionSelect, xy_select) {
+	    var validationVM;
+	    // 定义所有相关的 vmodel
 	    var vm = avalon.define({
-	        $id: "account",
-	        isSumbit: false,
-	        user_username: null,
-	        user_account: null,
-	        user_password: null,
-	        newlist: [],
-	        uid: "",
+	        $id: "compensation",
 	        _id: "",
 	        type: "",
-	        _type: null,
 	        short_id: "",
 	        username: "",
 	        identity: "",
 	        toggle: false,
-	        list: {
-	            page: 1,
-	            force: true,
-	            user_id: ''
-	        },
-	        count: 0,
-	        bigList: [],
-	        smallList: [],
-	        userList: [],
-	        skipId: {},
-	        pager: {
-	            currentPage: 1,
-	            totalItems: 0,
-	            showJumper: true,
-	            alwaysShowNext: true,
-	            alwaysShowPrev: true,
-	            prevText: "上一页",
-	            nextText: "下一页",
-	            onJump: function(e, page) {
-	                var param = {
-	                    force: false,
-	                    page: page.currentPage,
-	                    user_id: ''
-	                }
-	                vm.initList(param);
-	            }
-	
-	        },
+	        api_url: "",
+	        data_id: "",
+	        params: {},
+	        info: [],
+	        hasInfo: "请添加分析说明...",
+	        J_compensationtype: "职能",
+	        c_function: "产品,设计,开发",
+	        c_industry: "",
+	        c_region: "",
+	        c_experience: "",
+	        c_time: "近一个月",
+	        report_info: "",
+	        data_disturb: [],
+	        data: {},
 	        show: function(id) {
-	            var arr = id.split(",");
-	            var id = arr[0];
-	            var index = arr[1];
-	            if (id.charAt(0) == "g") {
-	                var oldpowerlist = [];
-	                vm.newlist = [];
-	                var $el = $(".J_power").eq(index);
-	                vm.uid = $el.attr("data_userid");
-	                oldpowerlist = $el.attr('_powerList').split(',');
-	                $("#powerPM_dialog input[type='checkbox']").each(function() {
-	                    $(this).removeAttr("checked");
-	                });
-	                $.each(oldpowerlist, function(index, val) {
-	                    $("#powerPM_dialog input:checkbox[value='" + val + "']").prop('checked', true);
-	                });
+	            // validationVM.resetAll();
+	            if (id.charAt(0) == "b") {
+	                var arr = id.split(",");
+	                var id = arr[0];
+	                var index = arr[1];
+	                if (index) {
+	                    for (var i = 0; i < $(".J_edit_desc").length; i++) {
+	                        if (i == index) {
+	                            $(this).attr("isClick", "yes");
+	                            break;
+	                        }
+	                    }
+	                } else {
+	                    $("#report_info").attr("isClick", "yes");
+	                }
 	
 	                var dialog = avalon.vmodels[id];
+	
 	            } else {
-	                vm._type = index - 0;
+	
 	                var dialog = avalon.vmodels[id];
 	            }
+	
 	            if (!dialog) {
 	
 	            } else {
 	                dialog.toggle = true;
 	            }
 	        },
-	        $eeOpts: {
-	            title: "创建账号",
+	        $aaOpts: {
+	            title: "数据干预",
 	            width: 500,
 	            onConfirm: function() {
-	                vm.addAcount(vm._type);
+	                var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
+	                var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
+	                $.post("/api/data/cheat", bean, function(result) {
+	                    util.resResult(result, "数据干预成功", function() {
+	                        $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
+	                        $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
+	                    });
+	                })
 	            }
 	        },
-	        $ggOpts: {
-	            title: "操作报告",
+	        $bbOpts: {
+	            title: "添加分析说明",
 	            width: 500,
 	            onConfirm: function() {
-	                vm.savePower({ user_id: vm.uid }, vm.newlist);
+	                if ($("#report_info").attr("isClick")) {
+	                    vm.saveDesc();
+	                    $("#report_info").attr("isClick", "");
+	                } else {
+	                    $(".J_edit_desc").each(function(i, v) {
+	                        if ($(v).attr("isClick")) {
+	                            console.log(vm.report_info);
+	                            vm.saveDesc(v);
+	                            $(v).attr("isClick", "");
+	                        }
+	                    });
+	                }
+	
 	            }
 	        },
 	        getPassFromCookie: function() {
@@ -1886,157 +1887,172 @@ webpackJsonp([12,13],{
 	            vm.clearPassToCookie();
 	            window.location.href = "";
 	        },
-	        initList: function(obj, objDom) {
+	        analysisData: function(obj) {
+	            var param = vm.getBean();
+	            // var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
 	            util.lockScreen();
-	            $.post('/user/list', obj, function(data) {
+	            $.post(param.url, param.bean, function(result) {
 	                util.hideLock();
-	                util.resResult(data);
-	                if (data.data.data.length == 0) {
-	                    if (obj.user_id) {
-	                        objDom.text('暂无数据');
-	                        vm.list.user_id = '';
-	                        vm.list.page = 1;
-	                    } else {
-	                        $(".table_li").hide();
-	                        $(".null-model").show();
+	                util.resResult(result);
+	                vm.data_disturb = result.data.data.data;
+	                $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean));
+	                $("#report_iframe").attr("src", "../lib/resource-report/remuneration.html");
+	                $("#report_info").attr("api_url", result.data.data.api_url);
+	                if (result.data.info.length > 0) {
+	                    $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
+	                    $("#report_info").attr("data_id", result.data.info[0]._id);
+	                    if (vm.type == "3") {
+	                        $(".charts-warp").val('').val(result.data.info[0].info);
+	                        vm.hasInfo = result.data.info[0].info;
 	                    }
 	                } else {
-	
-	                    $(".null-model").hide();
-	                    if (obj.user_id) {
-	                        vm.smallList = data.data.data;
-	                        vm.list.user_id = '';
-	                        vm.list.page = 1;
-	                    } else {
-	                        vm.count = data.data.count;
-	                        if (vm.type == "2") {
-	                            vm.userList = data.data.data;
-	                        } else if (vm.type == "1") {
-	                            // $(".table_li").show();
-	                            vm.bigList = data.data.data;
-	                        }
-	                        if (obj.page == 1) {
-	                            var widget = avalon.vmodels.pp
-	                            if (widget) {
-	                                widget.totalItems = data.data.count;
-	                            }
-	
-	                        }
+	                    $("#report_info").attr("data_url", "").attr("data_id", "").val('');
+	                    if (vm.type == "3") {
+	                        $(".charts-warp").val('');
+	                        vm.hasInfo = "请添加分析说明...";
 	                    }
 	                }
 	
-	                vm.domListener();
+	                //超管与公司权限
+	                if (vm.type != "3") {
+	                    vm.info = result.data.info;
+	                }
+	                vm.params = result.data.data.params;
+	                vm.api_url = result.data.data.api_url;
+	                vm.data_id = result.data.data._id;
+	
+	
 	            })
 	        },
-	        domListener: function() {
-	            /*展开子账号*/
-	            $(".J_click_pull").off().on('click', function() {
-	                var num = $(this).text().trim();
-	                if (num == "0") {
-	                    util.tips("没有子账号");
-	                    return;
+	        getBean: function() {
+	            var tab = vm.J_compensationtype;
+	            var bean = {};
+	            var url = "";
+	            var charts_type = "";
+	            switch (tab) {
+	                case "职能":
+	                    bean = {
+	                        name: vm.c_function,
+	                        industry: vm.c_industry,
+	                        experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
+	                        city: vm.c_region,
+	                        // index: 180,
+	                        type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
+	                        top: 10
+	                    }
+	                    if (bean.experience == "3") {
+	                        bean.experience = "0-3";
+	                    }
+	                    if (bean.experience == "12") {
+	                        bean.experience = "12+";
+	                    }
+	                    url = "/api/func/salary/analysis";
+	                    break;
+	                case "岗位":
+	
+	                    bean = {
+	                        name: vm.c_function,
+	                        industry: vm.c_industry,
+	                        experience: vm.c_experience.substring(0, vm.c_experience.indexOf("年")),
+	                        city: vm.c_region,
+	                        // index: 180,
+	                        type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
+	                        top: 10
+	                    }
+	                    url = "/api/position/salary/analysis";
+	                    break;
+	                default:
+	                    break;
+	            }
+	
+	            return { bean: bean, url: url };
+	        },
+	        saveDesc: function(obj) {
+	            var user_id = $("#report_info").attr("user_id") ? $("#report_info").attr("user_id") : vm._id;
+	            var bean = {};
+	            if (obj) {
+	                var param = {
+	                    api_url: $(obj).attr("api_url"),
+	                    user_id: $(obj).attr("user_id"),
+	                    report_info: vm.report_info,
+	                    params: JSON.stringify(vm.params)
+	                }
+	                bean = param;
+	                console.log(bean);
+	            } else {
+	                bean = {
+	                    api_url: vm.api_url,
+	                    user_id: user_id,
+	                    report_info: vm.report_info,
+	                    params: JSON.stringify(vm.params)
 	                };
-	                var _this = $(this).parent().parent().next()
-	                if (_this.is(":hidden")) {
-	                    $(".pull_model").slideUp("fast");
-	                    var objDom = $(this).find('.smaillList');
-	                    vm.list.user_id = $(this).attr('_id');
-	                    vm.list.page = '';
-	                    vm.initList(vm.list.$model, objDom);
-	                    _this.slideDown("fast");
-	                } else {
-	                    vm.smallList = [];
-	                    _this.slideUp("fast");
-	                }
-	
-	            });
-	            /*跳转用户列表页*/
-	            $(".J_click_skip").off().on('click', function() {
-	                var param = $(this).attr("_id");
-	                window.location.href = "/#!/userInfo/" + param;
-	            });
-	
-	
-	        },
-	        addAcount: function(type) {
-	
-	            if (vm.isSumbit) {
-	                return;
+	                console.log(bean);
 	            }
-	            var bean = {
-	                username: vm.user_username,
-	                account: vm.user_account,
-	                password: vm.user_password - 0
-	            }
-	            vm.isSumbit = true;
 	
-	            $.post('/user/regist', bean, function(data) {
-	                vm.isSumbit = false;
-	                util.resResult(data, "添加账户成功", function() {
-	                    if (type == 0) {
-	                        vm.initList(vm.list.$model);
-	                    }
+	            $.post("/api/info/write", bean, function(result) {
+	                util.resResult(result, "添加分析说明成功", function() {
+	                    $(obj).prev().text(bean.report_info);
 	                });
-	
 	            })
 	        },
-	        savePower: function(param, oldpowerlist) {
-	            var newpower = [];
-	
-	            $.each($("#powerPM_dialog").find("input[type='checkbox']"), function(index) {
-	                if ($(this).is(':checked')) {
-	                    newpower.push($(this).attr("value"))
-	                }
-	
+	        domLisenter: function() {
+	            // $(".configbar").find("input").blur(function() {
+	            //     $('#maskLayer').remove();
+	            // })
+	        },
+	        getJson: function() {
+	            //发送数据到后台
+	            var url = "../data/config203.json";
+	            util.lockScreen();
+	            $.get(url, function(jsonObj) {
+	                util.hideLock();
+	                vm.data = jsonObj;
+	                vm.domLisenter();
 	            });
-	            var contactArr = [];
-	            $.each(newpower, function(i) {
-	                if ($.inArray(newpower[i], oldpowerlist) > -1) {
-	                    contactArr.push(newpower[i]);
-	                }
-	            })
+	        },
+	        doClick: function(str) {
+	            var _this = this;
+	            var obj = {};
+	            obj[str] = vm.data[str];
+	            positionSelect.doClick.call(_this, obj);
 	
-	            var remove = [];
-	            $.each(oldpowerlist, function(i) {
-	                if ($.inArray(oldpowerlist[i], contactArr) == -1) {
-	                    remove.push(oldpowerlist[i]);
-	                }
-	            })
-	            var add = [];
-	            $.each(newpower, function(i) {
-	                if ($.inArray(newpower[i], contactArr) == -1) {
-	                    add.push(newpower[i]);
-	                }
-	            })
-	
-	            // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
-	
-	
-	            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
-	                util.resResult(data, "设置成功", function() {
-	                    vm.initList(vm.list.$model);
-	                    var widget = avalon.vmodels.pp
-	                    if (widget) {
-	                        widget.currentPage = 1;
-	                    }
-	                });
-	
-	            })
 	        }
 	    });
 	
-	    vm.$skipArray = ["pager"]
+	    vm.$watch("J_compensationtype", function() {
+	        $("#positionDiv").html("");
+	        switch (vm.J_compensationtype) {
+	            case "职能":
+	                vm.c_function = "产品,设计,开发";
+	                break;
+	            case "岗位":
+	                vm.c_function = "产品经理,UI设计师,web前端开发";
+	                break;
+	            default:
+	                break;
+	        }
+	        vm.analysisData();
+	    });
+	
+	
+	
+	    //开始扫描编译
+	    avalon.scan(document.body);
 	
 	    return avalon.controller(function($ctrl) {
-	        avalon.scan(document.body);
 	        // 视图渲染后，意思是avalon.scan完成
 	        $ctrl.$onRendered = function() {
 	            document.title = '数联寻英';
-	
-	            $('#side_accordion div').removeClass('md-accent-bg').eq(4).addClass('md-accent-bg');
-	
-	            //生成列表
-	            vm.initList(vm.list.$model);
+	            $('#side_accordion div').removeClass('md-accent-bg').eq(1).addClass('md-accent-bg');
+	            //生成数据
+	            vm.analysisData();
+	            $("#result").bind("click", function() {
+	                xy_select.init({
+	                    containerId: "positionDiv",
+	                    className: "big-window",
+	                    nameId: "result"
+	                });
+	            });
 	
 	
 	        };
@@ -2049,7 +2065,7 @@ webpackJsonp([12,13],{
 	            vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
 	            vm.short_id = userBean[2];
 	            vm.username = userBean[3];
-	
+	            vm.getJson();
 	        };
 	        // 对应的视图销毁前
 	        $ctrl.$onBeforeUnload = function() {
@@ -2057,10 +2073,267 @@ webpackJsonp([12,13],{
 	        };
 	        $ctrl.$vmodels = [vm];
 	    })
+	
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
+
+/***/ }),
+
+/***/ 44:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	    'use strict';
+	    var xy_select = {
+	        doClick: function(data) {
+	            $('#maskLayer').remove();
+	            $(this).append(' <div id = "maskLayer" style = "display:none"><div id = "drag" ><div id = "drag_con" > </div> </div > </div>');
+	            var dragHtml = '<div id="FuntypeAlpha">'; //职能类别
+	            dragHtml += '<div id="FuntypeList"></div>'; //职能类别列表
+	            dragHtml += '</div>';
+	            $('#drag_con').html(dragHtml);
+	            xy_select.Show2(data);
+	            $('#maskLayer').css({ top: 30, left: 0 }).show();
+	            // $("#sublist").css({ top: top + 44, left: left - 92 })
+	        },
+	        Show2: function(data) {
+	            var output = '',
+	                flag,
+	                output2 = '',
+	                _id = '',
+	                dataArr = [];
+	
+	            for (var key in data) {
+	                _id = key;
+	                dataArr = data[key];
+	            }
+	            $.each(dataArr, function(i, v) {
+	                output += '<li style="float:left;"><label style="width:100%;cursor: pointer;"><input type="checkbox" id="checkbox_' + i + '" class="chk_1"/><label for="checkbox_' + i + '"></label>' + v + '</label></li>';
+	                // output += '<li><input type="checkbox"/>' + v + '</li>';
+	            })
+	            if (dataArr.length > 5) {
+	                $('#drag').width('300px');
+	            } else {
+	                $('#drag').width('150px');
+	            }
+	
+	            $('#FuntypeList').html('<ul>' + output + '</ul>');
+	            $('#FuntypeList').append('<p class="require_tips"></p><div class="require_btn">确定</div>');
+	            // 鼠标悬停变色
+	            $('#FuntypeAlpha li').hover(
+	                function() { $(this).addClass('over') },
+	                function() { $(this).removeClass('over') }
+	            ).click(function(e) {
+	                e.stopPropagation();
+	            });
+	            // 点击弹出子菜单
+	            $('.require_btn').click(
+	                function(e) {
+	                    xy_select.Chk2(_id);
+	                    e.stopPropagation();
+	                }
+	            )
+	        },
+	        Chk2: function(_id) {
+	            var el = $("#" + _id);
+	            var str = el.text().split(":")[0] + ":";
+	            var arr = [];
+	            if ($('input:checkbox:checked').length > 3) {
+	                $(".require_tips").text("最多只能选择三个标签！").show();
+	                return false;
+	            };
+	
+	            $('input:checkbox:checked').each(function(i, v) {
+	                arr.push($(v).parent("label").text());
+	            });
+	            $(el).find("input").val(arr.join(","));
+	            // el.text(str += arr.join(","));
+	            $('#maskLayer').remove();
+	            return false;
+	        }
+	    };
+	    return xy_select;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
+
+/***/ }),
+
+/***/ 45:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {   !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	       'use strict';
+	       var xy_select = {
+	           init: function(settings) {
+	               if (this.length < 1) { return; };
+	               // 默认值
+	               settings = $.extend({
+	                   containerId: "positionDiv",
+	                   className: "big-window",
+	                   nameId: "result",
+	                   required: true,
+	                   maxCount: 3,
+	                   onConfirm: null
+	               }, settings);
+	
+	               var box_obj = $(this);
+	               var container = $("#" + settings.containerId);
+	               var num = settings.containerId;
+	               var title = "<div class=\"title\"><b>请选择</b><span class=\"tip\">(最多选择" + settings.maxCount + "项)</span> &nbsp&nbsp;<span class='tip' style='font-weight:bold;' id='tip_" + num + "'></span><a href=\"javascript:void(0)\" ></a></div>";
+	               var selectedResult = "<div class=\"sele-tag\"><dl><dt>已选择：</dt><dd id='ddResult_" + num + "'><a id='btnSure_" + num + "' href='javascript:void(0)' class='btn'>确定</a></dd></dl></div>";
+	
+	               if ($("body #" + num + "_bg").length <= 0) {
+	                   $("body").append("<div id='" + num + "_bg' class='mask-Bg'></div>");
+	               }
+	               if (settings.className != null) {
+	                   container.addClass(settings.className);
+	               }
+	               var J_compensationtype = $("#J_compensationtype").val();
+	               if (J_compensationtype == "职能") {
+	                   var data = {
+	                       'positionlist': [
+	                           { 'p': '核心职能', 'c': [{ 'a': [{ 's': '产品' }, { 's': '设计' }, { 's': '开发' }, { 's': '数据' }, { 's': '测试' }, { 's': 'IT运维' }, { 's': '运营' }, { 's': '市场&品牌' }, { 's': '销售' }] }] },
+	                           { 'p': '特殊职能', 'c': [{ 'a': [{ 's': '人力资源' }, { 's': '行政&采购' }, { 's': '财务' }, { 's': '风控&法务' }, { 's': '公司事务&投融资' }] }] }
+	                       ]
+	                   }
+	               } else {
+	                   var data = {
+	                       'positionlist': [
+	                           { 'p': '产品', 'c': [{ 'a': [{ 's': '产品经理' }, { 's': '产品助理/产品专员' }, { 's': '产品-管理类' }] }] },
+	                           { 'p': '设计', 'c': [{ 'a': [{ 's': '网页设计师' }, { 's': '平面设计师' }, { 's': '多媒体设计师' }, { 's': '广告设计师' }, { 's': 'UI设计师' }, { 's': 'UI设计-管理类' }, { 's': '交互设计师' }, { 's': '交互设计－管理类' }, { 's': '用户研究' }, { 's': '用户研究-管理类' }] }] },
+	                           { 'p': '开发', 'c': [{ 'a': [{ 's': 'web前端开发' }, { 's': '前端开发-html5' }, { 's': 'android工程师' }, { 's': 'ios工程师' }, { 's': '后端开发－java' }, { 's': '后端开发－python' }, { 's': '后端开发－php' }, { 's': '后端开发－c' }, { 's': '后端开发－c++' }, { 's': '全栈工程师' }, { 's': '架构师' }, { 's': '开发-管理类' }, { 's': '项目管理' }] }] },
+	                           { 'p': '数据', 'c': [{ 'a': [{ 's': '算法工程师' }] }] },
+	                           { 'p': '测试', 'c': [{ 'a': [{ 's': '测试开发' }, { 's': '测试工程师' }, { 's': '自动化测试' }, { 's': '功能测试' }, { 's': '性能测试' }, { 's': '白盒测试' }, { 's': '灰盒测试' }, { 's': '黑盒测试' }, { 's': '测试－管理类' }] }] },
+	                           { 'p': 'IT运维', 'c': [{ 'a': [{ 's': '网络运维' }, { 's': '系统工程师' }, { 's': '系统管理员' }, { 's': 'IT支持' }, { 's': '安全运维' }, { 's': '运维工程师' }, { 's': '运维-管理类' }, { 's': 'DBA－oracle' }, { 's': 'DBA－etl' }, { 's': 'DBA' }] }] },
+	                           { 'p': '运营', 'c': [{ 'a': [{ 's': '产品运营' }, { 's': '内容运营' }, { 's': '主编' }, { 's': '编辑' }, { 's': '记者' }, { 's': '数据运营' }, { 's': '用户运营' }, { 's': '活动运营' }, { 's': '媒体运营' }, { 's': '媒体运营' }, { 's': '海外运营' }, { 's': '运营-综合' }, { 's': '运营-管理类' }, { 's': '售后客服' }, { 's': '售后工程师' }, { 's': '在线客服' }, { 's': '客服经理' }, { 's': '客服-管理类' }] }] },
+	                           { 'p': '市场&品牌', 'c': [{ 'a': [{ 's': 'SEM' }, { 's': 'SEO' }, { 's': '网络推广' }, { 's': '市场策划' }, { 's': '市场推广' }, { 's': '海外市场' }, { 's': '市场营销' }, { 's': '市场营销-管理类' }, { 's': '品牌推广' }, { 's': '媒介' }, { 's': '公关' }, { 's': '公关-管理类' }] }] },
+	                           { 'p': '销售', 'c': [{ 'a': [{ 's': '业务开发－BD' }, { 's': '电话销售' }, { 's': '渠道销售' }, { 's': '商务' }, { 's': '售前客服' }, { 's': '售前工程师' }, { 's': '在线销售' }, { 's': '大客户代表' }, { 's': '综合销售' }, { 's': '销售助理' }, { 's': '销售－管理类' }] }] },
+	                           { 'p': '风控&法务', 'c': [{ 'a': [{ 's': '法务' }, { 's': '律师' }, { 's': '专利' }, { 's': '审计' }, { 's': '风控管理' }] }] },
+	                           { 'p': '人力资源', 'c': [{ 'a': [{ 's': '薪酬福利' }, { 's': '绩效管理' }, { 's': '招聘' }, { 's': '培训' }, { 's': '组织发展' }, { 's': 'RBP' }, { 's': '员工关系' }, { 's': '企业文化' }, { 's': 'HR-综合' }, { 's': 'HR-管理类' }] }] },
+	                           { 'p': '行政&采购', 'c': [{ 'a': [{ 's': '文秘' }, { 's': '前台' }, { 's': '行政-综合' }, { 's': '行政-管理类' }, { 's': '供应商管理' }, { 's': '采购' }, { 's': '采购－管理类' }] }] },
+	                           { 'p': '财务', 'c': [{ 'a': [{ 's': '会计' }, { 's': '出纳' }, { 's': '税务' }, { 's': '结算' }, { 's': '预算' }, { 's': '财务-综合' }, { 's': '财务－管理类' }] }] },
+	                           { 'p': '公司事务&投融资', 'c': [{ 'a': [{ 's': '公司事务&投资者关系' }, { 's': '融资' }, { 's': '投资' }] }] },
+	                       ]
+	                   }
+	               }
+	
+	               if ($.trim(container.html()) == "") {
+	                   container.append(title);
+	                   container.append(selectedResult);
+	                   container.append("<div class=\"position-menu\" id='" + num + "_datalist'></div>");
+	                   var datalist = $("#" + num + "_datalist");
+	                   datalist.append("<div class='menu' id='firstMenu'></div>");
+	                   var firstMenu = datalist.find("#firstMenu");
+	                   firstMenu.append("<ul></ul>");
+	                   $.each(data.positionlist, function(i, obj) { // 循环第一级
+	                       $(firstMenu).find("ul").append("<li id='dl_" + i + "' name='" + i + "'>" + obj.p + "</li>");
+	                   });
+	
+	                   if (datalist.find("div[class='sub-menu']").length <= 0) {
+	                       datalist.append("<div class='sub-menu' id='secondMenu'></div>");
+	                   }
+	                   var secondMenu = datalist.find("#secondMenu");
+	
+	                   // 第一级菜单鼠标悬浮事件，弹出二级菜单和三级菜单项
+	                   $("#" + num + "_datalist #firstMenu ul li").bind("mouseover", function() {
+	                       secondMenu.html("");
+	                       $("#" + num + "_datalist #firstMenu ul li").removeClass("sele");
+	                       $(this).addClass("sele");
+	
+	                       var index = $(this).attr("name");
+	                       $.each(data.positionlist[index].c, function(j, item) {
+	                           secondMenu.append("<dl id='dl_" + j + "'></dl>");
+	                           // var dtItem = "<dt id='dt_" + j + "'>" + item.n + "</dt>";
+	                           // secondMenu.find("dl[id='dl_" + j + "']").append(dtItem);
+	                           secondMenu.find("dl[id='dl_" + j + "']").append("<dd id='dd_" + j + "'></dd>");
+	                           $.each(data.positionlist[index].c[j].a, function(m, dist) {
+	                               var threeMenu = "<a href='javascript:void(0)' id='item_" + index + "_" + j + "_" + m + "'>" + dist.s + "</a>";
+	                               secondMenu.find("dl[id='dl_" + j + "'] dd[id='dd_" + j + "']").append(threeMenu);
+	
+	                           });
+	                       });
+	
+	                       //根据已选择的项，将相同的列表展示项添加样式
+	                       var resultItems = container.find("#ddResult_" + num + " a");
+	                       $.each(resultItems, function(n, ritem) {
+	                           var rid = $(ritem).attr("id").substr(2, $(ritem).attr("id").length);
+	                           secondMenu.find("a[id='" + rid + "']").addClass("sele");
+	                       });
+	
+	                       // 列表项点击事件，选中则在结果容器中显示添加选中样式
+	                       secondMenu.find("a").bind("click", function() {
+	                           var selectedCount = container.find("#ddResult_" + num + " a").length - 1;
+	
+	                           if ($(this).hasClass("sele")) {
+	                               $(this).removeClass("sele");
+	                               container.find("#ddResult_" + num).find("a[id='c_" + $(this).attr("id") + "']").remove();
+	                           } else {
+	                               if (selectedCount >= settings.maxCount) {
+	                                   container.find("#tip_" + num).html("最多只能选择" + settings.maxCount + "项！").css("color", "red");
+	                                   setTimeout(function() {
+	                                       container.find("#tip_" + num).empty();
+	                                   }, 3000);
+	                               } else {
+	                                   $(this).addClass("sele");
+	                                   container.find("#ddResult_" + num + " #btnSure_" + num).before("<a href='#' id='c_" + $(this).attr("id") + "'>" + $.trim($(this).html()) + "</a>");
+	                               }
+	                           }
+	
+	                           // 结构容器中选中项点击事件，移除并将列表中的选中样式取消
+	                           container.find("#ddResult_" + num + " a").bind("click", function() {
+	                               var rid = $(this).attr("id");
+	                               if (rid != "btnSure_" + num) {
+	                                   var sid = rid.substr(2, rid.length);
+	                                   $(this).remove();
+	                                   secondMenu.find("a[id='" + sid + "']").removeClass("sele");
+	                               }
+	                           });
+	                       });
+	
+	                   });
+	
+	                   // 默认显示第一级
+	                   $(firstMenu).find("ul li:first").addClass("sele").trigger("mouseover");
+	
+	
+	                   // 关闭选择框
+	                   container.find(".title a").bind("click", function() {
+	                       container.hide();
+	                       $("#" + num + "_bg").hide();
+	                   });
+	
+	                   // 确定
+	                   container.find("#ddResult_" + num + " a[id='btnSure_" + num + "']").bind("click", function() {
+	                       var selectedItems = container.find("#ddResult_" + num + " a[id!='btnSure_" + num + "']");
+	                       var results = "";
+	                       $.each(selectedItems, function(i, item) {
+	                           results += $.trim($(item).text()) + ",";
+	                       });
+	                       if (results.length > 0) {
+	                           results = results.substr(0, results.length - 1);
+	                       }
+	                       xy_select.setValue(results);
+	                       container.hide();
+	                       $("#" + num + "_bg").hide();
+	                   });
+	
+	               }
+	               container.show();
+	               $("#" + num + "_bg").show();
+	           },
+	           setValue: function(value) {
+	               var type = $("#result");
+	               if (type.attr("type") == "text") {
+	                   type.val(value);
+	               } else
+	                   type.html(value);
+	           }
+	       }
+	       return xy_select;
+	   }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
 
 /***/ })
 
 });
-//# sourceMappingURL=12.chunk.587d9ef1.js.map
+//# sourceMappingURL=6.chunk.7392079d.js.map

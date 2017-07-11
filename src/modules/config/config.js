@@ -25,6 +25,10 @@ define(["../../lib/util.js"], function(util) {
         identity: "",
         toggle: false,
         data: [],
+        tag0s: [],
+        tags1: [],
+        tags2: [],
+        tags3: [],
         configstype: "人才分布",
         report_type: 201,
         ltnum: 0,
@@ -102,12 +106,14 @@ define(["../../lib/util.js"], function(util) {
             if (bean == "nodata") return;
             bean.report_type = vm.report_type;
             if (vm.report_type == 204) {
-                var url = "http://10.101.1.171:10110/report/config/allmodify";
+                var url = "/report/config/allmodify";
             } else {
-                var url = "http://10.101.1.171:10110/report/config/modify";
+                var url = "/report/config/modify";
             }
             $.post(url, bean, function(data) {
-                util.resResult(data, "配置成功");
+                util.resResult(data, "配置成功", function() {
+                    vm.getconfig(vm.configstype);
+                });
             })
         },
         clearAll: function() {
@@ -151,13 +157,67 @@ define(["../../lib/util.js"], function(util) {
             //发送数据到后台
             num = vm.report_type == 204 ? 201 : 202;
             var url = "../data/config" + num + ".json";
-            util.lockScreen();
+            // util.lockScreen();
             $.get(url, function(jsonObj) {
-                util.hideLock();
+                // util.hideLock();
+                vm.data_redy[0].name = jsonObj.data[0].name;
+                vm.data_redy[0].tags = jsonObj.data[0].tags;
+                if (num == 201) {
+                    vm.data_redy[1].name = jsonObj.data[1].name;
+                    vm.data_redy[1].tags = jsonObj.data[1].tags;
+                    vm.data_redy[2].name = jsonObj.data[2].name;
+                    vm.data_redy[2].tags = jsonObj.data[2].tags;
+                    vm.data_redy[3].name = jsonObj.data[3].name;
+                    vm.data_redy[3].tags = jsonObj.data[3].tags;
+                }
                 vm.data = [];
-                vm.data = jsonObj.data;
+                vm.data = vm.data_redy;
                 vm.domLisenter();
             });
+        },
+        getconfig: function(type) {
+            var _type = null;
+            switch (type) {
+                case "人才分布":
+                    _type = 201;
+                    break;
+                case "人才流动":
+                    _type = 202;
+                    break;
+                case "人才供需":
+                    _type = 203;
+                    break;
+                case "热门岗位人群的薪酬及特征画像":
+                    _type = 204;
+                    break;
+                default:
+                    break;
+            }
+            var url = "/report/config/all";
+            var bean = {
+                report_type: _type
+                    // config_type: "city"
+            }
+            util.lockScreen();
+            $.post(url, bean, function(result) {
+                util.hideLock();
+                util.resResult(result);
+                vm.data_redy = [];
+                vm.data_redy.push({
+                    hastag: result.data[0].checks
+                })
+                if (bean.report_type == 204) {
+                    vm.data_redy.push({
+                        hastag: result.data[1].checks
+                    }, {
+                        hastag: result.data[2].checks
+                    }, {
+                        hastag: result.data[3].checks
+                    })
+                }
+                vm.getJson();
+            })
+
         },
         validator: function(str, el) {
             $("#errorMsg2").hide();
@@ -189,7 +249,7 @@ define(["../../lib/util.js"], function(util) {
                 break;
         }
 
-        vm.getJson();
+        vm.getconfig(vm.configstype);
 
     });
     vm.$watch("ltnum", function() {
@@ -210,7 +270,7 @@ define(["../../lib/util.js"], function(util) {
 
         // 进入视图
         $ctrl.$onEnter = function(param, rs, rj) {
-            vm.getJson();
+            vm.getconfig(vm.configstype);
             var userinfo = vm.getPassFromCookie();
             var userBean = userinfo.split('|');
             vm._id = userBean[0];

@@ -24,10 +24,15 @@
                 dataArr = data[key];
             }
             $.each(dataArr, function(i, v) {
-                output += '<li><label style="width:100%;cursor: pointer;"><input type="checkbox" id="checkbox_' + i + '" class="chk_1"/><label for="checkbox_' + i + '"></label>' + v + '</label></li>';
+                output += '<li style="float:left;"><label style="width:100%;cursor: pointer;"><input type="checkbox" id="checkbox_' + i + '" class="chk_1"/><label for="checkbox_' + i + '"></label>' + v + '</label></li>';
                 // output += '<li><input type="checkbox"/>' + v + '</li>';
             })
-            $('#drag').width('150px');
+            if (dataArr.length > 5) {
+                $('#drag').width('300px');
+            } else {
+                $('#drag').width('150px');
+            }
+
             $('#FuntypeList').html('<ul>' + output + '</ul>');
             $('#FuntypeList').append('<p class="require_tips"></p><div class="require_btn">确定</div>');
             // 鼠标悬停变色

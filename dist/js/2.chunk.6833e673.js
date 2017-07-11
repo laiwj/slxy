@@ -21,6 +21,9 @@ webpackJsonp([2,13],{
 	            onError: function(reasons) {
 	                var str = reasons[0].message;
 	                $(".alert-login").text(str).show();
+	                setTimeout(function() {
+	                    $(".alert-login").text("").hide();
+	                }, 2000)
 	                $("#J_login").attr("disabled", true);
 	            },
 	            onSuccess: function() {
@@ -133,4 +136,4 @@ webpackJsonp([2,13],{
 /***/ })
 
 });
-//# sourceMappingURL=2.chunk.05b67535.js.map
+//# sourceMappingURL=2.chunk.6833e673.js.map

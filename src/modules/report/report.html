@@ -175,9 +175,9 @@
                                             </div>
                                         </div>
                                         <div class="control-group" ms-repeat-el="data_disturb_flow">
-                                            <p class="f14" style="margin-bottom:10px;" ms-visible="$index%11">{{el.name}}</p>
-                                            <p class="f14" style="margin-bottom:10px;color:red" ms-visible="!($index%11)">{{el.name}}</p>
-                                            <div style="margin-bottom:10px;" ms-visible="$index%11">
+                                            <p class="f14" style="margin-bottom:10px;" ms-visible="el.value">{{el.name}}</p>
+                                            <p class="f14" style="margin-bottom:10px;color:red" ms-visible="!el.value">{{el.name}}</p>
+                                            <div style="margin-bottom:10px;" ms-visible="el.value">
                                                 <input class="input data" ms-duplex="el.value" maxlength="50" ms-attr-placeholder="'请输入'+el.name+'的数据'" />
                                             </div>
                                         </div>
