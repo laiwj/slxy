@@ -3,9 +3,10 @@ define(["../../lib/util.js"], function(util) {
     var vm = avalon.define({
         $id: "account",
         isSumbit: false,
-        user_username: null,
-        user_account: null,
-        user_password: null,
+        user_name: "",
+        user_account: "",
+        user_password: "",
+        email_hint: true,
         newlist: [],
         uid: "",
         _id: "",
@@ -103,7 +104,7 @@ define(["../../lib/util.js"], function(util) {
         },
         initList: function(obj, objDom) {
             util.lockScreen();
-            $.post('/user/list', obj, function(data) {
+            $.post('http://10.101.1.171:10110/user/list', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
                 if (data.data.data.length == 0) {
@@ -171,10 +172,17 @@ define(["../../lib/util.js"], function(util) {
                 window.location.href = "/#!/userInfo/" + param;
             });
 
-
         },
         addAcount: function(type) {
-
+            if (vm.user_name == "" || vm.user_account == "" || vm.account == "") {
+                util.tips("请输入完整信息");
+                return;
+            } else if (vm.email_hint) {
+                util.tips("手机或邮箱格式有误");
+                return;
+            } else {
+                // vm.isSumbit = false;
+            }
             if (vm.isSumbit) {
                 return;
             }
@@ -185,7 +193,7 @@ define(["../../lib/util.js"], function(util) {
             }
             vm.isSumbit = true;
 
-            $.post('/user/regist', bean, function(data) {
+            $.post('http://10.101.1.171:10110/user/regist', bean, function(data) {
                 vm.isSumbit = false;
                 util.resResult(data, "添加账户成功", function() {
                     if (type == 0) {
@@ -227,7 +235,7 @@ define(["../../lib/util.js"], function(util) {
             // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
 
 
-            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
+            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
                 util.resResult(data, "设置成功", function() {
                     var widget = avalon.vmodels.hh
                     if (widget) {
@@ -243,6 +251,37 @@ define(["../../lib/util.js"], function(util) {
         }
     });
 
+    vm.$watch("user_name", function() {
+        if ((/^[a-z0-9_-]{1,16}$/).test(vm.user_username)) {
+            $('.user_hint').html("✔").css("color", "green");
+            // vm.password = false;
+        } else {
+            $('.user_hint').html("×").css("color", "red");
+            // vm.password = true;
+        }
+    })
+    vm.$watch("user_account", function() {
+        if ((/^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/).test(vm.user_account)) {
+            $('.email_hint').html("✔").css("color", "green");
+            vm.email_hint = false;
+        } else if ((/^1[34578]\d{9}$/).test(vm.user_account)) {
+            $('.email_hint').html("✔").css("color", "green");
+            vm.email_hint = false;
+        } else {
+            $('.email_hint').html("×").css("color", "red");
+            vm.email_hint = true;
+        }
+
+    })
+    vm.$watch("user_password", function() {
+        if ((/^[a-z0-9_-]{1,16}$/).test(vm.user_password)) {
+            $('.password_hint').html("✔").css("color", "green");
+            // vm.password = false;
+        } else {
+            $('.password_hint').html("×").css("color", "red");
+            // vm.password = true;
+        }
+    })
     vm.$skipArray = ["pager"]
 
     return avalon.controller(function($ctrl) {

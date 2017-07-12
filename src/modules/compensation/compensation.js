@@ -59,7 +59,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             onConfirm: function() {
                 var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
                 var bean = { data: JSON.stringify(vm.data_disturb), data_id: vm.data_id };
-                $.post("/api/data/cheat", bean, function(result) {
+                $.post("http://10.101.1.171:10110/api/data/cheat", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
                         $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
@@ -100,6 +100,10 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
             window.location.href = "";
         },
         analysisData: function(obj) {
+            if (vm.c_function == "") {
+                util.tips("请选择" + vm.J_compensationtype);
+                return false;
+            }
             var param = vm.getBean();
             // var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : "supplydemand";
             util.lockScreen();
@@ -158,7 +162,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                     if (bean.experience == "12") {
                         bean.experience = "12+";
                     }
-                    url = "/api/func/salary/analysis";
+                    url = "http://10.101.1.171:10110/api/func/salary/analysis";
                     break;
                 case "岗位":
 
@@ -171,7 +175,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                         type: vm.c_time == "近一个月" ? 2 : vm.c_time == "近三个月" ? 3 : 4,
                         top: 10
                     }
-                    url = "/api/position/salary/analysis";
+                    url = "http://10.101.1.171:10110/api/position/salary/analysis";
                     break;
                 default:
                     break;
@@ -201,7 +205,7 @@ define(["../../lib/util.js", "../../lib/positionSelect.js", "../../lib/jquery.po
                 console.log(bean);
             }
 
-            $.post("/api/info/write", bean, function(result) {
+            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
                 util.resResult(result, "添加分析说明成功", function() {
                     $(obj).prev().text(bean.report_info);
                 });

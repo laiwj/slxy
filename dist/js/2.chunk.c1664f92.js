@@ -3,7 +3,7 @@ webpackJsonp([2,13],{
 /***/ 35:
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function(api) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
 	    var validationVM
 	        // 定义所有相关的 vmodel
 	    var vm = avalon.define({
@@ -11,25 +11,7 @@ webpackJsonp([2,13],{
 	        isSumbit: false,
 	        account: "",
 	        password: null,
-	        validation: {
-	            onInit: function(v) {
-	                validationVM = v;
-	            },
-	            onReset: function(e, data) {
-	                $(".alert-login").text("").hide();
-	            },
-	            onError: function(reasons) {
-	                var str = reasons[0].message;
-	                $(".alert-login").text(str).show();
-	                setTimeout(function() {
-	                    $(".alert-login").text("").hide();
-	                }, 2000)
-	                $("#J_login").attr("disabled", true);
-	            },
-	            onSuccess: function() {
-	                $("#J_login").attr("disabled", false);
-	            }
-	        },
+	        email_hint: true,
 	        initEditData: function() {
 	            var userStr = vm.getPassFromCookie();
 	            if (userStr) {
@@ -48,8 +30,48 @@ webpackJsonp([2,13],{
 	                    $('#J_login').click();
 	                }
 	            });
+	            $('#login_password').blur(function() {
+	                if ((/^[a-z0-9_-]{1,16}$/).test($("#login_password").val())) {
+	                    $('.password_hint').html("✔").css("color", "green");
+	                    // vm.password = false;
+	                } else {
+	                    $('.password_hint').html("×").css("color", "red");
+	                    // vm.password = true;
+	                }
+	            });
+	
+	            $('#login_account').blur(function() {
+	                if ($("#login_account").val() == "admin") {
+	                    $('.email_hint').html("✔").css("color", "green");
+	                    vm.email_hint = false;
+	                } else if ((/^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/).test($("#login_account").val())) {
+	                    $('.email_hint').html("✔").css("color", "green");
+	                    vm.email_hint = false;
+	                } else if ((/^1[34578]\d{9}$/).test($("#login_account").val())) {
+	                    $('.email_hint').html("✔").css("color", "green");
+	                    vm.email_hint = false;
+	                } else {
+	                    $('.email_hint').html("×").css("color", "red");
+	                    vm.email_hint = true;
+	                }
+	            });
 	        },
 	        loginFun: function() {
+	            if ($("#login_password").val() == "" || $("#login_account").val() == "") {
+	                $(".alert-login").text("请输入账号或密码").show();
+	                setTimeout(function() {
+	                    $(".alert-login").hide();
+	                }, 2000);
+	                return;
+	            } else if (vm.email_hint) {
+	                $(".alert-login").text("邮箱或手机格式有误").show();
+	                setTimeout(function() {
+	                    $(".alert-login").hide();
+	                }, 2000);
+	                return;
+	            } else {
+	                // vm.isSumbit = false;
+	            }
 	            if (vm.isSumbit) {
 	                return;
 	            }
@@ -136,4 +158,4 @@ webpackJsonp([2,13],{
 /***/ })
 
 });
-//# sourceMappingURL=2.chunk.6833e673.js.map
+//# sourceMappingURL=2.chunk.c1664f92.js.map

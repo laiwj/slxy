@@ -3737,6 +3737,14 @@
     
     .pure-form li {
         margin-bottom: 20px;
+        width: 95%;
+        position: relative;
+    }
+    
+    .pure-form li span {
+        position: absolute;
+        top: 30px;
+        right: -20px;
     }
     
     .pure-form li:last-child {

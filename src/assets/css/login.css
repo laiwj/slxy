@@ -236,6 +236,13 @@ input[type='password'] {
     line-height: 43px;
     border-radius: 5px;
     padding-top: 0;
+    position: relative;
+}
+
+.input-prepend .stipIcon {
+    position: absolute;
+    top: 0;
+    right: -20px;
 }
 
 .input-prepend i {

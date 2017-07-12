@@ -18,6 +18,7 @@ define(["../../lib/util.js"], function(util) {
         userList: [],
         serviceName: "请选择客户名称",
         serviceNameList: [],
+        currentPage: 1,
         list: {},
         pager: {
             currentPage: 1,
@@ -28,6 +29,7 @@ define(["../../lib/util.js"], function(util) {
             prevText: "上一页",
             nextText: "下一页",
             onJump: function(e, page) {
+                vm.currentPage = page.currentPage;
                 var param = {
                     force: false,
                     page: page.currentPage,
@@ -107,7 +109,7 @@ define(["../../lib/util.js"], function(util) {
         },
         initList: function(obj, callback) {
             util.lockScreen();
-            $.post('/user/list/b', obj, function(data) {
+            $.post('http://10.101.1.171:10110/user/list/b', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
                 if (data.data.data.length == 0) {
@@ -119,12 +121,12 @@ define(["../../lib/util.js"], function(util) {
                     $(".infolist").show();
                     $(".null-model").hide();
 
-                    if (obj.page == 1) {
-                        var widget = avalon.vmodels.pp
-                        if (widget) {
-                            widget.totalItems = data.data.count;
-                        }
+                    // if (obj.page == 1) {
+                    var widget = avalon.vmodels.pp
+                    if (widget) {
+                        widget.totalItems = data.data.count;
                     }
+                    // }
 
                 }
                 try {
@@ -164,14 +166,24 @@ define(["../../lib/util.js"], function(util) {
                 }
             })
 
-            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'b' }, function(data) {
+            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'b' }, function(data) {
                 util.resResult(data, "设置成功", function() {
                     var widget = avalon.vmodels.pp
                     if (widget) {
-                        var obj = {
-                            page: widget.currentPage,
-                            user_id: ""
+                        if (vm.serviceName == "请选择客户名称") {
+                            var obj = {
+                                force: false,
+                                page: widget.currentPage,
+                                user_id: "",
+                            }
+                        } else {
+                            var obj = {
+                                page: 1,
+                                user_id: vm.list.id ? vm.list.id : '',
+                                pm_user_id: vm.serviceName
+                            }
                         }
+
                     }
                     vm.initList(obj);
                 });
@@ -194,7 +206,15 @@ define(["../../lib/util.js"], function(util) {
 
     vm.$watch("serviceName", function() {
         if (vm.serviceName == "请选择客户名称") {
-            vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '' });
+            vm.initList({ page: vm.currentPage, user_id: vm.list.id ? vm.list.id : '' }, function() {
+                // 存储客户名称列表
+                vm.serviceNameList = [];
+                vm.serviceName = "请选择客户名称";
+                $.each(vm.userList, function(i, v) {
+                    vm.serviceNameList.push({ id: v.pm_user_id, name: v.pm_user_name });
+                })
+                vm.serviceNameList = vm.unique(vm.serviceNameList);
+            });
         } else {
             vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '', pm_user_id: vm.serviceName });
         }
