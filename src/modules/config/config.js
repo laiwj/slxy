@@ -65,7 +65,6 @@ define(["../../lib/util.js"], function(util) {
         },
         generate: function() {
             // 获取input数值
-            // console.log(vm.ltnum + "----" + vm.gtnum)
             if ($("#msgTips").is(":hidden")) {
                 return false;
             }
@@ -106,9 +105,9 @@ define(["../../lib/util.js"], function(util) {
             if (bean == "nodata") return;
             bean.report_type = vm.report_type;
             if (vm.report_type == 204) {
-                var url = "http://10.101.1.171:10110/report/config/allmodify";
+                var url = "/report/config/allmodify";
             } else {
-                var url = "http://10.101.1.171:10110/report/config/modify";
+                var url = "/report/config/modify";
             }
             $.post(url, bean, function(data) {
                 util.resResult(data, "配置成功", function() {
@@ -193,7 +192,7 @@ define(["../../lib/util.js"], function(util) {
                 default:
                     break;
             }
-            var url = "http://10.101.1.171:10110/report/config/all";
+            var url = "/report/config/all";
             var bean = {
                 report_type: _type
                     // config_type: "city"

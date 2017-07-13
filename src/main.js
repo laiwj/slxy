@@ -199,12 +199,9 @@ avalon.state("account", {
  * 路由全局配置
  */
 avalon.state.config({
-    onError: function() {
-        // console.log(arguments)
-    },
+    onError: function() {},
     onBegin: function() {
         // var obj = root.userinfo.$model;
-        // console.log(root.passname);
         // delete avalon.vmodels["userInfo"]
 
 

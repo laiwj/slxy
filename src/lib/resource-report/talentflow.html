@@ -77,40 +77,12 @@
         LoadGraphExample();
         //图形加载 - 人才流动，人才流动数据格式示例
         function LoadGraphExample() {
-            /* var data = [
-                 {name:'上海',value:85},
-                 {name:'广州',value:90},
-                 {name:'大连',value:80},
-                 {name:'南宁',value:70},
-                 {name:'南昌',value:60},
-                 {name:'拉萨',value:10},
-                 {name:'长春',value:40},
-                 {name:'包头',value:30},
-                 {name:'重庆',value:20},
-                 {name:'北京',value:95}
-             ];*/
+
 
 
             var type = node.attr("charts_type");
             var bean = JSON.parse(node.attr("bean"));
-            // var flow = $("#bean_direction", window.parent.document).val();
-            // var city = $("#bean_city", window.parent.document).val();
             var zn_data = {};
-
-
-            // var bean_type = $("#bean_type", window.parent.document).val();
-            // var industry = $("#bean_industry", window.parent.document).val();
-            // console.log(city);
-
-            //            if(type == "city"){
-            //                if(flow == "in"){
-            //                    ShowMapFlowIn("charts_wrap", data,city);
-            //                }else{
-            //                    ShowMapFlowOut("charts_wrap", data,city);
-            //                }
-            //            }else{
-            //                ShowPieCity("charts_wrap", data,city);
-            //            }
 
             if (type == "city") {
                 ShowMapTop("charts_wrap", datas, function(city, obj) {

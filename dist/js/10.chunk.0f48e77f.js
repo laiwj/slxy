@@ -1739,7 +1739,7 @@ webpackJsonp([10,13],{
 	        list: {},
 	        pager: {
 	            currentPage: 1,
-	            totalItems: 0,
+	            totalItems: 600,
 	            showJumper: true,
 	            alwaysShowNext: true,
 	            alwaysShowPrev: true,
@@ -1762,7 +1762,6 @@ webpackJsonp([10,13],{
 	                    vm.serviceNameList = vm.unique(vm.serviceNameList);
 	                });
 	            }
-	
 	        },
 	        show: function(id) {
 	            var arr = id.split(",");
@@ -1981,4 +1980,4 @@ webpackJsonp([10,13],{
 /***/ })
 
 });
-//# sourceMappingURL=10.chunk.fe6d40bb.js.map
+//# sourceMappingURL=10.chunk.0f48e77f.js.map

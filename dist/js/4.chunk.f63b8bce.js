@@ -1,4 +1,386 @@
-webpackJsonp([8,13],{
+webpackJsonp([4,13],{
+
+/***/ 37:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38)], __WEBPACK_AMD_DEFINE_RESULT__ = function(util) {
+	    var validationVM;
+	    // 定义所有相关的 vmodel
+	    var vm = avalon.define({
+	        $id: "report",
+	        _id: "",
+	        type: "",
+	        short_id: "",
+	        username: "",
+	        identity: "",
+	        toggle: false,
+	        api_url: "",
+	        data_id: "",
+	        params: {},
+	        info: [],
+	        hasInfo: "请添加分析说明...",
+	        J_chartstype: "人才分布",
+	        J_type: "近一个月",
+	        J_industry: "互联网全行业",
+	        J_direction: "人才流入",
+	        J_na: "需求量",
+	        J_cf: "热门城市",
+	        J_fp: "职能",
+	        industry: [],
+	        label: [],
+	        index: "",
+	        type_limit: "",
+	        r_ltnum: null,
+	        r_gtnum: null,
+	        report_info: "",
+	        data_disturb: [],
+	        data_disturb_flow: [],
+	        show: function(id) {
+	            // validationVM.resetAll();
+	            if (id.charAt(0) == "b") {
+	                var arr = id.split(",");
+	                var id = arr[0];
+	                var index = arr[1];
+	                if (index) {
+	                    for (var i = 0; i < $(".J_edit_desc").length; i++) {
+	                        if (i == index) {
+	                            $(this).attr("isClick", "yes");
+	                            break;
+	                        }
+	                    }
+	                } else {
+	                    $("#report_info").attr("isClick", "yes");
+	                }
+	
+	                var dialog = avalon.vmodels[id];
+	
+	            } else {
+	
+	                var dialog = avalon.vmodels[id];
+	            }
+	
+	            if (!dialog) {
+	
+	            } else {
+	                dialog.toggle = true;
+	            }
+	        },
+	        $aaOpts: {
+	            title: "数据干预",
+	            width: 500,
+	            onConfirm: function() {
+	                var tab = vm.J_chartstype == "人才分布" ? "talentdistribution" : vm.J_chartstype == "人才流动" ? "talentflow" : "supplydemand";
+	                var bean_data = [];
+	                if (vm.data_disturb.$model.length) {
+	                    bean_data = vm.data_disturb.$model;
+	                    $.each(bean_data, function(i, v) {
+	                        v.value = parseInt(v.value);
+	                    })
+	                } else {
+	                    var bean_data_arr = vm.data_disturb_flow.$model;
+	                    var flage_str = "";
+	                    $.each(bean_data_arr, function(i, v) {
+	                        if (v.value) {
+	                            v.value = parseInt(v.value);
+	                            obj_key[flage_str].push(v);
+	                        } else {
+	                            obj_key = {};
+	                            bean_data.push(obj_key);
+	                            flage_str = v.name;
+	                            obj_key[v.name] = [];
+	                        }
+	                    })
+	                }
+	
+	                var bean = { data: JSON.stringify(bean_data), api_url: vm.api_url, id: vm.data_id, api_time: vm.api_time, params: JSON.stringify(vm.params) };
+	                $.post("/api/data/interpose", bean, function(result) {
+	                    util.resResult(result, "数据干预成功", function() {
+	                        // $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
+	                        // $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
+	                        vm.analysisData();
+	                    });
+	                })
+	            }
+	        },
+	        $bbOpts: {
+	            title: "添加分析说明",
+	            width: 500,
+	            onConfirm: function() {
+	                if ($("#report_info").attr("isClick")) {
+	                    vm.saveDesc();
+	                    $("#report_info").attr("isClick", "");
+	                } else {
+	                    $(".J_edit_desc").each(function(i, v) {
+	                        if ($(v).attr("isClick")) {
+	                            vm.saveDesc(v);
+	                            $(v).attr("isClick", "");
+	                        }
+	                    });
+	                }
+	
+	            }
+	        },
+	        getPassFromCookie: function() {
+	            return window.$.cookie(location.host + "_userinfo");
+	        },
+	        clearPassToCookie: function() {
+	            window.$.cookie(location.host + "_userinfo", "", { path: "/" });
+	        },
+	        toggle_hiddle: function() {
+	            vm.toggle = !vm.toggle
+	        },
+	        logout: function() {
+	            vm.clearPassToCookie();
+	            window.location.href = "";
+	        },
+	        analysisData: function() {
+	            var param = vm.getBean();
+	            var tab = param.tab == "人才分布" ? "talentdistribution" : param.tab == "人才流动" ? "talentflow" : param.tab == "人才供需" ? "supplydemand" : "remuneration";
+	            util.lockScreen();
+	            $.post(param.url, param.bean, function(result) {
+	                util.hideLock();
+	                util.resResult(result);
+	                vm.data_disturb = [];
+	                vm.data_disturb_flow = [];
+	                if (result.data.data.data[0].name) {
+	                    vm.data_disturb = result.data.data.data;
+	                } else {
+	                    var data_arr = result.data.data.data;
+	                    $.each(data_arr, function(i, v) {
+	                        for (var key in v) {
+	                            vm.data_disturb_flow.push({ name: key });
+	                            vm.data_disturb_flow = vm.data_disturb_flow.concat(v[key]);
+	                        }
+	                    })
+	                }
+	                $("#J_charts_data").val(JSON.stringify(result.data.data.data)).attr("charts_type", param.charts_type).attr("bean", JSON.stringify(param.bean)).attr("typeLimit", JSON.stringify(vm.type_limit));
+	                $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
+	                $("#report_info").attr("api_url", result.data.data.api_url);
+	                if (result.data.info.length > 0) {
+	                    $("#report_info").attr("user_id", result.data.info[0].pm_user_id);
+	                    $("#report_info").attr("data_id", result.data.info[0]._id);
+	                    if (vm.type == "3") {
+	                        $(".charts-warp").val('').val(result.data.info[0].info);
+	                        vm.hasInfo = result.data.info[0].info;
+	                    }
+	                } else {
+	                    $("#report_info").attr("data_url", "").attr("data_id", "").val('');
+	                    if (vm.type == "3") {
+	                        $(".charts-warp").val('');
+	                        vm.hasInfo = "请添加分析说明...";
+	                    }
+	                }
+	
+	                //超管与公司权限
+	                if (vm.type != "3") {
+	                    vm.info = result.data.info;
+	                }
+	                vm.params = result.data.data.params;
+	                vm.api_url = result.data.data.api_url;
+	                vm.data_id = result.data.data._id;
+	                vm.api_time = result.data.data.api_time;
+	            })
+	        },
+	        getBean: function() {
+	            var tab = vm.J_chartstype;
+	            var bean = {};
+	            var url = "";
+	            var charts_type = "";
+	            switch (tab) {
+	                case "人才分布":
+	                    bean = {
+	                        industry: vm.J_industry,
+	                        cf: vm.J_cf == "热门城市" ? "city" : "func",
+	                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
+	                    }
+	                    bean.city = "";
+	                    bean.top = 10;
+	
+	                    url = "/api/talent/distribution";
+	                    charts_type = bean.cf;
+	                    break;
+	                case "人才流动":
+	                    bean = {
+	                        industry: vm.J_industry,
+	                        direction: vm.J_direction == "人才流入" ? "in" : "out",
+	                        cf: vm.J_cf == "热门城市" ? "city" : "func",
+	                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
+	                    }
+	                    bean.city = "";
+	                    bean.top = 10;
+	                    url = "/api/talent/flow";
+	                    charts_type = bean.cf;
+	                    break;
+	                case "人才供需":
+	                    bean = {
+	                        industry: vm.J_industry,
+	                        na: vm.J_na == "需求量" ? "need" : "all",
+	                        fp: vm.J_fp == "职能" ? "func" : "position",
+	                        type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4
+	                    }
+	                    bean.top = 5;
+	                    bean.city = "";
+	                    url = "/api/talent/exponential";
+	                    charts_type = bean.na;
+	                    break;
+	                case "人才薪酬":
+	                    bean = {
+	                            industry: vm.J_industry,
+	                            type: vm.J_type == "近一个月" ? 2 : vm.J_type == "近三个月" ? 3 : 4,
+	                            index: vm.index,
+	                            label: vm.label.join(","),
+	                            top: 10
+	                        }
+	                        // bean.city = "";
+	                    url = "/api/talent/salary/analysis";
+	                    charts_type = "tab1";
+	                    break;
+	                default:
+	                    break;
+	            }
+	
+	            return { bean: bean, tab: tab, url: url, charts_type: charts_type };
+	        },
+	        saveDesc: function(obj) {
+	            var user_id = $("#report_info").attr("user_id") ? $("#report_info").attr("user_id") : vm._id;
+	            var bean = {};
+	            if (obj) {
+	                var param = {
+	                    api_url: $(obj).attr("api_url"),
+	                    user_id: $(obj).attr("user_id"),
+	                    report_info: vm.report_info,
+	                    params: JSON.stringify(vm.params)
+	                }
+	                bean = param;
+	            } else {
+	                bean = {
+	                    api_url: vm.api_url,
+	                    user_id: user_id,
+	                    report_info: vm.report_info,
+	                    params: JSON.stringify(vm.params)
+	                };
+	            }
+	
+	            $.post("/api/info/write", bean, function(result) {
+	                util.resResult(result, "添加分析说明成功", function() {
+	                    $(obj).prev().text(bean.report_info);
+	                });
+	            })
+	        },
+	        getconfig: function(type) {
+	            var _type = null;
+	            switch (type) {
+	                case "人才分布":
+	                    _type = 201;
+	                    break;
+	                case "人才流动":
+	                    _type = 202;
+	                    break;
+	                case "人才供需":
+	                    _type = 203;
+	                    break;
+	                case "人才薪酬":
+	                    _type = 204;
+	                    break;
+	                default:
+	                    break;
+	            }
+	            var url = "/report/config/all";
+	            var bean = {
+	                report_type: _type
+	                    // config_type: "city"
+	            }
+	            $.post(url, bean, function(result) {
+	                util.resResult(result);
+	                vm.industry = result.data[0].checks;
+	                if (bean.report_type == 204) {
+	                    vm.label = result.data[3].checks;
+	                    try {
+	                        if (result.data[4].checks[0]) {
+	                            vm.index = result.data[4].checks[0];
+	                        } else {
+	                            vm.index = "0-200";
+	                        }
+	                        vm.r_ltnum = vm.index.split("-")[0];
+	                        vm.r_gtnum = vm.index.split("-")[1];
+	                    } catch (error) {}
+	                    vm.type_limit = result.data[5].checks;
+	                }
+	                vm.analysisData();
+	            })
+	
+	        },
+	        consfigClick: function() {
+	            var reg = /\b[0-9]\d{0,1}\b|\b[1-1]\d\d\b|\b200\b/;
+	            if (!reg.test(vm.r_ltnum) || (vm.r_ltnum - 0) < 0 || (vm.r_ltnum - 0) > 200 || !reg.test(vm.r_gtnum) || (vm.r_gtnum - 0) < 0 || (vm.r_gtnum - 0) > 200 || (vm.r_ltnum - 0) > (vm.r_gtnum - 0)) {
+	                $("#errorMsg").show();
+	                setTimeout(function() {
+	                    $("#errorMsg").hide();
+	                }, 2000);
+	                return false;
+	            }
+	            vm.index = vm.r_ltnum + "-" + vm.r_gtnum;
+	            vm.analysisData()
+	        }
+	    });
+	
+	    vm.$watch("J_chartstype", function() {
+	        vm.getconfig(vm.J_chartstype);
+	    });
+	    vm.$watch("J_type", function() {
+	        vm.analysisData();
+	    });
+	    vm.$watch("J_industry", function() {
+	        vm.analysisData();
+	    });
+	    vm.$watch("J_direction", function() {
+	        vm.analysisData();
+	    });
+	    vm.$watch("J_na", function() {
+	        vm.analysisData();
+	    });
+	    vm.$watch("J_cf", function() {
+	        vm.analysisData();
+	    });
+	    vm.$watch("J_fp", function() {
+	        vm.analysisData();
+	    });
+	
+	
+	    //开始扫描编译
+	    avalon.scan(document.body);
+	
+	    return avalon.controller(function($ctrl) {
+	        // 视图渲染后，意思是avalon.scan完成
+	        $ctrl.$onRendered = function() {
+	            document.title = '数联寻英';
+	            $('#side_accordion div').removeClass('md-accent-bg').eq(0).addClass('md-accent-bg');
+	            //生成数据
+	            vm.getconfig(vm.J_chartstype);
+	            // vm.analysisData();
+	        };
+	        // 进入视图
+	        $ctrl.$onEnter = function(param, rs, rj) {
+	            var userinfo = vm.getPassFromCookie();
+	            var userBean = userinfo.split('|');
+	            vm._id = userBean[0];
+	            vm.type = userBean[1];
+	            vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
+	            vm.short_id = userBean[2];
+	            vm.username = userBean[3];
+	
+	        };
+	        // 对应的视图销毁前
+	        $ctrl.$onBeforeUnload = function() {
+	            $(".oni-dialog").empty();
+	        };
+	        $ctrl.$vmodels = [vm];
+	    })
+	
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
+
+/***/ }),
 
 /***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
@@ -1710,303 +2092,7 @@ webpackJsonp([8,13],{
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
 
 
-/***/ }),
-
-/***/ 47:
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38)], __WEBPACK_AMD_DEFINE_RESULT__ = function(util) {
-	    function Show2(data) {
-	        var output = '',
-	            flag, output2 = '';
-	        $.each(data, function(i, v) {
-	            output += '<li onclick="Chk2(\'' + v + '\')"><label class="mr30"><input type="radio" id="checkbox_a3" class="chk_1" value="chk_1" name="chk_1" /> <label for="checkbox_a3"></label>' + v + '</label></li>';
-	        })
-	
-	        $('#drag').width('150px');
-	        $('#FuntypeList').html('<ul>' + output + '</ul>');
-	        // 鼠标悬停变色
-	        $('#FuntypeAlpha li').hover(
-	            function() { $(this).addClass('over') },
-	            function() { $(this).removeClass('over') }
-	        );
-	    }
-	    // 定义所有相关的 vmodel
-	    var vm = avalon.define({
-	        $id: "config",
-	        _id: "",
-	        type: "",
-	        _type: null,
-	        short_id: "",
-	        username: "",
-	        identity: "",
-	        toggle: false,
-	        data: [],
-	        tag0s: [],
-	        tags1: [],
-	        tags2: [],
-	        tags3: [],
-	        configstype: "人才分布",
-	        report_type: 201,
-	        ltnum: 0,
-	        gtnum: 200,
-	        condition_l: "=",
-	        condition_r: "p25",
-	        getPassFromCookie: function() {
-	            return window.$.cookie(location.host + "_userinfo");
-	        },
-	        clearPassToCookie: function() {
-	            window.$.cookie(location.host + "_userinfo", "", { path: "/" });
-	        },
-	        toggle_hiddle: function() {
-	            vm.toggle = !vm.toggle
-	        },
-	        logout: function() {
-	            vm.clearPassToCookie();
-	            window.location.href = "";
-	        },
-	        doClick: function(data) {
-	            $("#sublist").empty();
-	            $(".tags").attr("isMe", "");
-	            var top = $(this)[0].parentNode.offsetTop,
-	                left = $(this)[0].parentNode.offsetWidth;
-	            var el = $(this)[0].parentNode.nextElementSibling.lastElementChild;
-	            $(el).attr("isMe", "yes");
-	            var dragHtml = '<div id="FuntypeAlpha">'; //职能类别
-	            dragHtml += '<div id="FuntypeList"></div>'; //职能类别列表
-	            dragHtml += '</div>';
-	            $('#drag_con').html(dragHtml);
-	            Show2(data.$model.tags);
-	            $('#maskLayer').css({ top: top + 44, left: left + 129 }).show();
-	            $("#sublist").css({ top: top + 44, left: left - 92 })
-	        },
-	        generate: function() {
-	            // 获取input数值
-	            // console.log(vm.ltnum + "----" + vm.gtnum)
-	            if ($("#msgTips").is(":hidden")) {
-	                return false;
-	            }
-	            if ((vm.ltnum - 0) > (vm.gtnum - 0)) {
-	                $("#msgTips").hide();
-	                $("#errorMsg").hide();
-	                $("#errorMsg2").show();
-	                return false;
-	            }
-	            var data = vm.ltnum + "-" + vm.gtnum;
-	            var tag = '';
-	            tag = '<div class="tag"><span>' + data + '</span><i> × </i></div>';
-	            var el = $(this)[0].parentNode.nextElementSibling.lastElementChild;
-	            $(el).find(".tag").remove();
-	            $(el).append(tag);
-	            vm.domLisenter();
-	        },
-	        condition: function() {
-	            var data = vm.condition_l + "" + vm.condition_r;
-	            var tag = '';
-	            tag = '<div class="tag"><span>' + data + '</span><i> × </i></div>';
-	            if (vm.condition_l == "<") {
-	                tag = '<div class="tag"><span>&lt' + vm.condition_r + '</span><i> × </i></div>';
-	            }
-	            var el = $(this)[0].parentNode.nextElementSibling.lastElementChild;
-	            var tagSpan = $(el).find(".tag span");
-	            var flage = true;
-	            $.each(tagSpan, function(i, v) {
-	                if (data == $(v).text()) {
-	                    flage = false;
-	                }
-	            })
-	            if (flage) $(el).append(tag);
-	            vm.domLisenter();
-	        },
-	        go: function() {
-	            var bean = vm.getdatas();
-	            if (bean == "nodata") return;
-	            bean.report_type = vm.report_type;
-	            if (vm.report_type == 204) {
-	                var url = "/report/config/allmodify";
-	            } else {
-	                var url = "/report/config/modify";
-	            }
-	            $.post(url, bean, function(data) {
-	                util.resResult(data, "配置成功", function() {
-	                    vm.getconfig(vm.configstype);
-	                });
-	            })
-	        },
-	        clearAll: function() {
-	            $(".tags").find(".tag").remove();
-	        },
-	        getdatas: function() {
-	            var bean = {};
-	            var _util = ["industry", "demand", "experience", "supply", "label", "type_limit"];
-	            $(".tags").each(function(i, v) {
-	                var xy_Arr = [];
-	                var _index = i;
-	                if (vm.report_type == 204) {
-	                    $(v).find("span").each(function(i, v) {
-	                        xy_Arr.push($(this).text());
-	                    })
-	                    if (_index == 4 && xy_Arr.length == 0) {
-	                        util.tips("请配置岗位供需指数");
-	                        bean = "nodata";
-	                        return;
-	                    }
-	                    bean[_util[i]] = xy_Arr.join(",");
-	                } else {
-	                    $(v).find("span").each(function(i, v) {
-	                        xy_Arr.push($(this).text());
-	                    })
-	                    bean.check = xy_Arr.join(",");
-	                    bean.config_type = "industry";
-	                    return false;
-	                }
-	
-	            })
-	
-	            return bean;
-	        },
-	        domLisenter: function() {
-	            $(".tag").find("i").on("click", function() {
-	                $(this).parent().remove();
-	            });
-	        },
-	        getJson: function() {
-	            //发送数据到后台
-	            num = vm.report_type == 204 ? 201 : 202;
-	            var url = "../data/config" + num + ".json";
-	            // util.lockScreen();
-	            $.get(url, function(jsonObj) {
-	                // util.hideLock();
-	                vm.data_redy[0].name = jsonObj.data[0].name;
-	                vm.data_redy[0].tags = jsonObj.data[0].tags;
-	                if (num == 201) {
-	                    vm.data_redy[1].name = jsonObj.data[1].name;
-	                    vm.data_redy[1].tags = jsonObj.data[1].tags;
-	                    vm.data_redy[2].name = jsonObj.data[2].name;
-	                    vm.data_redy[2].tags = jsonObj.data[2].tags;
-	                    vm.data_redy[3].name = jsonObj.data[3].name;
-	                    vm.data_redy[3].tags = jsonObj.data[3].tags;
-	                }
-	                vm.data = [];
-	                vm.data = vm.data_redy;
-	                vm.domLisenter();
-	            });
-	        },
-	        getconfig: function(type) {
-	            var _type = null;
-	            switch (type) {
-	                case "人才分布":
-	                    _type = 201;
-	                    break;
-	                case "人才流动":
-	                    _type = 202;
-	                    break;
-	                case "人才供需":
-	                    _type = 203;
-	                    break;
-	                case "热门岗位人群的薪酬及特征画像":
-	                    _type = 204;
-	                    break;
-	                default:
-	                    break;
-	            }
-	            var url = "/report/config/all";
-	            var bean = {
-	                report_type: _type
-	                    // config_type: "city"
-	            }
-	            util.lockScreen();
-	            $.post(url, bean, function(result) {
-	                util.hideLock();
-	                util.resResult(result);
-	                vm.data_redy = [];
-	                vm.data_redy.push({
-	                    hastag: result.data[0].checks
-	                })
-	                if (bean.report_type == 204) {
-	                    vm.data_redy.push({
-	                        hastag: result.data[1].checks
-	                    }, {
-	                        hastag: result.data[2].checks
-	                    }, {
-	                        hastag: result.data[3].checks
-	                    })
-	                }
-	                vm.getJson();
-	            })
-	
-	        },
-	        validator: function(str, el) {
-	            $("#errorMsg2").hide();
-	            var reg = /\b[0-9]\d{0,1}\b|\b[1-1]\d\d\b|\b200\b/;
-	            if (!reg.test(str) || (str - 0) < 0 || (str - 0) > 200) {
-	                $("#msgTips").hide();
-	                $("#errorMsg").show();
-	            } else {
-	                $("#msgTips").show();
-	                $("#errorMsg").hide();
-	            }
-	        }
-	    });
-	    vm.$watch("configstype", function() {
-	        switch (vm.configstype) {
-	            case "人才分布":
-	                vm.report_type = 201;
-	                break;
-	            case "人才流动":
-	                vm.report_type = 202;
-	                break;
-	            case "人才供需":
-	                vm.report_type = 203;
-	                break;
-	            case "热门岗位人群的薪酬及特征画像":
-	                vm.report_type = 204;
-	                break;
-	            default:
-	                break;
-	        }
-	
-	        vm.getconfig(vm.configstype);
-	
-	    });
-	    vm.$watch("ltnum", function() {
-	        vm.validator(vm.ltnum);
-	    });
-	    vm.$watch("gtnum", function() {
-	        vm.validator(vm.gtnum);
-	    });
-	
-	    //开始扫描编译
-	    avalon.scan(document.body);
-	    return avalon.controller(function($ctrl) {
-	        // 视图渲染后，意思是avalon.scan完成
-	        $ctrl.$onRendered = function() {
-	            document.title = '数联寻英';
-	            $('#side_accordion div').removeClass('md-accent-bg').eq(2).addClass('md-accent-bg');
-	        };
-	
-	        // 进入视图
-	        $ctrl.$onEnter = function(param, rs, rj) {
-	            vm.getconfig(vm.configstype);
-	            var userinfo = vm.getPassFromCookie();
-	            var userBean = userinfo.split('|');
-	            vm._id = userBean[0];
-	            vm.type = userBean[1];
-	            vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
-	            vm.short_id = userBean[2];
-	            vm.username = userBean[3];
-	
-	        };
-	        // 对应的视图销毁前
-	        $ctrl.$onBeforeUnload = function() {
-	
-	        };
-	        $ctrl.$vmodels = [vm];
-	    })
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
-
 /***/ })
 
 });
-//# sourceMappingURL=8.chunk.3c5b49fd.js.map
+//# sourceMappingURL=4.chunk.f63b8bce.js.map

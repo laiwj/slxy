@@ -88,7 +88,7 @@ define(["../../lib/util.js"], function(util) {
                 }
 
                 var bean = { data: JSON.stringify(bean_data), api_url: vm.api_url, id: vm.data_id, api_time: vm.api_time, params: JSON.stringify(vm.params) };
-                $.post("http://10.101.1.171:10110/api/data/interpose", bean, function(result) {
+                $.post("/api/data/interpose", bean, function(result) {
                     util.resResult(result, "数据干预成功", function() {
                         // $("#J_charts_data").val(JSON.stringify(vm.data_disturb));
                         // $("#report_iframe").attr("src", "../lib/resource-report/" + tab + ".html");
@@ -107,7 +107,6 @@ define(["../../lib/util.js"], function(util) {
                 } else {
                     $(".J_edit_desc").each(function(i, v) {
                         if ($(v).attr("isClick")) {
-                            console.log(vm.report_info);
                             vm.saveDesc(v);
                             $(v).attr("isClick", "");
                         }
@@ -192,7 +191,7 @@ define(["../../lib/util.js"], function(util) {
                     bean.city = "";
                     bean.top = 10;
 
-                    url = "http://10.101.1.171:10110/api/talent/distribution";
+                    url = "/api/talent/distribution";
                     charts_type = bean.cf;
                     break;
                 case "人才流动":
@@ -204,7 +203,7 @@ define(["../../lib/util.js"], function(util) {
                     }
                     bean.city = "";
                     bean.top = 10;
-                    url = "http://10.101.1.171:10110/api/talent/flow";
+                    url = "/api/talent/flow";
                     charts_type = bean.cf;
                     break;
                 case "人才供需":
@@ -216,7 +215,7 @@ define(["../../lib/util.js"], function(util) {
                     }
                     bean.top = 5;
                     bean.city = "";
-                    url = "http://10.101.1.171:10110/api/talent/exponential";
+                    url = "/api/talent/exponential";
                     charts_type = bean.na;
                     break;
                 case "人才薪酬":
@@ -228,7 +227,7 @@ define(["../../lib/util.js"], function(util) {
                             top: 10
                         }
                         // bean.city = "";
-                    url = "http://10.101.1.171:10110/api/talent/salary/analysis";
+                    url = "/api/talent/salary/analysis";
                     charts_type = "tab1";
                     break;
                 default:
@@ -248,7 +247,6 @@ define(["../../lib/util.js"], function(util) {
                     params: JSON.stringify(vm.params)
                 }
                 bean = param;
-                console.log(bean);
             } else {
                 bean = {
                     api_url: vm.api_url,
@@ -256,10 +254,9 @@ define(["../../lib/util.js"], function(util) {
                     report_info: vm.report_info,
                     params: JSON.stringify(vm.params)
                 };
-                console.log(bean);
             }
 
-            $.post("http://10.101.1.171:10110/api/info/write", bean, function(result) {
+            $.post("/api/info/write", bean, function(result) {
                 util.resResult(result, "添加分析说明成功", function() {
                     $(obj).prev().text(bean.report_info);
                 });
@@ -283,7 +280,7 @@ define(["../../lib/util.js"], function(util) {
                 default:
                     break;
             }
-            var url = "http://10.101.1.171:10110/report/config/all";
+            var url = "/report/config/all";
             var bean = {
                 report_type: _type
                     // config_type: "city"

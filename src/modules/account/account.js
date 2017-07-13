@@ -104,7 +104,7 @@ define(["../../lib/util.js"], function(util) {
         },
         initList: function(obj, objDom) {
             util.lockScreen();
-            $.post('http://10.101.1.171:10110/user/list', obj, function(data) {
+            $.post('/user/list', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
                 if (data.data.data.length == 0) {
@@ -193,7 +193,7 @@ define(["../../lib/util.js"], function(util) {
             }
             vm.isSumbit = true;
 
-            $.post('http://10.101.1.171:10110/user/regist', bean, function(data) {
+            $.post('/user/regist', bean, function(data) {
                 vm.isSumbit = false;
                 util.resResult(data, "添加账户成功", function() {
                     if (type == 0) {
@@ -232,10 +232,9 @@ define(["../../lib/util.js"], function(util) {
                 }
             })
 
-            // console.log({ user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' });
 
 
-            $.post("http://10.101.1.171:10110/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
+            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'pm' }, function(data) {
                 util.resResult(data, "设置成功", function() {
                     var widget = avalon.vmodels.hh
                     if (widget) {
