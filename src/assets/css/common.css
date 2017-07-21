@@ -194,7 +194,7 @@ button {
     background-color: rgba(41, 41, 41, 0.38);
     /*opacity: 0.38;*/
     filter: alpha(opacity=38);
-    z-index: 10000;
+    /*z-index: 10000;*/
 }
 
 #loading_layer .loading_layer_body {

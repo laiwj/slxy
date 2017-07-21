@@ -1,4 +1,4 @@
-webpackJsonp([8,13],{
+webpackJsonp([10,13],{
 
 /***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
@@ -385,7 +385,12 @@ webpackJsonp([8,13],{
 	            },
 	            lockScreen: function() {
 	                var width = document.documentElement.clientWidth;
-	                var height = document.documentElement.clientHeight + document.documentElement.scrollHeight;
+	                // var height = document.documentElement.clientHeight + document.documentElement.scrollHeight;
+	                var height = $(document).height();
+	                // console.log($(document).height())
+	                // console.log($('body').height())
+	                // $(document).width() < $('body').width() ? $(document).width() : $('body').width();
+	                // $(document).height() < $('body').height() ? $(document).height() : $('body').height();
 	                //var scrlloTop = $(window).clientHeight();
 	
 	                //$("body").addClass("overflow-hidden");
@@ -1712,46 +1717,104 @@ webpackJsonp([8,13],{
 
 /***/ }),
 
-/***/ 47:
+/***/ 49:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(38)], __WEBPACK_AMD_DEFINE_RESULT__ = function(util) {
-	    function Show2(data) {
-	        var output = '',
-	            flag, output2 = '';
-	        $.each(data, function(i, v) {
-	            output += '<li onclick="Chk2(\'' + v + '\')"><label class="mr30"><input type="radio" id="checkbox_a3" class="chk_1" value="chk_1" name="chk_1" /> <label for="checkbox_a3"></label>' + v + '</label></li>';
-	        })
-	
-	        $('#drag').width('150px');
-	        $('#FuntypeList').html('<ul>' + output + '</ul>');
-	        // 鼠标悬停变色
-	        $('#FuntypeAlpha li').hover(
-	            function() { $(this).addClass('over') },
-	            function() { $(this).removeClass('over') }
-	        );
-	    }
-	    // 定义所有相关的 vmodel
+	    // 定义所有相关的vmodel
 	    var vm = avalon.define({
-	        $id: "config",
+	        $id: "userInfo",
+	        isSumbit: false,
+	        user_username1: null,
+	        user_account1: null,
+	        user_msg: null,
+	        newlist: [],
+	        uid: "",
 	        _id: "",
 	        type: "",
-	        _type: null,
 	        short_id: "",
 	        username: "",
 	        identity: "",
 	        toggle: false,
-	        data: [],
-	        tag0s: [],
-	        tags1: [],
-	        tags2: [],
-	        tags3: [],
-	        configstype: "人才分布",
-	        report_type: 201,
-	        ltnum: 0,
-	        gtnum: 200,
-	        condition_l: "=",
-	        condition_r: "p25",
+	        count: 0,
+	        userList: [],
+	        serviceName: "请选择客户名称",
+	        serviceNameList: [],
+	        currentPage: 1,
+	        list: {},
+	        pager: {
+	            currentPage: 1,
+	            totalItems: 0,
+	            showJumper: true,
+	            alwaysShowNext: true,
+	            alwaysShowPrev: true,
+	            prevText: "上一页",
+	            nextText: "下一页",
+	            onJump: function(e, page) {
+	                vm.currentPage = page.currentPage;
+	                var param = {
+	                    force: false,
+	                    page: page.currentPage,
+	                    user_id: vm.list.id ? vm.list.id : ''
+	                }
+	                vm.initList(param, function() {
+	                    // 存储客户名称列表
+	                    vm.serviceNameList = [];
+	                    vm.serviceName = "请选择客户名称";
+	                    $.each(vm.userList, function(i, v) {
+	                        vm.serviceNameList.push({ id: v.pm_user_id, name: v.pm_user_name });
+	                    })
+	                    vm.serviceNameList = vm.unique(vm.serviceNameList);
+	                });
+	            }
+	        },
+	        show: function(id) {
+	            var arr = id.split(",");
+	            var id = arr[0];
+	            var index = arr[1];
+	            if (id.charAt(0) == "d") {
+	                var oldpowerlist = [];
+	                vm.newlist = [];
+	                var $el = $(".J_power").eq(index);
+	                vm.uid = $el.attr("data_userid");
+	                oldpowerlist = $el.attr('_powerList').split(',');
+	                $("#powerB_dialog input[type='checkbox']").each(function() {
+	                    $(this).removeAttr("checked");
+	                });
+	                $.each(oldpowerlist, function(index, val) {
+	                    $("#powerB_dialog input:checkbox[value='" + val + "']").prop('checked', true);
+	                    if (val.length == 3) {
+	                        vm.newlist.push(val);
+	                    }
+	                });
+	                var dialog = avalon.vmodels[id];
+	
+	            } else {
+	                var dialog = avalon.vmodels[id];
+	            }
+	            if (!dialog) {
+	
+	            } else {
+	                dialog.toggle = true;
+	            }
+	        },
+	        $ccOpts: {
+	            title: "邀请用户",
+	            width: 500,
+	            onOpen: function() {
+	                vm.user_msg = "http://localhost:8081/register?id=" + vm.short_id;
+	            },
+	            onConfirm: function() {
+	                alert("你点击了确定");
+	            }
+	        },
+	        $ddOpts: {
+	            title: "操作报告",
+	            width: 500,
+	            onConfirm: function() {
+	                vm.savePower({ user_id: vm.uid }, vm.newlist);
+	            }
+	        },
 	        getPassFromCookie: function() {
 	            return window.$.cookie(location.host + "_userinfo");
 	        },
@@ -1765,228 +1828,145 @@ webpackJsonp([8,13],{
 	            vm.clearPassToCookie();
 	            window.location.href = "";
 	        },
-	        doClick: function(data) {
-	            $("#sublist").empty();
-	            $(".tags").attr("isMe", "");
-	            var top = $(this)[0].parentNode.offsetTop,
-	                left = $(this)[0].parentNode.offsetWidth;
-	            var el = $(this)[0].parentNode.nextElementSibling.lastElementChild;
-	            $(el).attr("isMe", "yes");
-	            var dragHtml = '<div id="FuntypeAlpha">'; //职能类别
-	            dragHtml += '<div id="FuntypeList"></div>'; //职能类别列表
-	            dragHtml += '</div>';
-	            $('#drag_con').html(dragHtml);
-	            Show2(data.$model.tags);
-	            $('#maskLayer').css({ top: top + 44, left: left + 129 }).show();
-	            $("#sublist").css({ top: top + 44, left: left - 92 })
-	        },
-	        generate: function() {
-	            // 获取input数值
-	            if ($("#msgTips").is(":hidden")) {
-	                return false;
-	            }
-	            if ((vm.ltnum - 0) > (vm.gtnum - 0)) {
-	                $("#msgTips").hide();
-	                $("#errorMsg").hide();
-	                $("#errorMsg2").show();
-	                return false;
-	            }
-	            var data = vm.ltnum + "-" + vm.gtnum;
-	            var tag = '';
-	            tag = '<div class="tag"><span>' + data + '</span><i> × </i></div>';
-	            var el = $(this)[0].parentNode.nextElementSibling.lastElementChild;
-	            $(el).find(".tag").remove();
-	            $(el).append(tag);
-	            vm.domLisenter();
-	        },
-	        condition: function() {
-	            var data = vm.condition_l + "" + vm.condition_r;
-	            var tag = '';
-	            tag = '<div class="tag"><span>' + data + '</span><i> × </i></div>';
-	            if (vm.condition_l == "<") {
-	                tag = '<div class="tag"><span>&lt' + vm.condition_r + '</span><i> × </i></div>';
-	            }
-	            var el = $(this)[0].parentNode.nextElementSibling.lastElementChild;
-	            var tagSpan = $(el).find(".tag span");
-	            var flage = true;
-	            $.each(tagSpan, function(i, v) {
-	                if (data == $(v).text()) {
-	                    flage = false;
-	                }
-	            })
-	            if (flage) $(el).append(tag);
-	            vm.domLisenter();
-	        },
-	        go: function() {
-	            var bean = vm.getdatas();
-	            if (bean == "nodata") return;
-	            bean.report_type = vm.report_type;
-	            if (vm.report_type == 204) {
-	                var url = "/report/config/allmodify";
-	            } else {
-	                var url = "/report/config/modify";
-	            }
-	            $.post(url, bean, function(data) {
-	                util.resResult(data, "配置成功", function() {
-	                    vm.getconfig(vm.configstype);
-	                });
-	            })
-	        },
-	        clearAll: function() {
-	            $(".tags").find(".tag").remove();
-	        },
-	        getdatas: function() {
-	            var bean = {};
-	            var _util = ["industry", "demand", "experience", "supply", "label", "type_limit"];
-	            $(".tags").each(function(i, v) {
-	                var xy_Arr = [];
-	                var _index = i;
-	                if (vm.report_type == 204) {
-	                    $(v).find("span").each(function(i, v) {
-	                        xy_Arr.push($(this).text());
-	                    })
-	                    if (_index == 4 && xy_Arr.length == 0) {
-	                        util.tips("请配置岗位供需指数");
-	                        bean = "nodata";
-	                        return;
-	                    }
-	                    bean[_util[i]] = xy_Arr.join(",");
-	                } else {
-	                    $(v).find("span").each(function(i, v) {
-	                        xy_Arr.push($(this).text());
-	                    })
-	                    bean.check = xy_Arr.join(",");
-	                    bean.config_type = "industry";
-	                    return false;
-	                }
-	
-	            })
-	
-	            return bean;
-	        },
-	        domLisenter: function() {
-	            $(".tag").find("i").on("click", function() {
-	                $(this).parent().remove();
-	            });
-	        },
-	        getJson: function() {
-	            //发送数据到后台
-	            num = vm.report_type == 204 ? 201 : 202;
-	            var url = "../data/config" + num + ".json";
-	            // util.lockScreen();
-	            $.get(url, function(jsonObj) {
-	                // util.hideLock();
-	                vm.data_redy[0].name = jsonObj.data[0].name;
-	                vm.data_redy[0].tags = jsonObj.data[0].tags;
-	                if (num == 201) {
-	                    vm.data_redy[1].name = jsonObj.data[1].name;
-	                    vm.data_redy[1].tags = jsonObj.data[1].tags;
-	                    vm.data_redy[2].name = jsonObj.data[2].name;
-	                    vm.data_redy[2].tags = jsonObj.data[2].tags;
-	                    vm.data_redy[3].name = jsonObj.data[3].name;
-	                    vm.data_redy[3].tags = jsonObj.data[3].tags;
-	                }
-	                vm.data = [];
-	                vm.data = vm.data_redy;
-	                vm.domLisenter();
-	            });
-	        },
-	        getconfig: function(type) {
-	            var _type = null;
-	            switch (type) {
-	                case "人才分布":
-	                    _type = 201;
-	                    break;
-	                case "人才流动":
-	                    _type = 202;
-	                    break;
-	                case "人才供需":
-	                    _type = 203;
-	                    break;
-	                case "热门岗位人群的薪酬及特征画像":
-	                    _type = 204;
-	                    break;
-	                default:
-	                    break;
-	            }
-	            var url = "/report/config/all";
-	            var bean = {
-	                report_type: _type
-	                    // config_type: "city"
-	            }
+	        initList: function(obj, callback) {
 	            util.lockScreen();
-	            $.post(url, bean, function(result) {
+	            $.post('/user/list/b', obj, function(data) {
 	                util.hideLock();
-	                util.resResult(result);
-	                vm.data_redy = [];
-	                vm.data_redy.push({
-	                    hastag: result.data[0].checks
-	                })
-	                if (bean.report_type == 204) {
-	                    vm.data_redy.push({
-	                        hastag: result.data[1].checks
-	                    }, {
-	                        hastag: result.data[2].checks
-	                    }, {
-	                        hastag: result.data[3].checks
-	                    })
+	                util.resResult(data);
+	                if (data.data.data.length == 0) {
+	                    $(".infolist").hide();
+	                    $(".null-model").show();
+	                } else {
+	                    vm.count = data.data.count;
+	                    vm.userList = data.data.data;
+	                    $(".infolist").show();
+	                    $(".null-model").hide();
+	
+	                    // if (obj.page == 1) {
+	                    var widget = avalon.vmodels.pp
+	                    if (widget) {
+	                        widget.totalItems = data.data.count;
+	                    }
+	                    // }
+	
 	                }
-	                vm.getJson();
+	                try {
+	                    callback();
+	                } catch (error) {
+	
+	                }
+	
 	            })
 	
 	        },
-	        validator: function(str, el) {
-	            $("#errorMsg2").hide();
-	            var reg = /\b[0-9]\d{0,1}\b|\b[1-1]\d\d\b|\b200\b/;
-	            if (!reg.test(str) || (str - 0) < 0 || (str - 0) > 200) {
-	                $("#msgTips").hide();
-	                $("#errorMsg").show();
-	            } else {
-	                $("#msgTips").show();
-	                $("#errorMsg").hide();
+	        savePower: function(param, oldpowerlist) {
+	            var newpower = [];
+	            $.each($("#powerB_dialog").find("input[type='checkbox']"), function(index) {
+	                if ($(this).is(':checked')) {
+	                    newpower.push($(this).attr("value"))
+	                }
+	
+	            });
+	            var contactArr = [];
+	            $.each(newpower, function(i) {
+	                if ($.inArray(newpower[i], oldpowerlist) > -1) {
+	                    contactArr.push(newpower[i]);
+	                }
+	            })
+	
+	            var remove = [];
+	            $.each(oldpowerlist, function(i) {
+	                if ($.inArray(oldpowerlist[i], contactArr) == -1) {
+	                    remove.push(oldpowerlist[i]);
+	                }
+	            })
+	            var add = [];
+	            $.each(newpower, function(i) {
+	                if ($.inArray(newpower[i], contactArr) == -1) {
+	                    add.push(newpower[i]);
+	                }
+	            })
+	
+	            $.post("/user/power/add", { user_id: param.user_id, power_del: remove.join(","), power: add.join(","), source: 'b' }, function(data) {
+	                util.resResult(data, "设置成功", function() {
+	                    var widget = avalon.vmodels.pp
+	                    if (widget) {
+	                        if (vm.serviceName == "请选择客户名称") {
+	                            var obj = {
+	                                force: false,
+	                                page: widget.currentPage,
+	                                user_id: "",
+	                            }
+	                        } else {
+	                            var obj = {
+	                                page: 1,
+	                                user_id: vm.list.id ? vm.list.id : '',
+	                                pm_user_id: vm.serviceName
+	                            }
+	                        }
+	
+	                    }
+	                    vm.initList(obj);
+	                });
+	
+	            })
+	        },
+	        unique: function(opt) {
+	            var kv = {}
+	            for (var i = 0; i < opt.length;) {
+	                if (kv[opt[i].id + ',' + opt[i].name]) {
+	                    opt.splice(i, 1);
+	                } else {
+	                    kv[opt[i].id + ',' + opt[i].name] = true;
+	                    i++;
+	                }
 	            }
 	        }
 	    });
-	    vm.$watch("configstype", function() {
-	        switch (vm.configstype) {
-	            case "人才分布":
-	                vm.report_type = 201;
-	                break;
-	            case "人才流动":
-	                vm.report_type = 202;
-	                break;
-	            case "人才供需":
-	                vm.report_type = 203;
-	                break;
-	            case "热门岗位人群的薪酬及特征画像":
-	                vm.report_type = 204;
-	                break;
-	            default:
-	                break;
+	    vm.$skipArray = ["pager"]
+	
+	    vm.$watch("serviceName", function() {
+	        if (vm.serviceName == "请选择客户名称") {
+	            vm.initList({ page: vm.currentPage, user_id: vm.list.id ? vm.list.id : '' }, function() {
+	                // 存储客户名称列表
+	                vm.serviceNameList = [];
+	                vm.serviceName = "请选择客户名称";
+	                $.each(vm.userList, function(i, v) {
+	                    vm.serviceNameList.push({ id: v.pm_user_id, name: v.pm_user_name });
+	                })
+	                vm.serviceNameList = vm.unique(vm.serviceNameList);
+	            });
+	            avalon.vmodels.pp.currentPage = vm.currentPage;
+	        } else {
+	            vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '', pm_user_id: vm.serviceName });
+	            avalon.vmodels.pp.currentPage = 1;
 	        }
-	
-	        vm.getconfig(vm.configstype);
-	
-	    });
-	    vm.$watch("ltnum", function() {
-	        vm.validator(vm.ltnum);
-	    });
-	    vm.$watch("gtnum", function() {
-	        vm.validator(vm.gtnum);
-	    });
-	
-	    //开始扫描编译
-	    avalon.scan(document.body);
+	    })
 	    return avalon.controller(function($ctrl) {
 	        // 视图渲染后，意思是avalon.scan完成
 	        $ctrl.$onRendered = function() {
+	            // 定义title
 	            document.title = '数联寻英';
-	            $('#side_accordion div').removeClass('md-accent-bg').eq(2).addClass('md-accent-bg');
-	        };
 	
+	            $('#side_accordion div').removeClass('md-accent-bg').eq(3).addClass('md-accent-bg');
+	
+	            //生成列表
+	            vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '' }, function() {
+	                // 存储客户名称列表
+	                vm.serviceNameList = [];
+	                vm.serviceName = "请选择客户名称";
+	                $.each(vm.userList, function(i, v) {
+	                    vm.serviceNameList.push({ id: v.pm_user_id, name: v.pm_user_name });
+	                })
+	                vm.serviceNameList = vm.unique(vm.serviceNameList);
+	            });
+	
+	
+	
+	        };
 	        // 进入视图
 	        $ctrl.$onEnter = function(param, rs, rj) {
-	            vm.getconfig(vm.configstype);
+	            vm.list = param;
 	            var userinfo = vm.getPassFromCookie();
 	            var userBean = userinfo.split('|');
 	            vm._id = userBean[0];
@@ -1994,11 +1974,10 @@ webpackJsonp([8,13],{
 	            vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
 	            vm.short_id = userBean[2];
 	            vm.username = userBean[3];
-	
 	        };
 	        // 对应的视图销毁前
 	        $ctrl.$onBeforeUnload = function() {
-	
+	            $(".oni-dialog").empty();
 	        };
 	        $ctrl.$vmodels = [vm];
 	    })
@@ -2008,4 +1987,4 @@ webpackJsonp([8,13],{
 /***/ })
 
 });
-//# sourceMappingURL=8.chunk.eaa1a0dc.js.map
+//# sourceMappingURL=10.chunk.0952c93c.js.map

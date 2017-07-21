@@ -22,7 +22,7 @@ define(["../../lib/util.js"], function(util) {
         list: {},
         pager: {
             currentPage: 1,
-            totalItems: 600,
+            totalItems: 0,
             showJumper: true,
             alwaysShowNext: true,
             alwaysShowPrev: true,
@@ -214,8 +214,10 @@ define(["../../lib/util.js"], function(util) {
                 })
                 vm.serviceNameList = vm.unique(vm.serviceNameList);
             });
+            avalon.vmodels.pp.currentPage = vm.currentPage;
         } else {
             vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '', pm_user_id: vm.serviceName });
+            avalon.vmodels.pp.currentPage = 1;
         }
     })
     return avalon.controller(function($ctrl) {

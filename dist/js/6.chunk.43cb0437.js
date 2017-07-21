@@ -385,7 +385,12 @@ webpackJsonp([6,13],{
 	            },
 	            lockScreen: function() {
 	                var width = document.documentElement.clientWidth;
-	                var height = document.documentElement.clientHeight + document.documentElement.scrollHeight;
+	                // var height = document.documentElement.clientHeight + document.documentElement.scrollHeight;
+	                var height = $(document).height();
+	                // console.log($(document).height())
+	                // console.log($('body').height())
+	                // $(document).width() < $('body').width() ? $(document).width() : $('body').width();
+	                // $(document).height() < $('body').height() ? $(document).height() : $('body').height();
 	                //var scrlloTop = $(window).clientHeight();
 	
 	                //$("body").addClass("overflow-hidden");
@@ -2272,4 +2277,4 @@ webpackJsonp([6,13],{
 /***/ })
 
 });
-//# sourceMappingURL=6.chunk.5595f875.js.map
+//# sourceMappingURL=6.chunk.43cb0437.js.map

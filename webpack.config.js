@@ -1,6 +1,3 @@
-/**
- * Created by WangMing on 15/12/9.
- */
 var path = require('path');
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin"); //将组件中的样式乖乖提取出来

@@ -7,7 +7,7 @@ require('./lib/bootstrap/css/bootstrap.min.css');
 require('./lib/select/css/select.css');
 
 require('./assets/css/theme.css');
-require('./assets/css/font-awesome/css/font-awesome.css');
+require('./assets/css/font-awesome/iconfont.css');
 require('./assets/css/slxy.css');
 require('./assets/css/login.css');
 //项目入口
