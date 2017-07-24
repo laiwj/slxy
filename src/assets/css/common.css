@@ -150,6 +150,7 @@ button {
 .charts-content {
     width: 100%;
     text-align: center;
+    position: relative;
 }
 
 .report_tab {

@@ -3970,11 +3970,10 @@
     .configbar {
         width: 190px;
         height: 500px;
-        /*background-color: red;*/
         margin-top: -20px;
         border-right: 1px solid #e3e3e3;
         box-sizing: border-box;
-        position: relative;
+        position: absolute;
     }
     
     .configbar li {
