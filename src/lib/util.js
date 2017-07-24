@@ -382,15 +382,8 @@ define(
             },
             lockScreen: function() {
                 var width = document.documentElement.clientWidth;
-                // var height = document.documentElement.clientHeight + document.documentElement.scrollHeight;
                 var height = $(document).height();
-                // console.log($(document).height())
-                // console.log($('body').height())
-                // $(document).width() < $('body').width() ? $(document).width() : $('body').width();
-                // $(document).height() < $('body').height() ? $(document).height() : $('body').height();
-                //var scrlloTop = $(window).clientHeight();
-
-                //$("body").addClass("overflow-hidden");
+                document.documentElement.style.overflow = "hidden";
                 var lock_overlay = $("#loading_layer");
                 if (lock_overlay.length != 0) {
                     $(".loading_layer_body").empty();
@@ -404,6 +397,7 @@ define(
             },
             hideLock: function() {
                 $("#loading_layer").hide();
+                document.documentElement.style.overflow = "";
             },
             /**
              * 加载数据显示蒙层
@@ -620,6 +614,8 @@ define(
             },
             resResult: function(result, msg, callback) {
                 try {
+                    var height = $(document).height();
+                    $("#loading_layer").css("height", height + 'px');
                     $("#loading_layer").show();
                     //登录失效
                     if (result.code == -10 || result.code == -11) {
@@ -662,6 +658,8 @@ define(
             },
             tips: function(msg) {
                 try {
+                    var height = $(document).height();
+                    $("#loading_layer").css("height", height + 'px');
                     $("#loading_layer").show();
                     if (msg) {
                         $(".loading_layer_body").empty();

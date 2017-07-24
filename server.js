@@ -11,7 +11,25 @@ config.plugins.push(new webpack.HotModuleReplacementPlugin());
 var app = new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    stats: { colors: true },
+    proxy: {
+        '/user': {
+            target: 'http://10.101.1.171:10110',
+            changeOrigin: true,
+            secure: false
+        },
+        '/report': {
+            target: 'http://10.101.1.171:10110',
+            changeOrigin: true,
+            secure: false
+        },
+        '/api': {
+            target: 'http://10.101.1.171:10110',
+            changeOrigin: true,
+            secure: false
+        }
+    }
 });
 app.listen(8090, function(err, result) {
     if (err) {
