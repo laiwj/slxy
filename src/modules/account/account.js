@@ -40,6 +40,7 @@ define(["../../lib/util.js"], function(util) {
                     page: page.currentPage,
                     user_id: ''
                 }
+                $(".pull_model").slideUp("fast");
                 vm.initList(param);
             }
 

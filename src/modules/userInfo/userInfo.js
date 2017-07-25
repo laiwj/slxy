@@ -227,7 +227,6 @@ define(["../../lib/util.js"], function(util) {
             document.title = '数联寻英';
 
             $('#side_accordion div').removeClass('md-accent-bg').eq(3).addClass('md-accent-bg');
-
             //生成列表
             vm.initList({ page: 1, user_id: vm.list.id ? vm.list.id : '' }, function() {
                 // 存储客户名称列表
@@ -256,6 +255,7 @@ define(["../../lib/util.js"], function(util) {
         // 对应的视图销毁前
         $ctrl.$onBeforeUnload = function() {
             $(".oni-dialog").empty();
+            vm.serviceName = "请选择客户名称";
         };
         $ctrl.$vmodels = [vm];
     })

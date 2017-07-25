@@ -16,7 +16,7 @@ define(["../../lib/util.js"], function(util) {
     }
     // 定义所有相关的 vmodel
     var vm = avalon.define({
-        $id: "config",
+        $id: "configure",
         _id: "",
         type: "",
         _type: null,
@@ -281,7 +281,7 @@ define(["../../lib/util.js"], function(util) {
         };
         // 对应的视图销毁前
         $ctrl.$onBeforeUnload = function() {
-
+            $(".oni-dialog").empty();
         };
         $ctrl.$vmodels = [vm];
     })

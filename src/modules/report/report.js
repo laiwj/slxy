@@ -288,6 +288,9 @@ define(["../../lib/util.js"], function(util) {
             $.post(url, bean, function(result) {
                 util.resResult(result);
                 vm.industry = result.data[0].checks;
+                if (vm.industry.indexOf(vm.J_industry) < 0) {
+                    vm.J_industry = "互联网全行业";
+                }
                 if (bean.report_type == 204) {
                     vm.label = result.data[3].checks;
                     try {
@@ -363,7 +366,6 @@ define(["../../lib/util.js"], function(util) {
             vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
             vm.short_id = userBean[2];
             vm.username = userBean[3];
-
         };
         // 对应的视图销毁前
         $ctrl.$onBeforeUnload = function() {

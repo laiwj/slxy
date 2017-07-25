@@ -126,7 +126,7 @@
                             if (p == v.name) {
                                 varr.push({
                                     name: keyname,
-                                    value: v.max_salary
+                                    value: v.max_salary > 200000 ? v.max_salary / 10 : v.max_salary
                                 });
                             }
                         })

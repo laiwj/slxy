@@ -101,22 +101,22 @@ avalon.state("compensation", {
     }
 });
 
-avalon.state("config", {
-    url: "/config",
+avalon.state("configure", {
+    url: "/configure",
     views: {
         "": {
             //配置模块模板和控制器
             templateProvider: function() {
                 return new Promise(function(rs) {
                     require.ensure([], function(tt) {
-                        rs(require("text!./modules/config/config.html"))
+                        rs(require("text!./modules/configure/configure.html"))
                     })
                 })
             },
             controllerProvider: function() {
                 return new Promise(function(rs) {
                     require.ensure([], function() {
-                        rs(require("./modules/config/config.js"))
+                        rs(require("./modules/configure/configure.js"))
                     })
                 })
             }
