@@ -25,6 +25,7 @@ define(["../../lib/util.js"], function(util) {
         bigList: [],
         smallList: [],
         userList: [],
+        powerList: [],
         skipId: {},
         pager: {
             currentPage: 1,
@@ -304,6 +305,7 @@ define(["../../lib/util.js"], function(util) {
             vm._id = userBean[0];
             vm.type = userBean[1];
             vm.identity = vm.type == "1" ? "管理员" : vm.type == "2" ? "公司" : "业务员";
+            vm.powerList = vm.type == "1" ? [{ key: "添加账户", val: 1 }, { key: "数据干预", val: 2 }, { key: "添加数据解释", val: 3 }, { key: "报告标签配置", val: 4 }, { key: "系统通知发送", val: 5 }, { key: "权限修改", val: 6 }] : [{ key: "添加数据解释", val: 3 }, { key: "权限修改", val: 6 }];
             vm.short_id = userBean[2];
             vm.username = userBean[3];
 

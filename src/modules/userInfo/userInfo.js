@@ -111,15 +111,14 @@ define(["../../lib/util.js"], function(util) {
             $.post('/user/list/b', obj, function(data) {
                 util.hideLock();
                 util.resResult(data);
+                vm.count = data.data.count;
                 if (data.data.data.length == 0) {
                     $(".infolist").hide();
                     $(".null-model").show();
                 } else {
-                    vm.count = data.data.count;
                     vm.userList = data.data.data;
                     $(".infolist").show();
                     $(".null-model").hide();
-
                     // if (obj.page == 1) {
                     var widget = avalon.vmodels.pp
                     if (widget) {

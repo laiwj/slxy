@@ -34,12 +34,12 @@ define([], function() {
                     // vm.password = true;
                 }
             });
-
+            // /^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/
             $('#login_account').blur(function() {
                 if ($("#login_account").val() == "admin") {
                     $('.email_hint').html("✔").css("color", "green");
                     vm.email_hint = false;
-                } else if ((/^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/).test($("#login_account").val())) {
+                } else if ((/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/).test($("#login_account").val())) {
                     $('.email_hint').html("✔").css("color", "green");
                     vm.email_hint = false;
                 } else if ((/^1[34578]\d{9}$/).test($("#login_account").val())) {

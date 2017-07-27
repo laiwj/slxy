@@ -192,30 +192,11 @@
                                 <div class=" powerPM_dialog p20 clearfix" id="powerPM_dialog" title="权限设置">
                                     <div class="control-group-warp">
                                         <div class="control-group-charts clearfix mt20">
-                                            <div class="ver-middle fl">
-                                                <input type="checkbox" value="1" />
-                                                <label>添加账户</label>
+                                            <div class="ver-middle fl ml20" ms-repeat-el="powerList">
+                                                <input type="checkbox" ms-attr-value=el.val />
+                                                <label>{{el.key}}</label>
                                             </div>
-                                            <div class="ver-middle fl ml20">
-                                                <input type="checkbox" value="2" />
-                                                <label>数据干预</label>
-                                            </div>
-                                            <div class="ver-middle fl ml20">
-                                                <input type="checkbox" value="3" />
-                                                <label>添加数据解释</label>
-                                            </div>
-                                            <div class="ver-middle fl ml20">
-                                                <input type="checkbox" value="4" />
-                                                <label>报告标签配置</label>
-                                            </div>
-                                            <div class="ver-middle fl ml20">
-                                                <input type="checkbox" value="5" />
-                                                <label>系统通知发送</label>
-                                            </div>
-                                            <div class="ver-middle fl ml20">
-                                                <input type="checkbox" value="6" />
-                                                <label>权限修改</label>
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
